@@ -22,6 +22,10 @@
 /* Onderste balk (Made with Zensical) weglaten */
 .md-footer-meta { display: none; }
 
+/* Illustratie op de startpagina */
+.hero-wrap { margin: 0 0 1.5rem; }
+.hero-wrap svg.hero { width: 100%; height: auto; max-width: 52rem; display: block; margin: 0 auto; }
+
 /* Icoontjes in de tekst */
 .md-typeset svg.ico { width: 1.15em; height: 1.15em; vertical-align: -0.2em; }
 
