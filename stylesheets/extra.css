@@ -19,6 +19,19 @@
   scrollbar-color: #8a8a8a transparent;
 }
 
+/* Knop om het linkermenu in en uit te klappen (enkel op brede schermen) */
+.md-menu-toggle { display: none; }
+@media screen and (min-width: 76.25em) {
+  .md-menu-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: none; border: 0; cursor: pointer; color: inherit;
+    padding: .4rem; margin: 0 .2rem; border-radius: .3rem;
+  }
+  .md-menu-toggle:hover { background: var(--md-accent-fg-color--transparent); }
+  .md-menu-toggle svg { width: 1.2rem; height: 1.2rem; }
+  body.menu-dicht .md-sidebar--primary { display: none; }
+}
+
 /* Bij kopiëren de prompt (student@serverXX:~$) en de uitvoer weglaten */
 [data-md-copying] .gp,
 [data-md-copying] .go,
