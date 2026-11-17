@@ -19,6 +19,12 @@
   scrollbar-color: #8a8a8a transparent;
 }
 
+/* Onderste balk (Made with Zensical) weglaten */
+.md-footer-meta { display: none; }
+
+/* Icoontjes in de tekst */
+.md-typeset svg.ico { width: 1.15em; height: 1.15em; vertical-align: -0.2em; }
+
 /* Knop om het linkermenu in en uit te klappen (enkel op brede schermen) */
 .md-menu-toggle { display: none; }
 @media screen and (min-width: 76.25em) {
