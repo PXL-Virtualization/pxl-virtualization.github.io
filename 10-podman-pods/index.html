@@ -1,0 +1,1592 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/10-podman-pods/">
+      
+      
+      
+        <link rel="prev" href="../09-podman-compose-in-combinatie-met-containerfile/">
+      
+      
+        <link rel="next" href="../11-kubernetes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>10 Podman pods - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10 Podman pods
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#101-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#102-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#103-werken-met-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.3 Werken met pods
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#104-wat-deelt-een-pod-en-wat-niet" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.4 Wat deelt een pod en wat niet?
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.4 Wat deelt een pod en wat niet?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1041-het-netwerk-is-gedeeld" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.4.1 Het netwerk is gedeeld
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1042-wat-een-pod-niet-deelt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.4.2 Wat een pod niet deelt
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1043-twee-valkuilen-met-poorten" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.4.3 Twee valkuilen met poorten
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1044-pod-of-eigen-netwerk" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.4.4 Pod of eigen netwerk?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#105-een-pod-beheren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.5 Een pod beheren
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#106-wordpress" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.6 WordPress
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.6 WordPress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1061-zonder-gegevens-op-serverxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.6.1 Zonder gegevens op ServerXX
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1062-met-gegevens-op-serverxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        10.6.2 Met gegevens op ServerXX
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../00-inleiding/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="10-podman-pods">10 Podman pods<a class="headerlink" href="#10-podman-pods" title="Permanent link">&para;</a></h1>
+<h2 id="101-doelstellingen">10.1 Doelstellingen<a class="headerlink" href="#101-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>uitleggen wat een pod is en welke rol de infra-container daarin speelt;</p>
+</li>
+<li>
+<p>een pod aanmaken, er containers aan toevoegen en de pod opvolgen met podman pod ps, podman pod top, podman pod stats en podman pod inspect;</p>
+</li>
+<li>
+<p>uitleggen welke namespaces de containers in een pod delen en welke niet;</p>
+</li>
+<li>
+<p>aantonen dat containers in een pod elkaar bereiken via 127.0.0.1;</p>
+</li>
+<li>
+<p>verklaren waarom je gepubliceerde poorten bij het aanmaken van de pod moet opgeven;</p>
+</li>
+<li>
+<p>beslissen wanneer je een pod gebruikt en wanneer een eigen netwerk;</p>
+</li>
+<li>
+<p>een pod beheren met start, stop, restart, pause, unpause, kill, rm en prune;</p>
+</li>
+<li>
+<p>het geheugen- en processorgebruik van een pod begrenzen;</p>
+</li>
+<li>
+<p>WordPress in een pod opzetten, met en zonder gegevens op de host;</p>
+</li>
+<li>
+<p>van een bestaande pod een Kubernetes-manifest maken en dat opnieuw afspelen met podman kube play.</p>
+</li>
+</ul>
+<h2 id="102-inleiding">10.2 Inleiding<a class="headerlink" href="#102-inleiding" title="Permanent link">&para;</a></h2>
+<p>Containers zijn de kleinste eenheden die je kan beheren met de containertools van Podman.</p>
+<p>Een Podman-pod is een groep van één of meer containers. Elke Podman-pod bevat altijd een infracontainer.</p>
+<p><img alt="" src="../assets/h10/image1.png" /></p>
+<p>De infracontainer draait geen toepassing. Hij houdt de namespaces van de pod vast zodat de andere containers die kunnen delen, en hij blijft draaien met een pauzeproces dat verder niets doet. Daardoor blijft de pod bestaan, ook als er even geen enkele andere container in draait. Je moet dit niet van buiten kennen, maar dit is wat hij doet:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Wat hij doet</strong></th>
+<th><strong>Waarom dat nodig is</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Houdt de netwerknamespace vast</td>
+<td>Alle containers in de pod delen één IP-adres en dezelfde poorten</td>
+</tr>
+<tr>
+<td>Draagt de poortbindingen</td>
+<td>Daarom geef je -p 8080:80 op bij het aanmaken van de pod en niet bij een container</td>
+</tr>
+<tr>
+<td>Deelt de ipc (Inter-Process Communication)- en uts (UNIX Time-Sharing System)-namespace</td>
+<td>De containers kunnen gedeeld geheugen gebruiken en zien dezelfde hostnaam</td>
+</tr>
+<tr>
+<td>Hangt onder dezelfde cgroup (control group)</td>
+<td>Grenzen aan geheugen en processor gelden voor de pod als geheel</td>
+</tr>
+<tr>
+<td>Blijft zelf draaien</td>
+<td>De pod blijft bestaan, ook als alle andere containers gestopt zijn</td>
+</tr>
+</tbody>
+</table>
+<p>De procesnamespace hoort daar niet bij: die blijft standaard per container. Verderop in dit hoofdstuk zie je hoe je dat kan veranderen.</p>
+<p>Samengevat:</p>
+<ul>
+<li>
+<p>Een pod is een groep containers die samenwerken alsof ze één toepassing zijn.</p>
+</li>
+<li>
+<p>Ze delen het netwerk en de resource-instellingen van de pod: één IP-adres, één poortenlijst, één geheugenlimiet.</p>
+</li>
+<li>
+<p>Hun opslag delen ze niet. Een volume koppel je aan een container, niet aan de pod.</p>
+</li>
+<li>
+<p>Een Podman-pod is hetzelfde idee als een pod in Kubernetes. Daar komen we later op terug.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h10/image2.png" /></p>
+<h2 id="103-werken-met-pods">10.3 Werken met pods<a class="headerlink" href="#103-werken-met-pods" title="Permanent link">&para;</a></h2>
+<p>Hier maken we een lege pod aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mypod
+</span><span id="__span-0-2"><span class="go">a518b698331a040cfb62308dad93e56a415bbe9f81d85f8e0407c91377e9f6d6</span>
+</span></code></pre></div>
+<p>De pod bevindt zich in de beginstatus 'Gemaakt'.</p>
+<p>We listen nu alle pods.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>ps
+</span><span id="__span-1-2"><span class="go">POD ID        NAME        STATUS      CREATED         INFRA ID      # OF CONTAINERS</span>
+</span><span id="__span-1-3"><span class="go">a518b698331a  mypod       Created     55 seconds ago  3136cbd2b750  1</span>
+</span></code></pre></div>
+<p>Zoals je ziet is er 1 container: dat is de infra-container.</p>
+<p>De container heeft als doel:</p>
+<ul>
+<li>
+<p>het netwerk en de namespaces van de pod “vasthouden”;</p>
+</li>
+<li>
+<p>een stabiele PID 1 leveren in de pod;</p>
+</li>
+<li>
+<p>te zorgen dat de pod blijft bestaan, ook als er (nog) geen andere containers draaien.</p>
+</li>
+</ul>
+<p>In een gewone container is PID 1 het proces dat bepaalt of de container “leeft”. Als dat proces stopt, stopt de container zoals we al besproken hebben.</p>
+<p>Je kan ook een lijst opvragen van alle pods en de bijhorende containers.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-2-2"><span class="go">CONTAINER ID  IMAGE                …           PODNAME</span>
+</span><span id="__span-2-3"><span class="go">3136cbd2b750                    …           mypod</span>
+</span></code></pre></div>
+<p>De standaard infracontainer is gebaseerd op de registry.access.redhat.com/ubi10/pause image.</p>
+<p>We zullen nu een container met de naam myubi in de bestaande pod mypod uitvoeren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-dit<span class="w"> </span>--name<span class="w"> </span>myubi<span class="w"> </span>--pod<span class="w"> </span>mypod<span class="w"> </span>registry.access.redhat.com/ubi10/ubi<span class="w"> </span>/bin/bash
+</span></code></pre></div>
+<p>We listen nu terug alle pods.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>ps
+</span><span id="__span-4-2"><span class="go">POD ID        NAME        STATUS      …    # OF CONTAINERS</span>
+</span><span id="__span-4-3"><span class="go">a518b698331a  mypod       Running     …     2</span>
+</span></code></pre></div>
+<p>Zoals je ziet heeft de pod mypod nu 2 containers.</p>
+<p>We zullen nu containers listen met info over pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-5-2"><span class="go">CONTAINER ID  IMAGE  …                                             PODNAME</span>
+</span><span id="__span-5-3"><span class="go">3136cbd2b750  localhost/podman-pause:5.4.0-1750809600 …             mypod</span>
+</span><span id="__span-5-4"><span class="go">6f297a9b39d3  registry.access.redhat.com/ubi10/ubi:latest  /bin/bash…  mypod</span>
+</span></code></pre></div>
+<p>Meer info over het aanmaken van een pod in de manual-page.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~$ </span>man<span class="w"> </span>podman-pod-create
+</span></code></pre></div>
+<p>Om de actieve processen van containers in een pod weer te geven, voer je het volgende in:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>top<span class="w"> </span>mypod
+</span><span id="__span-7-2"><span class="go">USER …        %CPU        ELAPSED         TTY         TIME        COMMAND</span>
+</span><span id="__span-7-3"><span class="go">0 …           0.000       6m5.964458803s  ?           0s          /catatonit -P</span>
+</span><span id="__span-7-4"><span class="go">Root …        0.000       6m5.966108961s  pts/0       0s          /bin/bash</span>
+</span></code></pre></div>
+<p>Om resourcestatistieken te zien van containers in een of meer pods gebruik je onderstaande:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>stats<span class="w"> </span>-a<span class="w"> </span>--no-stream
+</span><span id="__span-8-2"><span class="go">POD           CID           NAME                CPU %       MEM USAGE/ LIMIT …</span>
+</span><span id="__span-8-3"><span class="go">a518b698331a  3136cbd2b750  a518b698331a-infra  0.00%       49.15kB / 3.795GB …</span>
+</span><span id="__span-8-4"><span class="go">a518b698331a  6f297a9b39d3  myubi               0.01%       647.2kB / 3.795GB …</span>
+</span></code></pre></div>
+<p>Je kan een pod ook inspecteren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>inspect<span class="w"> </span>mypod
+</span><span id="__span-9-2"><span class="go">…</span>
+</span></code></pre></div>
+<p>Hier zie je dat er 2 containers in de pod mypod zijn.</p>
+<p>Stop nu de pod mypod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>stop<span class="w"> </span>mypod
+</span><span id="__span-10-2"><span class="go">WARN[0010] StopSignal SIGTERM failed to stop container myubi in 10 seconds, resorting to SIGKILL</span>
+</span><span id="__span-10-3"><span class="go">mypod</span>
+</span></code></pre></div>
+<p>We maken nu een lijst van alle pods met de bijhorende containers.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-11-2"><span class="go">…</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h10/image3.png" /></p>
+<p>Je kan zien dat de pod mypod en de container myubi de status 'Verlaten' (exited) hebben.</p>
+<blockquote>
+<p>Afhankelijk van je Podman-versie kan bij de infra-container de kolom IMAGE leeg blijven in plaats van localhost/podman-pause:… te tonen; dat verandert niets aan de werking van de pod.</p>
+</blockquote>
+<p>Met podman pod rm verwijder je een gestopte pod, samen met alle containers die erin zitten. Je kan ook meerdere pods na elkaar opgeven, of ze met -a allemaal ineens verwijderen. Draait de pod nog, dan weigert Podman en heb je -f nodig.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>rm<span class="w"> </span>mypod
+</span><span id="__span-12-2"><span class="go">a518b698331a040cfb62308dad93e56a415bbe9f81d85f8e0407c91377e9f6d6</span>
+</span></code></pre></div>
+<p>We controleren of alle containers van de pod en de pod verwijderd zijn.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a
+</span><span id="__span-13-2"><span class="go">CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES</span>
+</span><span id="__span-13-3"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>ps
+</span><span id="__span-13-4"><span class="go">POD ID      NAME        STATUS      CREATED     INFRA ID    # OF CONTAINERS</span>
+</span></code></pre></div>
+<p>Opmerking: Aan podman pod ps kan je de optie -a niet toevoegen! Met podman pod ps toon je zowel actieve als gestopte pods.</p>
+<h2 id="104-wat-deelt-een-pod-en-wat-niet">10.4 Wat deelt een pod en wat niet?<a class="headerlink" href="#104-wat-deelt-een-pod-en-wat-niet" title="Permanent link">&para;</a></h2>
+<p>Hierboven staat dat de containers in een pod hetzelfde netwerk delen. Dat is geen detail: het is de reden waarom pods bestaan. In deze paragraaf maken we zichtbaar wat er precies gedeeld wordt en wat elke container voor zichzelf houdt.</p>
+<p><img alt="" src="../assets/h10/image4.png" /></p>
+<h3 id="1041-het-netwerk-is-gedeeld">10.4.1 Het netwerk is gedeeld<a class="headerlink" href="#1041-het-netwerk-is-gedeeld" title="Permanent link">&para;</a></h3>
+<p>We maken een pod met twee containers: een webserver en een gewone ubi-container.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>demo-pod
+</span><span id="__span-14-2"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>demo-web<span class="w"> </span>--pod<span class="w"> </span>demo-pod<span class="w"> </span>registry.access.redhat.com/ubi10/nginx-126<span class="w"> </span>nginx<span class="w"> </span>-g<span class="w"> </span><span class="s2">"daemon off;"</span>
+</span><span id="__span-14-3"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-dit<span class="w"> </span>--name<span class="w"> </span>demo-ubi<span class="w"> </span>--pod<span class="w"> </span>demo-pod<span class="w"> </span>registry.access.redhat.com/ubi10/ubi
+</span></code></pre></div>
+<p>Vraag nu in allebei de containers het IP-adres op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>demo-web<span class="w"> </span>ip<span class="w"> </span>-br<span class="w"> </span>addr
+</span><span id="__span-15-2"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>demo-ubi<span class="w"> </span>ip<span class="w"> </span>-br<span class="w"> </span>addr
+</span></code></pre></div>
+<p>-br is de afkorting van -brief en zet de gegevens van elke interface op één regel.</p>
+<p>Je krijgt twee keer hetzelfde adres te zien. Dat adres hoort bij de infra-container: alle containers van de pod gebruiken daarvan de netwerknamespace. Ze hebben dus niet elk een eigen IP, zoals containers op een eigen netwerk.</p>
+<p>Daarom bereikt de ene container de andere via 127.0.0.1, zonder dat er iets gepubliceerd of gekoppeld moet worden.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>demo-ubi<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:8080
+</span><span id="__span-16-2"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-16-3"><span class="go">&lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;</span>
+</span><span id="__span-16-4"><span class="go">&lt;body&gt;</span>
+</span><span id="__span-16-5"><span class="go">&lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;</span>
+</span><span id="__span-16-6"><span class="go">&lt;hr&gt;&lt;center&gt;nginx/1.26.3&lt;/center&gt;</span>
+</span><span id="__span-16-7"><span class="go">&lt;/body&gt;</span>
+</span><span id="__span-16-8"><span class="go">&lt;/html&gt;</span>
+</span></code></pre></div>
+<p>Zit curl niet in het image, installeer het dan eerst met podman exec demo-ubi dnf install -y curl.</p>
+<p>Op naam werkt dat niet: de containers in een pod delen één netwerkadres, dus valt er per container niets op te zoeken. Voor hen is de pod één machine, en op een machine spreek je jezelf aan met localhost.</p>
+<h3 id="1042-wat-een-pod-niet-deelt">10.4.2 Wat een pod niet deelt<a class="headerlink" href="#1042-wat-een-pod-niet-deelt" title="Permanent link">&para;</a></h3>
+<p>Het netwerk is gedeeld, het bestandssysteem niet. Een volume koppel je dus altijd aan een container en nooit aan de pod, en dat is precies wat verderop bij WordPress zullen zien.</p>
+<p>Ook de procesnamespace blijft standaard per container. Welke namespaces gedeeld worden, vraag je op bij de pod zelf.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>inspect<span class="w"> </span>demo-pod<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{.SharedNamespaces}}'</span>
+</span><span id="__span-17-2"><span class="go">[ipc net uts]</span>
+</span></code></pre></div>
+<p>pid staat daar niet bij. Elke container ziet dus alleen zijn eigen processen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>demo-ubi<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>procps-ng
+</span><span id="__span-18-2"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>demo-ubi<span class="w"> </span>ps<span class="w"> </span>-ef
+</span><span id="__span-18-3"><span class="go">UID          PID    PPID  C STIME TTY          TIME CMD</span>
+</span><span id="__span-18-4"><span class="go">root           1       0  0 21:40 pts/0    00:00:00 /bin/bash</span>
+</span><span id="__span-18-5"><span class="go">root          44       0  0 21:53 ?        00:00:00 ps -ef</span>
+</span></code></pre></div>
+<p>Wil je dat anders, dan geef je dat mee bij het aanmaken van de pod. Achteraf kan het niet meer.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>demo-pod2<span class="w"> </span>--share<span class="w"> </span>net,ipc,uts,pid
+</span></code></pre></div>
+<p>In zo'n pod ziet een container ook de processen van zijn buren. Dat is handig om te zoeken naar fouten, maar je haalt er wel een stuk isolatie mee weg.</p>
+<h3 id="1043-twee-valkuilen-met-poorten">10.4.3 Twee valkuilen met poorten<a class="headerlink" href="#1043-twee-valkuilen-met-poorten" title="Permanent link">&para;</a></h3>
+<ul>
+<li>De eerste valkuil: je kan geen poort publiceren bij een container die in een pod draait.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>demo-web2<span class="w"> </span>--pod<span class="w"> </span>demo-pod<span class="w"> </span>-p<span class="w"> </span><span class="m">9090</span>:8080<span class="w"> </span>registry.access.redhat.com/ubi10/nginx-126<span class="w"> </span>nginx<span class="w"> </span>-g<span class="w"> </span><span class="s2">"daemon off;"</span>
+</span><span id="__span-20-2"><span class="go">Error: invalid config provided: published or exposed ports must be defined when the pod is created</span>
+</span></code></pre></div>
+<p>De poorten horen bij de netwerknamespace, en die is van de pod. Je legt ze dus vast bij podman pod create, zoals bij wp-pod verderop met -p 8080:80. Ben je er een vergeten, dan moet je de pod opnieuw opbouwen.</p>
+<ul>
+<li>De tweede valkuil: twee containers in dezelfde pod kunnen niet allebei dezelfde poort gebruiken.</li>
+</ul>
+<p>Een tweede webserver op poort 8080 start wel, maar valt meteen stil omdat het adres al in gebruik is. Je ziet die melding met podman logs. Zet in een pod dus containers die samen een toepassing vormen, en geen twee toepassingen die toevallig hetzelfde doen.</p>
+<h3 id="1044-pod-of-eigen-netwerk">10.4.4 Pod of eigen netwerk?<a class="headerlink" href="#1044-pod-of-eigen-netwerk" title="Permanent link">&para;</a></h3>
+<p>In hoofdstuk 6 lieten we WordPress en MariaDB samenwerken via een eigen netwerk. Ze vonden elkaar toen op naam. In een pod gebruik je 127.0.0.1. Allebei werken ze, maar ze lossen een ander probleem op.</p>
+<p><img alt="" src="../assets/h10/image5.png" /></p>
+<p>Kies een pod wanneer de containers een geheel vormen, samen moeten starten en stoppen, en aan de buitenkant met een adres en een poortenlijst toekomen.</p>
+<p>Kies een eigen netwerk wanneer het losse diensten zijn die elk hun eigen poorten publiceren, of wanneer er later nog containers kunnen bijkomen.</p>
+<p>We ruimen onze demonstratie op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>demo-pod<span class="w"> </span>demo-pod2
+</span></code></pre></div>
+<h2 id="105-een-pod-beheren">10.5 Een pod beheren<a class="headerlink" href="#105-een-pod-beheren" title="Permanent link">&para;</a></h2>
+<p>Tot nu toe gebruikten we podman pod create, podman pod stop en podman pod rm. De volledige set lijkt sterk op wat je van containers kent, maar werkt telkens op alle containers van de pod tegelijk.</p>
+<ul>
+<li>
+<p>podman pod start wp-pod: start alle containers van de pod;</p>
+</li>
+<li>
+<p>podman pod stop wp-pod: stopt ze, met dezelfde wachttijd van tien seconden per container;</p>
+</li>
+<li>
+<p>podman pod restart wp-pod: stopt en start ze opnieuw;</p>
+</li>
+<li>
+<p>podman pod pause wp-pod en podman pod unpause wp-pod: bevriezen de processen zonder de containers te stoppen;</p>
+</li>
+<li>
+<p>podman pod kill wp-pod: stuurt meteen een signaal, standaard SIGKILL; met --signal kies je zelf welk;</p>
+</li>
+<li>
+<p>podman pod rm wp-pod: verwijdert de pod en al zijn containers, met -f ook als ze nog draaien;</p>
+</li>
+<li>
+<p>podman pod prune: ruimt alle gestopte pods op.</p>
+</li>
+</ul>
+<p>Grenzen aan geheugen en processor leg je op het niveau van de pod. Alle containers samen moeten het dan met die limiet doen.</p>
+<p>Als voorbeeld een pod waarvan alle containers samen hoogstens 512 MB geheugen en één processorkern mogen gebruiken.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>klein-pod<span class="w"> </span>--memory<span class="w"> </span>512m<span class="w"> </span>--cpus<span class="w"> </span><span class="m">1</span>
+</span></code></pre></div>
+<p>We verwijderen deze pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>klein-pod
+</span></code></pre></div>
+<h2 id="106-wordpress">10.6 WordPress<a class="headerlink" href="#106-wordpress" title="Permanent link">&para;</a></h2>
+<h3 id="1061-zonder-gegevens-op-serverxx">10.6.1 Zonder gegevens op ServerXX<a class="headerlink" href="#1061-zonder-gegevens-op-serverxx" title="Permanent link">&para;</a></h3>
+<p>We hebben WordPress tot nu toe op 2 keer verschillende manieren geïnstalleerd:</p>
+<ul>
+<li>
+<p>Via de CLI: 2 containers en een user-defined netwerk opgezet</p>
+</li>
+<li>
+<p>Via podman compose</p>
+</li>
+</ul>
+<p>We doen het nu een derde keer, nu met een pod.</p>
+<p>De belangrijkste voordelen hiervan:</p>
+<ul>
+<li>
+<p>Eén gedeelde netwerknamespace<br>Containers in dezelfde pod praten rechtstreeks met elkaar via localhost en gedeelde poorten. Je hoeft dus géén apart user-defined netwerk meer te maken of linken.</p>
+</li>
+<li>
+<p>Eenvoudiger lifecycle management<br>Veel handiger dan containers individueel beheren.</p>
+</li>
+<li>
+<p>Infra-container houdt de pod stabiel<br>Zoals reeds besproken: de pod blijft actief zolang de infra-container draait, ook als WordPress of de database herstart.</p>
+</li>
+<li>
+<p>Dichter bij Kubernetes-concepten<br>Pods zijn het basisconcept van Kubernetes. Werken met Podman pods helpt dus om ervaring op te doen met hoe Kubernetes applicaties structureert.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h10/image6.png" /></p>
+<p>We maken nu eerst de pod aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>wp-pod<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80
+</span></code></pre></div>
+<p>De pod heeft, zoals je verwacht, als naam wp-pod.</p>
+<p>We maken hier ook een poortverbinding. Poort 8080 op de host wordt verbonden met poort 80 in de pod. De poortbinding wordt toegewezen aan de infra-container van de pod. Alle containers in de pod delen dezelfde netwerkstack, dus ze kunnen intern communiceren en zijn extern bereikbaar via die ene poort.</p>
+<p>We starten nu een container in de pod op van mariadb. In feite komt dat overeen met hetgeen we al gedaan hebben. Alleen zie je dat de container in de pod wp-pod wordt gestart.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="o">=</span>always<span class="w"> </span>--pod<span class="o">=</span>wp-pod<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"dbpass"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_DATABASE</span><span class="o">=</span><span class="s2">"wp"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_USER</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="s2">"wppass"</span><span class="w"> </span>--name<span class="o">=</span>wp-db<span class="w"> </span>mariadb
+</span><span id="__span-25-2"><span class="go">57e09fc0bf994b418a68857d5521958a877024b7ca1a86186a6b08d348063a84</span>
+</span></code></pre></div>
+<p>We kijken nu naar de containers die draaien in deze pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-26-2"><span class="go">…</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h10/image7.png" /></p>
+<p>Zoals je ziet draait de infra-container en de mariadb-container.</p>
+<p>We starten nu ook de wordpress-container op gekoppeld aan dezelfde pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-27-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="o">=</span>always<span class="w"> </span>--pod<span class="o">=</span>wp-pod<span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_NAME</span><span class="o">=</span><span class="s2">"wp"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_USER</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_PASSWORD</span><span class="o">=</span><span class="s2">"wppass"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_HOST</span><span class="o">=</span><span class="s2">"127.0.0.1"</span><span class="w"> </span>--name<span class="w"> </span>wp-web<span class="w"> </span>wordpress
+</span><span id="__span-27-2"><span class="go">c06cecef4e7ce1317c04fc310dd5fd8aca0443b14488ea0f6ed5f0455cbec2fe</span>
+</span></code></pre></div>
+<p>Je ziet hier dat, zoals beschreven hierboven, er connectie kan gemaakt worden met WordPress via localhost (127.0.0.1).</p>
+<p>We kijken nu naar de containers die draaien in deze pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-28-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-28-2"><span class="go">…</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h10/image8.png" /></p>
+<p>Je ziet nu dat de 3 containers draaien.</p>
+<p>Je kan nu naar de browser gaan en de nodige instellingen doen zoals we al enkele keren gedaan hebben.</p>
+<p><img alt="" src="../assets/h10/image9.png" /></p>
+<p>Na je test verwijderen we de pod nu met de bijhorende containers.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>rm<span class="w"> </span>wp-pod<span class="w"> </span>-f
+</span><span id="__span-29-2"><span class="go">527e0e3a0cf164b224503feea89965f6457d507d8a0c313117a401b1dae6b7e0</span>
+</span></code></pre></div>
+<h3 id="1062-met-gegevens-op-serverxx">10.6.2 Met gegevens op ServerXX<a class="headerlink" href="#1062-met-gegevens-op-serverxx" title="Permanent link">&para;</a></h3>
+<p>Wat we zojuist gedaan hebben, is niet erg verstandig omdat de gegevens niet worden opgeslagen op de host zelf maar in de container.</p>
+<ul>
+<li>
+<p>Als je geen volumes koppelt, worden gegevens in de container zelf opgeslagen en gaan verloren als je de container verwijdert. De gegevens worden nooit in de pod opgeslagen.</p>
+</li>
+<li>
+<p>Als je named volumes of bind volumes gebruikt (zoals we nu gaan doen), worden gegevens op de host opgeslagen, maar toegewezen aan een specifieke container.</p>
+</li>
+</ul>
+<p>We maken nu eerst de mappen aan op de host.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-30-1"><span class="gp">student@serverXX:~$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>wpdata/<span class="o">{</span>html,db<span class="o">}</span>
+</span></code></pre></div>
+<p>We maken nu weer de pod aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-31-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>wp-pod<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80
+</span><span id="__span-31-2"><span class="go">f5fe87b906b6dcdef8e833a1cd379fa29c5cdf25b426c52e18b5db36dbb4466d</span>
+</span></code></pre></div>
+<p>We starten nu de MariaDB-container met het bind mount volume op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--pod<span class="w"> </span>wp-pod<span class="w"> </span>--name<span class="w"> </span>wp-db<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"admin123"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_DATABASE</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_USER</span><span class="o">=</span><span class="s2">"wpuser"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="s2">"user123"</span><span class="w"> </span>-v<span class="w"> </span>/home/student/wpdata/db:/var/lib/mysql:Z<span class="w"> </span>docker.io/library/mariadb:latest
+</span><span id="__span-32-2"><span class="go">366306c21f0a7a4b0c2e582a91380ead1194a78f88a1f5082d2a0f478435700a</span>
+</span></code></pre></div>
+<p>We starten nu de WordPress-container met het gekoppeld volume.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-33-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--pod<span class="w"> </span>wp-pod<span class="w"> </span>--name<span class="w"> </span>wp-app<span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_HOST</span><span class="o">=</span><span class="s2">"127.0.0.1"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_NAME</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_USER</span><span class="o">=</span><span class="s2">"wpuser"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_PASSWORD</span><span class="o">=</span><span class="s2">"user123"</span><span class="w"> </span>-v<span class="w"> </span><span class="nv">$HOME</span>/wpdata/html:/var/www/html:Z<span class="w"> </span>docker.io/library/wordpress:latest
+</span><span id="__span-33-2"><span class="go">bd14ebea558e413f0f67ebb366f3204ba2309d8747fa537f23a635e898d9fef6</span>
+</span></code></pre></div>
+<p>We kijken nu naar de containers die draaien in deze pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-34-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--pod
+</span><span id="__span-34-2"><span class="go">…</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h10/image10.png" /></p>
+<p>Je ziet nu dat de 3 containers draaien.</p>
+<p>Je kan nu naar de browser gaan en de nodige instellingen doen zoals we al enkele keren gedaan hebben.</p>
+<p><img alt="" src="../assets/h10/image11.png" /></p>
+<p>Stel in zoals gebruikelijk.</p>
+<p>Na instellen krijg je dit bijvoorbeeld.</p>
+<p><img alt="" src="../assets/h10/image12.png" /></p>
+<p><img alt="" src="../assets/h10/image13.png" /></p>
+<p>We stoppen en verwijderen nu de pod.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-35-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>stop<span class="w"> </span>wp-pod
+</span><span id="__span-35-2"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>rm<span class="w"> </span>wp-pod<span class="w"> </span>-f
+</span></code></pre></div>
+<p>Het mooie is nu dat wanneer de pod verwijderd is je nog steeds terug een nieuwe pod kan opbouwen met de zelfde bind mounts en de website voorhanden blijft. Je moet dus niets meer opnieuw instellen omdat de database en website op ServerXX staan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-36-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>wp-pod2<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80
+</span><span id="__span-36-2"><span class="go">7ea8e4f8784a52e847024f57947b367e4f95bb4c3f4b20d73195d7a6d062ca0b</span>
+</span><span id="__span-36-3"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--pod<span class="w"> </span>wp-pod2<span class="w"> </span>--name<span class="w"> </span>wp-db<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"admin123"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_DATABASE</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_USER</span><span class="o">=</span><span class="s2">"wpuser"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="s2">"user123"</span><span class="w"> </span>-v<span class="w"> </span>/home/student/wpdata/db:/var/lib/mysql:Z<span class="w"> </span>docker.io/library/mariadb:latest
+</span><span id="__span-36-4"><span class="go">08360a21128d5d20797fe20cae0fdb019eb1806b4786ccc255c094e46addced1</span>
+</span><span id="__span-36-5"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--pod<span class="w"> </span>wp-pod2<span class="w"> </span>--name<span class="w"> </span>wp-app<span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_HOST</span><span class="o">=</span><span class="s2">"127.0.0.1"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_NAME</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_USER</span><span class="o">=</span><span class="s2">"wpuser"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_PASSWORD</span><span class="o">=</span><span class="s2">"user123"</span><span class="w"> </span>-v<span class="w"> </span><span class="nv">$HOME</span>/wpdata/html:/var/www/html:Z<span class="w"> </span>docker.io/library/wordpress:latest
+</span><span id="__span-36-6"><span class="go">93d67641b7ff74a7283e8d3172d3744442aa2a8a6dc66dd31352e5505d9fadcb</span>
+</span></code></pre></div>
+<p>Als je nu terug gaat naar <a href="http://localhost:8080">http://localhost:8080</a> krijg je terug dezelfde website zonder dat je dus nog moet instellen.</p>
+<p><img alt="" src="../assets/h10/image12.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 9 Podman Compose in combinatie met Containerfile">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                9 Podman Compose in combinatie met Containerfile
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../11-kubernetes/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 11 Kubernetes">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                11 Kubernetes
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

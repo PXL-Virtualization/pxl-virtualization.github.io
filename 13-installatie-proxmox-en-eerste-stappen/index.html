@@ -1,0 +1,1989 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/13-installatie-proxmox-en-eerste-stappen/">
+      
+      
+      
+        <link rel="prev" href="../12-van-podman-naar-kubernetes/">
+      
+      
+        <link rel="next" href="../14-proxmox-standalone-server/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>13 Installatie Proxmox en eerste stappen - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13 Installatie Proxmox en eerste stappen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#131-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#132-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.2 Inleiding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1321-hypervisors" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.2.1 Hypervisors
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#133-hypervisor-proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3 Hypervisor Proxmox
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.3 Hypervisor Proxmox">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1331-nodes-en-clusters" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.1 Nodes en clusters
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1332-hardwarevereisten" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.2 Hardwarevereisten
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1333-hyperconverged-infrastructure-hci" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.3 Hyperconverged Infrastructure (HCI)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1334-licenties-en-het-verdienmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.4 Licenties en het verdienmodel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1335-beheer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.5 Beheer
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1336-backups-en-snapshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.6 Backups en snapshots
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1337-beveiliging" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.7 Beveiliging
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1338-architectuur-proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.3.8 Architectuur Proxmox
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#134-proxmox-ve-installeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.4 Proxmox VE installeren
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 Proxmox VE installeren">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1341-download-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.4.1 Download ISO
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1342-aanmaken-vm-voor-proxmox" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.4.2 Aanmaken VM voor Proxmox
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1343-installatie-in-de-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.4.3 Installatie in de VM
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#135-beheer-via-gui-en-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.5 Beheer via GUI en CLI
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.5 Beheer via GUI en CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1351-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.5.1 GUI
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1352-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.5.2 CLI
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#136-tijd-correct-zetten" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.6 Tijd correct zetten
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#137-repositories-aanpassen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.7 Repositories aanpassen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.7 Repositories aanpassen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1371-via-het-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.7.1 Via het script
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1372-via-de-commandoregel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.7.2 Via de commandoregel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1373-via-de-webinterface" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        13.7.3 Via de webinterface
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Proxmox
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="13-installatie-proxmox-en-eerste-stappen">13 Installatie Proxmox en eerste stappen<a class="headerlink" href="#13-installatie-proxmox-en-eerste-stappen" title="Permanent link">&para;</a></h1>
+<h2 id="131-doelstellingen">13.1 Doelstellingen<a class="headerlink" href="#131-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>het verschil uitleggen tussen een hypervisor van type 1 en type 2, met voorbeelden van allebei;</p>
+</li>
+<li>
+<p>de belangrijkste eigenschappen van Proxmox VE benoemen en vergelijken met ESXi en Hyper-V;</p>
+</li>
+<li>
+<p>uitleggen wat hyperconverged infrastructure is en welke rol Ceph daarin speelt;</p>
+</li>
+<li>
+<p>het verschil uitleggen tussen de community- en de enterprise-repository, en het licentiemodel van Proxmox;</p>
+</li>
+<li>
+<p>de lagen van de Proxmox-architectuur herkennen: kernel, QEMU, virtuele machines en containers, diensten en beheertools;</p>
+</li>
+<li>
+<p>uitleggen wat een Proxmox-cluster is, en wat quorum en split-brain betekenen;</p>
+</li>
+<li>
+<p>in VMware Workstation een virtuele machine aanmaken die geschikt is om Proxmox VE in te installeren;</p>
+</li>
+<li>
+<p>Proxmox VE installeren en aanmelden op de webinterface;</p>
+</li>
+<li>
+<p>de onderdelen van die webinterface benoemen: datacenter, node, takenlogboek en bedieningsknoppen;</p>
+</li>
+<li>
+<p>de server bereiken via de webinterface en via de commandoregel, en de sterke punten van allebei benoemen;</p>
+</li>
+<li>
+<p>de repositories omzetten naar de gratis no-subscription-variant en het systeem bijwerken;</p>
+</li>
+<li>
+<p>de abonnementswaarschuwing uitzetten;</p>
+</li>
+<li>
+<p>de bestanden in /etc/apt/sources.list.d/ lezen en aangeven welke regel een repository in- of uitschakelt;</p>
+</li>
+<li>
+<p>de repositories op drie manieren aanpassen: met het post-install-script, rechtstreeks in de tekstbestanden en via de webinterface.</p>
+</li>
+</ul>
+<h2 id="132-inleiding">13.2 Inleiding<a class="headerlink" href="#132-inleiding" title="Permanent link">&para;</a></h2>
+<h3 id="1321-hypervisors">13.2.1 Hypervisors<a class="headerlink" href="#1321-hypervisors" title="Permanent link">&para;</a></h3>
+<p>Een hypervisor van type 1 draait rechtstreeks op de hardware en beheert zelf het geheugen, de processor en de andere bronnen. Een hypervisor van type 2 draait als programma bovenop een besturingssysteem en spreekt die bronnen aan via dat besturingssysteem.</p>
+<p><img alt="" src="../assets/h13/image1.png" /></p>
+<p>Voorbeelden:</p>
+<ul>
+<li>
+<p>Type 2<br>VMware Workstation en Virtualbox</p>
+</li>
+<li>
+<p>Type 1<br>VMware ESXi, Microsoft Hyper-V en Proxmox</p>
+</li>
+</ul>
+<p>Proxmox VE, VMware ESXi en Hyper-V hebben verschillende gemeenschappelijke functies, die essentieel zijn voor virtualisatieplatformen:</p>
+<ul>
+<li>
+<p>Virtualisatie van besturingssystemen<br>Alle drie ondersteunen het draaien van meerdere virtuele machines (VM's) op één fysieke server, waardoor hardware efficiënter wordt gebruikt.</p>
+</li>
+<li>
+<p>Live migratie<br>Ze bieden mogelijkheden om VM's live te migreren tussen hosts zonder downtime.</p>
+</li>
+<li>
+<p>Snapshot-functionaliteit<br>Ondersteuning voor het maken van snapshots van VM's, zodat snel teruggedraaid kan worden naar een vorige toestand.</p>
+</li>
+<li>
+<p>Clustering<br>Mogelijkheid om meerdere hosts te groeperen voor schaalbaarheid en failover-functionaliteit.</p>
+</li>
+<li>
+<p>Beheerinterface<br>Alle drie bieden beheer via een GUI (web- of applicatiegebaseerd) en command-line tools.</p>
+</li>
+<li>
+<p>Netwerkvirtualisatie<br>Ondersteuning voor virtuele netwerken, VLAN's en geavanceerde netwerkconfiguraties.</p>
+</li>
+<li>
+<p>Opslagopties<br>Ondersteuning voor verschillende opslagmethoden, zoals NFS, iSCSI en lokale opslag.</p>
+</li>
+<li>
+<p>Ondersteuning van diverse besturingssystemen<br>Ze kunnen een breed scala aan gast-besturingssystemen draaien, waaronder Linux, Windows en BSD.</p>
+</li>
+<li>
+<p>Integratie met externe tools: Alle drie kunnen worden geïntegreerd met back-up-, monitoring- en beheertools.</p>
+</li>
+</ul>
+<h2 id="133-hypervisor-proxmox">13.3 Hypervisor Proxmox<a class="headerlink" href="#133-hypervisor-proxmox" title="Permanent link">&para;</a></h2>
+<p>Proxmox Virtual Environment (kortweg Proxmox VE) is een open source virtualisatieplatform, sinds 2008 ontwikkeld door het Oostenrijkse Proxmox Server Solutions en vrijgegeven onder de GNU AGPL licentie. Het ondersteunt zowel VM's (virtuele machines) op basis van KVM (Linux Kernel-based Virtual Machine) alsook containers op basis van Linux Container LXC. Hun inkomsten genereren ze voornamelijk via betaalde ondersteuningsabonnementen. Deze abonnementen bieden toegang tot de Proxmox Enterprise Repository, die stabiele en geteste updates bevat, evenals technische ondersteuning op verschillende niveaus.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Kenmerk</strong></th>
+<th><strong>Proxmox VE</strong></th>
+<th><strong>VMware ESXi</strong></th>
+<th><strong>Hyper-V</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type</td>
+<td>Open-source virtualisatieplatform</td>
+<td>Proprietair virtualisatieplatform</td>
+<td>Microsoft virtualisatieplatform</td>
+</tr>
+<tr>
+<td>Licentie</td>
+<td>GPLv3 (gratis, betaalde support mogelijk)</td>
+<td>Gratis basisversie, commerciële licenties</td>
+<td>Inclusief in Windows Server-licenties</td>
+</tr>
+<tr>
+<td>Host OS</td>
+<td>Debian-gebaseerd</td>
+<td>Op Linux-gebaseerd, eigen OS</td>
+<td>Windows Server of Windows 10/11 Pro/Edu (in beperkte mate)</td>
+</tr>
+<tr>
+<td>Beheerinterface</td>
+<td>Webinterface, CLI</td>
+<td>Webinterface, VMware vSphere Client</td>
+<td>Hyper-V Manager, PowerShell, Windows Admin Center</td>
+</tr>
+<tr>
+<td>Ondersteunde VM-formaten</td>
+<td>KVM, LXC</td>
+<td>VMDK</td>
+<td>VHD, VHDX</td>
+</tr>
+<tr>
+<td>Opslagopties</td>
+<td>ZFS, Ceph, LVM, NFS, ISCSI, en meer</td>
+<td>VMFS, NFS, ISCSI</td>
+<td>CSV, SMB, NFS, ISCSI</td>
+</tr>
+<tr>
+<td>Back-ups</td>
+<td>Ingebouwd (via GUI of CLI)</td>
+<td>Externe tools zoals Veeam</td>
+<td>Windows Backup, externe tools</td>
+</tr>
+<tr>
+<td>Kosten</td>
+<td>Gratis, optioneel supportabonnement</td>
+<td>Hoog, afhankelijk van editie</td>
+<td>Inclusief bij Windows Server</td>
+</tr>
+<tr>
+<td>Schalingsopties</td>
+<td>Schaalbaar met clustering en Ceph</td>
+<td>Hoog, afhankelijk van licentie</td>
+<td>Beperkt door Windows Server-functionaliteit</td>
+</tr>
+<tr>
+<td>Integratie met containers</td>
+<td>Ja (via LXC)</td>
+<td>Nee</td>
+<td>Beperkt (via Windows Containers)</td>
+</tr>
+<tr>
+<td>Community Support</td>
+<td>Groot, actief</td>
+<td>Klein, afhankelijk van commerciële support</td>
+<td>Gematigd, via Microsoft en gebruikersfora</td>
+</tr>
+<tr>
+<td>Updates</td>
+<td>Regelmatig, open-source</td>
+<td>Regelmatig, vereist betaald contract</td>
+<td>Regelmatig via Windows Update</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1331-nodes-en-clusters">13.3.1 Nodes en clusters<a class="headerlink" href="#1331-nodes-en-clusters" title="Permanent link">&para;</a></h3>
+<p>Een enkele Proxmox-server heet een node. Zo'n node kan perfect alleen werken: dat is een standalone server, en daar beginnen we mee. Zet je meerdere nodes samen, dan vormen ze een cluster: een groep servers die je als een geheel beheert.</p>
+<p><img alt="" src="../assets/h13/image2.png" /></p>
+<p>Een cluster levert het volgende op:</p>
+<ul>
+<li>
+<p>de configuratie is gedeeld: alle nodes hebben dezelfde bestanden onder /etc/pve, dus een wijziging op een node staat meteen op de andere;</p>
+</li>
+<li>
+<p>je meldt je aan op gelijk welke node en beheert van daaruit de hele groep;</p>
+</li>
+<li>
+<p>pas in een cluster kan je een virtuele machine live naar een andere server verplaatsen, of ze automatisch laten herstarten wanneer een server uitvalt.</p>
+</li>
+</ul>
+<p>Die twee laatste mogelijkheden hebben een naam. Bij live migratie verhuis je zelf een draaiende virtuele machine naar een andere node, bijvoorbeeld omdat je de eerste wil bijwerken.</p>
+<p><img alt="" src="../assets/h13/image3.png" /></p>
+<p>High availability werkt zonder dat je iets doet. Valt een node onverwacht uit, dan starten de overblijvende nodes haar virtuele machines opnieuw op.</p>
+<p><img alt="" src="../assets/h13/v2_pve_ha.png" /></p>
+<p>De nodes moeten het onderling eens zijn over wie er nog meedoet. Daarvoor is een meerderheid nodig: het quorum. Meer dan de helft van de nodes moet bereikbaar zijn voor het cluster nog iets mag beslissen.</p>
+<p><img alt="" src="../assets/h13/v2_pve_quorum.png" /></p>
+<p>Valt die meerderheid weg, dan zet Proxmox /etc/pve op alleen-lezen. Virtuele machines die al draaien, blijven gewoon doorlopen, maar je kan er niets meer aan wijzigen en er komt er geen bij. Met twee nodes gebeurt dat al zodra er een uitvalt; met drie nodes niet. Daarom werk je in de praktijk met minstens drie servers.</p>
+<p><img alt="" src="../assets/h13/v2_pve_noquorum.png" /></p>
+<p>Die regel bestaat om split-brain te voorkomen. Stel dat de verbinding tussen de nodes wegvalt terwijl alle servers blijven draaien. Elke helft ziet de andere niet meer en zou kunnen besluiten dat zij nog als enige over is. Zonder quorum zouden beide helften dezelfde virtuele machine starten, allebei schrijvend naar dezelfde gedeelde opslag. Het bestandssysteem van die machine is dan onherstelbaar beschadigd. Door een meerderheid te eisen kan hoogstens een helft handelen: de andere legt zichzelf stil.</p>
+<p><img alt="" src="../assets/h13/v3_pve_split.png" /></p>
+<p>Wij werken voorlopig met een enkele node. Hoe je een cluster opzet en beheert, bekijken we later.</p>
+<h3 id="1332-hardwarevereisten">13.3.2 Hardwarevereisten<a class="headerlink" href="#1332-hardwarevereisten" title="Permanent link">&para;</a></h3>
+<p>Proxmox VE draait op 64-bit processors van Intel of AMD met ondersteuning voor Intel VT of AMD-V. Je hebt minstens 4 GB RAM en 32 GB opslag nodig.</p>
+<p>Wij installeren Proxmox VE in VMware Workstation.</p>
+<p>In een testopstelling volstaat een eenvoudige NUC; in productie gebruik je serverhardware. Wordt de hardware door Debian ondersteund, dan werkt Proxmox VE erop.</p>
+<h3 id="1333-hyperconverged-infrastructure-hci">13.3.3 Hyperconverged Infrastructure (HCI)<a class="headerlink" href="#1333-hyperconverged-infrastructure-hci" title="Permanent link">&para;</a></h3>
+<p>Hyperconverged infrastructure is geen nieuw idee, maar het wint de laatste jaren sterk aan terrein bij kmo's, vooral omwille van de kostprijs. Een klassieke omgeving met hoge beschikbaarheid bestaat bijvoorbeeld uit drie servers voor de rekenkracht en drie servers voor de centrale opslag, samen zes machines. Bij HCI vallen die twee samen: de opslag draait op dezelfde servers als de virtuele machines.</p>
+<p>Binnen Proxmox VE doe je dat met Ceph. Zo zet je een cluster van meerdere nodes op met gedeelde opslag die over diezelfde nodes verspreid zit.</p>
+<p><img alt="" src="../assets/h13/image8.png" /></p>
+<h3 id="1334-licenties-en-het-verdienmodel">13.3.4 Licenties en het verdienmodel<a class="headerlink" href="#1334-licenties-en-het-verdienmodel" title="Permanent link">&para;</a></h3>
+<p>Proxmox VE is vrijgegeven onder de open source licentie GNU AGPL v3 en is gratis te downloaden en te gebruiken.</p>
+<p>Proxmox VE gebruikt Debian als besturingssysteem. Na de installatie staat de gratis community-repository klaar; tegen betaling krijg je toegang tot de enterprise-repository.</p>
+<p>Het verschil tussen beide is tweeledig. De updates verschijnen eerst in de community-repository en pas enkele weken later in de enterprise-repository, zodat die laatste beter uitgetest is. Daarnaast bevatten sommige enterprise-abonnementen ook ondersteuning.</p>
+<p>Qua functionaliteit zijn ze identiek. De enterprise-variant bevat niets extra; ze loopt alleen enkele weken achter.</p>
+<p>In een professionele omgeving kies je voor de enterprise-repository, puur omwille van de stabiliteit. Alle nodes van een cluster moeten dezelfde licentie hebben; mengen kan niet.</p>
+<p>De enterprise-licentie betaal je per bezette processorsocket, niet per core. Of in die socket nu een Intel i3 met zes cores zit of een AMD EPYC met achtenveertig, de prijs blijft dezelfde. Er bestaan maar vier licentiemodellen, dus veel uitzoekwerk is er niet.</p>
+<p>Meer info: <a href="https://www.proxmox.com/en/proxmox-virtual-environment/pricing">https://www.proxmox.com/en/proxmox-virtual-environment/pricing</a>.</p>
+<h3 id="1335-beheer">13.3.5 Beheer<a class="headerlink" href="#1335-beheer" title="Permanent link">&para;</a></h3>
+<p>Voor het beheer van Proxmox VE heb je geen extra software of beheerserver nodig. Elke installatie bevat alles, en je kiest zelf hoe je werkt:</p>
+<ul>
+<li>
+<p>de webinterface: je surft naar https://&lt;ip-adres&gt;:8006 en beheert daar de node en, als je er een hebt, het volledige cluster. Je moet niets installeren, een browser volstaat;</p>
+</li>
+<li>
+<p>de commandoregel: je meldt je aan via SSH of via de shell in de webinterface. Alles wat je kan aanklikken, kan je ook typen, en je kan het in scripts gieten;</p>
+</li>
+<li>
+<p>de REST-API: dezelfde opdrachten vanuit andere software, bijvoorbeeld om virtuele machines automatisch uit te rollen.</p>
+</li>
+</ul>
+<p>Je kan die drie door elkaar gebruiken, want ze spreken dezelfde diensten aan. Verderop in dit hoofdstuk werk je zowel met de webinterface als met de commandoregel.</p>
+<p>Upgraden is daardoor eenvoudig. Elke upgrade komt met duidelijke instructies, en meestal volstaat de webinterface. Heb je een cluster, dan blijven de virtuele machines ondertussen draaien dankzij live migratie. Ook de sprong naar een nieuwe Debian-versie verloopt vlot.</p>
+<h3 id="1336-backups-en-snapshots">13.3.6 Backups en snapshots<a class="headerlink" href="#1336-backups-en-snapshots" title="Permanent link">&para;</a></h3>
+<p>Van elke virtuele machine kan je snapshots nemen. Proxmox VE heeft ook een ingebouwde back-upoplossing, bijvoorbeeld voor een dagelijkse back-up van je machines en containers. Wil je meer mogelijkheden, dan is Proxmox Backup Server het bekijken waard: die installeer je op een aparte server en gebruik je als centrale back-upoplossing.</p>
+<p>Die twee lijken op elkaar, maar ze dienen een ander doel.</p>
+<p><img alt="" src="../assets/h13/image9.png" /></p>
+<h3 id="1337-beveiliging">13.3.7 Beveiliging<a class="headerlink" href="#1337-beveiliging" title="Permanent link">&para;</a></h3>
+<p>De nodes van een cluster communiceren onderling via SSH. Proxmox VE heeft een ingebouwde firewall op drie niveaus: cluster, host en virtuele machine. Op elk niveau stel je eigen regels in, voor IPv4 en IPv6. Aanmelden op de webinterface kan ook met tweestapsverificatie, bijvoorbeeld met een YubiKey.</p>
+<h3 id="1338-architectuur-proxmox">13.3.8 Architectuur Proxmox<a class="headerlink" href="#1338-architectuur-proxmox" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/h13/image10.png" /></p>
+<p>Het diagram hierboven toont hoe Proxmox VE is opgebouwd. Van onder naar boven:</p>
+<ul>
+<li>
+<p>Linux-kernel: KVM voor volledige virtuele machines, LXC voor containers, en AppArmor en cgroups om alles af te schermen en de resources te verdelen. AppArmor speelt in Debian dezelfde rol als SELinux in Red Hat.</p>
+</li>
+<li>
+<p>QEMU: voert de virtuele machines uit en bootst de hardware na die een gastbesturingssysteem te zien krijgt.</p>
+</li>
+<li>
+<p>Virtuele machines en containers: een VM draait een eigen besturingssysteem, een container deelt de kernel van de host en is dus lichter. Let op: dit zijn LXC-containers, geen Docker- of Podman-containers.</p>
+</li>
+<li>
+<p>Diensten: de programma's die op elke node op de achtergrond draaien, ook op een standalone server.</p>
+<ul>
+<li>
+<p>pveproxy: bedient de webinterface en de API op poort 8006. De naam zegt wat hij doet: het is een tussenstation, een proxy. Hij neemt je verzoek aan en geeft het door aan pvedaemon, of aan een andere node als de virtuele machine daar staat. Zelf voert hij niets uit.</p>
+</li>
+<li>
+<p>pvedaemon: voert de opdrachten uit, met rootrechten. Virtuele machines en containers starten, stoppen en aanmaken gebeurt hier.</p>
+</li>
+<li>
+<p>pvestatd: verzamelt om de paar seconden de toestand van de virtuele machines, de containers en de opslag. Daar komen de grafieken en de statusicoontjes in de webinterface vandaan.</p>
+</li>
+<li>
+<p>pve-cluster: houdt /etc/pve op alle nodes gelijk. Op een standalone server beheert deze dienst gewoon de configuratie van die ene node.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Beheertools: de commando's waarmee je hetzelfde doet zonder webinterface.</p>
+<ul>
+<li>
+<p>qm: virtuele machines beheren;</p>
+</li>
+<li>
+<p>pct: containers beheren;</p>
+</li>
+<li>
+<p>pvesm: opslag beheren;</p>
+</li>
+<li>
+<p>pvecm: het cluster beheren.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Die lagen werken samen. Klik je in de webinterface op Start bij een virtuele machine, dan neemt pveproxy je verzoek aan, geeft pvedaemon de opdracht door, en start QEMU de machine met KVM in de kernel. Typ je in de plaats daarvan qm start 100 in een shell, dan kom je bij diezelfde pvedaemon uit. De webinterface is dus geen aparte wereld, maar een schil rond dezelfde diensten.</p>
+<p>Onderstaande figuur toont de opstelling waarmee we in deze OLOD werken: een standalone Proxmox-server, zoals hierboven beschreven, die zelf in een virtuele machine draait.</p>
+<p><img alt="" src="../assets/h13/v3_opstelling.png" /></p>
+<h2 id="134-proxmox-ve-installeren">13.4 Proxmox VE installeren<a class="headerlink" href="#134-proxmox-ve-installeren" title="Permanent link">&para;</a></h2>
+<h3 id="1341-download-iso">13.4.1 Download ISO<a class="headerlink" href="#1341-download-iso" title="Permanent link">&para;</a></h3>
+<p>Om Proxmox VE te installeren, download je eerst de installatiesoftware van <a href="https://www.proxmox.com/en/downloads">https://www.proxmox.com/en/downloads</a>.</p>
+<p><img alt="" src="../assets/h13/image12.png" /></p>
+<h3 id="1342-aanmaken-vm-voor-proxmox">13.4.2 Aanmaken VM voor Proxmox<a class="headerlink" href="#1342-aanmaken-vm-voor-proxmox" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Open uiteraard VMware Workstation 26H1u1 op je systeem.</p>
+</li>
+<li>
+<p>Klik op File, New Virtual Machine.</p>
+</li>
+<li>
+<p>Kies in onderstaand venster voor Typical en klik op Next.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h13/image13.png" /></p>
+<ul>
+<li>Kies in het volgende venster de gedownloade Proxmox ISO-image door te klikken op Browse en het ISO-bestand te selecteren. Klik erna op Next.</li>
+</ul>
+<p><img alt="" src="../assets/h13/image14.png" /></p>
+<ul>
+<li>Stel het gastbesturingssysteem in als Linux en de versie als Debian 13.x 64-bit.</li>
+</ul>
+<p><img alt="" src="../assets/h13/image15.png" /></p>
+<ul>
+<li>Geef uw virtuele machine een naam en selecteer de locatie. Klik dan Next.</li>
+</ul>
+<p><img alt="" src="../assets/h13/image16.png" /></p>
+<ul>
+<li>
+<p>Kies voor een schijf van 200 GB en klik op Next.<br>PS De optie i.v.m. het splitten van virtuele schijven is niet belangrijk voor ons.<br><br><img alt="" src="../assets/h13/image17.png" /></p>
+</li>
+<li>
+<p>Controleer de informatie en klik erna op Customize Hardware… .<br><br><img alt="" src="../assets/h13/image18.png" /></p>
+</li>
+<li>
+<p>Pas de instellingen aan.</p>
+<ul>
+<li>
+<p>Memory: minimaal 4GB.<br><br><img alt="" src="../assets/h13/image19.png" /></p>
+</li>
+<li>
+<p>Processors: maximaliseer Total processor Cores (afhankelijk van je processor) en zet een vinkje voor Virtualize Intel VT-x/EPT or AMD-V/RVI. Klik erna op Close.<br><br><img alt="" src="../assets/h13/image20.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Klik erna op Finish.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h13/image21.png" /></p>
+<h3 id="1343-installatie-in-de-vm">13.4.3 Installatie in de VM<a class="headerlink" href="#1343-installatie-in-de-vm" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Zet de VM aan.<br><img alt="" src="../assets/h13/image22.png" /></li>
+</ul>
+<p>Waarschijnlijk krijg je nu onderstaande melding.</p>
+<p><img alt="" src="../assets/h13/image23.png" /></p>
+<p>Dat wil zeggen dat je nested virtualization niet correct hebt ingesteld. Voor het vervolg van de lessen hebben we dat niet nodig. Kies dus voor Yes.</p>
+<p>Je krijgt nu onderstaande melding.</p>
+<p><img alt="" src="../assets/h13/image24.png" /></p>
+<p>Klik uiteraard OK.</p>
+<p>Ga naar de instellingen (VM =&gt; Settings…) en vink bij Processors “Virtualize Intel VT-x/EPT or AMD-V/RVI uit.</p>
+<p><img alt="" src="../assets/h13/image25.png" /></p>
+<p>Zet de VM nu opnieuw aan.</p>
+<p><img alt="" src="../assets/h13/image26.png" /></p>
+<ul>
+<li>
+<p>Kies voor Install Proxmox VE (Graphical) door op &lt;Enter&gt; te drukken.<br><img alt="" src="../assets/h13/image27.png" /></p>
+</li>
+<li>
+<p>Na een aantal tests krijg je de melding dat in de VM geen virtualization mogelijk is. Klik op OK.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h13/image28.png" /></p>
+<p>De installatie kan verder gaan.</p>
+<ul>
+<li>
+<p>Vervolgens krijg je de gebruikerslicentie te zien, klik op I agree.<br><img alt="" src="../assets/h13/image29.png" /></p>
+</li>
+<li>
+<p>In het volgende venster staat onder in het scherm, een beetje onopvallend, staat de Target Harddisk. Selecteer hier de juiste schijf (er is er nu maar 1, dus dat is geen probleem) en klik dan op Next.<br><img alt="" src="../assets/h13/image30.png" /></p>
+</li>
+<li>
+<p>Kies bij Country Belgium en bij Time Zone voor Europe/Brussels. Bij Keyboard Layout selecteer je je toetsenbordindeling.<br><img alt="" src="../assets/h13/image31.png" /></p>
+</li>
+<li>
+<p>Vul een wachtwoord (kijk naar de voorwaarden!) in bij Password. Vul ook uw mailadres in.<br><img alt="" src="../assets/h13/image32.png" /></p>
+</li>
+<li>
+<p>Als laatste kun je op het blad Management Network Configuration de naam en de netwerkconfiguratie kiezen. We laten de standaard staan aangezien we dit later kunnen wijzigen.<br><img alt="" src="../assets/h13/image33.png" /></p>
+</li>
+<li>
+<p>Controleer tot slot de gekozen opties en klik op Install om Proxmox ook echt te installeren.<br><img alt="" src="../assets/h13/image34.png" /></p>
+</li>
+<li>
+<p>De installatie gaat gebeurt nu op de virtuele SSD.<br><img alt="" src="../assets/h13/image35.png" /></p>
+</li>
+<li>
+<p>Na installatie krijg je onderstaande na reboot…<br><img alt="" src="../assets/h13/image36.png" /></p>
+</li>
+<li>
+<p>Je ziet hoe je kan inloggen (<a href="https://192.168.112.144:8006/">https://192.168.112.144:8006/</a> in dit geval) via de website om Proxmox VE te beheren.</p>
+</li>
+<li>
+<p>Ga naar je browser op je hostmachine en typ <a href="https://192.168.112.144:8006/">https://192.168.112.144:8006/</a> in.</p>
+<ul>
+<li>
+<p>Proxmox gebruikt een zelfondertekend certificaat. Je browser toont dan ook een waarschuwing. Klik op Geavanceerd en daarna op Doorgaan naar 192.168.112.144 (onveilig). Je meldt je dan aan met:</p>
+</li>
+<li>
+<p>.<br><img alt="" src="../assets/h13/image37.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Log nu in met onderstaande gegevens:</p>
+<ul>
+<li>
+<p>User name: root</p>
+</li>
+<li>
+<p>Password: het wachtwoord dat je gekozen hebt tijdens de installatie.</p>
+</li>
+<li>
+<p>We laten de taal op English – English staan.<br><img alt="" src="../assets/h13/image38.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Je zal nu onderstaande melding krijgen.<br><img alt="" src="../assets/h13/image39.png" /></p>
+</li>
+</ul>
+<p>Je ziet nu de grafische interface van Proxmox.</p>
+<p><img alt="" src="../assets/h13/image40.png" /></p>
+<p>De interface is overzichtelijk en krachtig zodra je ermee vertrouwd bent.</p>
+<h2 id="135-beheer-via-gui-en-cli">13.5 Beheer via GUI en CLI<a class="headerlink" href="#135-beheer-via-gui-en-cli" title="Permanent link">&para;</a></h2>
+<h3 id="1351-gui">13.5.1 GUI<a class="headerlink" href="#1351-gui" title="Permanent link">&para;</a></h3>
+<p>De GUI van Proxmox die je nu voor je ziet is gemakkelijk te gebruiken.</p>
+<p>Kenmerken van de GUI:</p>
+<ul>
+<li>
+<p>Overzichtelijk dashboard: geeft statusinformatie over nodes, opslag, netwerken en resources.</p>
+</li>
+<li>
+<p>Beheer van virtuele machines en containers: aanmaken, starten, stoppen en configureren van VM's en containers.</p>
+</li>
+<li>
+<p>Snapshots en back-ups: eenvoudige toegang tot snapshotbeheer en back-upfuncties.</p>
+</li>
+<li>
+<p>Netwerkconfiguratie: instellen van bridges, VLAN's en netwerkinterfaces.</p>
+</li>
+<li>
+<p>Clusterbeheer: beheer van meerdere Proxmox-nodes binnen een cluster.</p>
+</li>
+</ul>
+<p>Je kan de webgebaseerde beheerinterface gebruiken met elke moderne browser. Wanneer Proxmox VE detecteert dat je verbinding maakt vanaf een mobiel apparaat, word je doorgestuurd naar een eenvoudigere interface die aangepast is voor een mobiel apparaat.</p>
+<p>De kracht van Proxmox zit erin dat je vanuit de webinterface van gelijk welke node de volledige omgeving beheert. De belangrijkste onderdelen:</p>
+<ul>
+<li>Datacenter als hoogste organisatieniveau</li>
+</ul>
+<blockquote>
+<p>Het datacenter is de hoogste organisatorische eenheid. Van daaruit beheer je alle nodes met hun virtuele machines, containers en opslag, en krijg je een overzicht van de volledige infrastructuur.<br><img alt="" src="../assets/h13/image41.png" /></p>
+</blockquote>
+<ul>
+<li>Knooppunten en hun componenten</li>
+</ul>
+<blockquote>
+<p>Elke node is een host in het cluster. Hier is er maar één: pve. Een node heeft zijn eigen netwerk, opslag en configuratie. Klik je een node aan, dan opent een venster waarin je dat allemaal beheert.</p>
+<p><img alt="" src="../assets/h13/image42.png" /></p>
+</blockquote>
+<ul>
+<li>Taakbeheer en logging</li>
+</ul>
+<blockquote>
+<p>Onderaan loopt een takenlogboek in realtime.</p>
+<p><img alt="" src="../assets/h13/image43.png" /></p>
+</blockquote>
+<ul>
+<li>Gebruiksvriendelijke bedieningsknoppen</li>
+</ul>
+<blockquote>
+<p>Rechtsboven staan de bedieningsknoppen voor virtuele machines en containers: starten, stoppen en migreren. Ook de console en het verdere beheer bereik je daar.</p>
+<p><img alt="" src="../assets/h13/image44.png" /></p>
+</blockquote>
+<p>Proxmox biedt dus zowel een doordachte webinterface als volwaardige toegang via de commandoregel, en is daardoor bruikbaar voor wie net begint en voor de ervaren beheerder.</p>
+<h3 id="1352-cli">13.5.2 CLI<a class="headerlink" href="#1352-cli" title="Permanent link">&para;</a></h3>
+<p>De CLI is op verschillende manieren toegankelijk:</p>
+<ul>
+<li>
+<p>Direct op de server.<br><img alt="" src="../assets/h13/image45.png" /></p>
+</li>
+<li>
+<p>Toegang gaat via SSH.<br><img alt="" src="../assets/h13/image46.png" /></p>
+</li>
+<li>
+<p>via GUI<br><img alt="" src="../assets/h13/image47.png" /></p>
+</li>
+</ul>
+<h2 id="136-tijd-correct-zetten">13.6 Tijd correct zetten<a class="headerlink" href="#136-tijd-correct-zetten" title="Permanent link">&para;</a></h2>
+<p>De klok van Proxmox moet juist staan. Loopt hij te ver voor of achter, dan weigert apt de pakketlijsten omdat hij de handtekeningen van de repository niet meer vertrouwt, en in een cluster raken de nodes het onderling oneens over wie er nog meedoet.</p>
+<p>Na de installatie in een virtuele machine klopt de tijd vaak niet. Controleer ze:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">root@pve:~# </span>timedatectl
+</span></code></pre></div>
+<p><img alt="" src="../assets/h13/image48.png" /></p>
+<p>Drie regels zijn van belang:</p>
+<ul>
+<li>
+<p>Local time is de tijd die de server zelf hanteert;</p>
+</li>
+<li>
+<p>System clock synchronized zegt of die tijd van een tijdserver komt. Staat daar no, dan loopt de klok vrij;</p>
+</li>
+<li>
+<p>NTP service zegt of de tijddienst draait.</p>
+</li>
+</ul>
+<p>Staat er bij System clock synchronized no, dan haalt de server zijn tijd niet op. Herstart dan de tijddienst:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">root@pve:~# </span>systemctl<span class="w"> </span>restart<span class="w"> </span>chronyd
+</span></code></pre></div>
+<p>Vraag de tijd daarna opnieuw op. Staat System clock synchronized nog altijd op no, of wijkt Local time nog zichtbaar af van de werkelijke tijd, dan dwing je de correctie in één keer af:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">root@pve:~# </span>chronyc<span class="w"> </span>makestep
+</span></code></pre></div>
+<p>Vraag de tijd opnieuw op (wacht wel eventjes).</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">root@pve:~# </span>timedatectl
+</span></code></pre></div>
+<p><img alt="" src="../assets/h13/image49.png" /></p>
+<p><u>Let op: ook nadat je een snapshot hebt teruggezet, staat de klok vaak verkeerd. Dezelfde herstart lost dat op.</u></p>
+<h2 id="137-repositories-aanpassen">13.7 Repositories aanpassen<a class="headerlink" href="#137-repositories-aanpassen" title="Permanent link">&para;</a></h2>
+<p>Je kan de repositories op drie manieren aanpassen. We bekijken ze alle drie, en ze doen alle drie precies hetzelfde.</p>
+<h3 id="1371-via-het-script">13.7.1 Via het script<a class="headerlink" href="#1371-via-het-script" title="Permanent link">&para;</a></h3>
+<p>We maken verbinding via SSH om de repositories aan te passen.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1">C:\Users\stijn&gt;ssh root@192.168.112.144
+</span></code></pre></div>
+<p><img alt="" src="../assets/h13/image50.png" /></p>
+<p>Voer het onderstaande uit.</p>
+<p>We gebruiken dist-upgrade en niet gewoon upgrade. Met upgrade slaat apt elk pakket over waarvoor iets extra geïnstalleerd of verwijderd moet worden, en bij Proxmox is dat net het geval zodra er een nieuwe kernel klaarstaat. Met dist-upgrade lost apt die afhankelijkheden wel op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">root@pve:~# </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>dist-upgrade
+</span></code></pre></div>
+<p><img alt="" src="../assets/h13/image51.png" /></p>
+<p>Je krijgt foutmeldingen. Dat komt doordat Proxmox er na de installatie van uitgaat dat je een betalend abonnement hebt: zonder abonnement krijg je geen toegang tot de repository die de foutmelding geeft.</p>
+<p>De gratis repositories mag je wel gebruiken, en dat is volkomen legaal.</p>
+<p>Je kan dit manueel aanpassen maar voor gratis gebruik maak je meestal gebruik van een  PVE Post Install-script dat je vindt op <a href="https://community-scripts.org/scripts/post-pve-install">https://community-scripts.org/scripts/post-pve-install</a>.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">root@pve:~# </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/post-pve-install.sh<span class="k">)</span><span class="s2">"</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h13/image52.png" /></p>
+<p>Klik in het venster erna op OK.</p>
+<p><img alt="" src="../assets/h13/image53.png" /></p>
+<p>De pve-enterprise waarvoor je moet betalen zetten we op disable.</p>
+<p><img alt="" src="../assets/h13/image54.png" /></p>
+<p>De ceph enterprise repository disablen we ook.</p>
+<p><img alt="" src="../assets/h13/image55.png" /></p>
+<p>We staan nu verbinding toe met pve-no-subscription. Dat zijn de gratis, open-source componenten.</p>
+<p><img alt="" src="../assets/h13/image56.png" /></p>
+<p>We voegen ook de Ceph Package Repositories toe.</p>
+<p><img alt="" src="../assets/h13/image57.png" /></p>
+<p>De pve-test repository voegen we op dit moment niet toe.</p>
+<p><img alt="" src="../assets/h13/image58.png" /></p>
+<p>Erna krijg je de mogelijkheid om de Abonnementswaarschuwing uit te zetten. Het gaat over deze waarschuwing die je krijgt als je in GUI inlogt:</p>
+<p><img alt="" src="../assets/h13/image59.png" /></p>
+<p>Doe dit.<br><br><img alt="" src="../assets/h13/image60.png" /></p>
+<p>Let wel: bij een update van het pakket proxmox-widget-toolkit wordt dat bestand overschreven en komt de melding terug. Je brengt de wijziging dan opnieuw aan.</p>
+<p>Je krijgt hier ook een melding dat het ondersteunen van het ontwikkelaarsteam essentieel is. Klik op Ok.</p>
+<p><img alt="" src="../assets/h13/image61.png" /></p>
+<p>Erna krijg je de mogelijkheid om High Availability uit te zetten. We doen dat nu niet.</p>
+<p><img alt="" src="../assets/h13/image62.png" /></p>
+<p>Er wordt nu gevraagd om Proxmox VE nu te updaten. We kiezen voor yes.</p>
+<p><img alt="" src="../assets/h13/image63.png" /></p>
+<p>Je zal nu geduld moeten hebben…</p>
+<p>Je krijgt erna nog een melding dat je dit script op alle hosts op je cluster dient uit te voeren indien je een cluster aanmaakt. Klik op OK.</p>
+<p><img alt="" src="../assets/h13/image64.png" /></p>
+<p>Erna wordt aangeraden om Proxmox te herstarten. Doe dit.</p>
+<p><img alt="" src="../assets/h13/image65.png" /></p>
+<p>We voeren het commando nog eens uit.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">root@pve:~# </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>dist-upgrade
+</span></code></pre></div>
+<p>Nu komt er geen fout meer voor.</p>
+<p><img alt="" src="../assets/h13/image66.png" /></p>
+<p>De updates worden gewoon opgehaald en geïnstalleerd.</p>
+<h3 id="1372-via-de-commandoregel">13.7.2 Via de commandoregel<a class="headerlink" href="#1372-via-de-commandoregel" title="Permanent link">&para;</a></h3>
+<p>Het script en ook de knoppen in de webinterface doen allebei hetzelfde: ze passen tekstbestanden aan. Sinds Proxmox VE 9, dat op Debian 13 gebouwd is, staan de repositories in afzonderlijke bestanden met de extensie .sources. Bekijk ze zelf:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">root@pve:~# </span>ls<span class="w"> </span>/etc/apt/sources.list.d/
+</span><span id="__span-8-2"><span class="go">ceph.sources  debian.sources  proxmox.sources  pve-enterprise.sources</span>
+</span></code></pre></div>
+<p>We bekijken één voorbeeld hieruit.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">root@pve:~# </span>cat<span class="w"> </span>/etc/apt/sources.list.d/pve-enterprise.sources
+</span></code></pre></div>
+<p>Zo'n bestand bestaat uit sleutel-waardeparen, een per regel. De belangrijkste zijn:</p>
+<ul>
+<li>
+<p>Types: het soort pakketten, meestal deb;</p>
+</li>
+<li>
+<p>URIs: het adres van de server waar de pakketten staan;</p>
+</li>
+<li>
+<p>Suites: de versie van Debian waarvoor ze bedoeld zijn, hier trixie;</p>
+</li>
+<li>
+<p>Components: welk deel van die repository je gebruikt, bijvoorbeeld pve-enterprise of pve-no-subscription;</p>
+</li>
+<li>
+<p>Signed-By: de sleutel waarmee de pakketten ondertekend zijn;</p>
+</li>
+<li>
+<p>Enabled: of de repository gebruikt wordt. Zet je die op false, dan blijft het bestand staan maar wordt de repository genegeerd.</p>
+</li>
+</ul>
+<p>Die laatste regel is precies wat het script doet wanneer het pve-enterprise op disable zet. Het bestand verdwijnt dus niet, en je kan de keuze altijd terugdraaien door Enabled weer op true te zetten.</p>
+<p>Je kan dat ook gewoon zelf doen met een teksteditor. Na elke wijziging moet je de lijst opnieuw ophalen:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">root@pve:~# </span>apt-get<span class="w"> </span>update
+</span></code></pre></div>
+<p>Let op: verwijder de enterprise-repository niet. Een update van Proxmox kan het bestand opnieuw aanmaken, en dan krijg je weer met dezelfde foutmelding. Uitschakelen volstaat.</p>
+<h3 id="1373-via-de-webinterface">13.7.3 Via de webinterface<a class="headerlink" href="#1373-via-de-webinterface" title="Permanent link">&para;</a></h3>
+<p>Dezelfde instellingen kan je ook aanpassen zonder commandoregel. Klik in de webinterface links op de node pve, en daarna op Updates en Repositories.</p>
+<p><img alt="" src="../assets/h13/image67.png" /></p>
+<p>Je krijgt een lijst van alle repositories die op de server ingesteld staan. Per regel zie je in welk bestand ze staat, welke component ze aanbiedt en of ze actief is. Dat zijn precies de bestanden die je hierboven met cat bekeken hebt.</p>
+<p>Daarmee kan je:</p>
+<ul>
+<li>
+<p>een repository selecteren en met Enable of Disable aan- of uitzetten. Proxmox schrijft dan dezelfde regel Enabled in hetzelfde bestand (doe onderstaande niet, is ter illustratie);<br><img alt="" src="../assets/h13/image68.png" /></p>
+</li>
+<li>
+<p>met Add een repository toevoegen. Je krijgt een keuzelijst met de bekende repositories, waaronder No-Subscription, zodat je geen adres hoeft in te typen;<br><img alt="" src="../assets/h13/image69.png" /></p>
+</li>
+<li>
+<p>bovenaan in een gekleurde balk aflezen hoe Proxmox je samenstelling beoordeelt: productieklaar, of een waarschuwing wanneer je de enterprise-repository aan hebt staan zonder abonnement.<br><img alt="" src="../assets/h13/image70.png" /></p>
+</li>
+</ul>
+<p>Je hebt de repositories nu op drie manieren leren aanpassen, en alle drie schrijven ze in dezelfde bestanden:</p>
+<ul>
+<li>
+<p>met het post-install-script: het snelst, en het regelt meteen ook de abonnementswaarschuwing;</p>
+</li>
+<li>
+<p>in de tekstbestanden: daar zie je wat er werkelijk verandert, en het werkt ook op een server zonder webinterface;</p>
+</li>
+<li>
+<p>via de webinterface: het veiligst, want je kan niets fout typen.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../12-van-podman-naar-kubernetes/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 12 Van Podman naar Kubernetes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                12 Van Podman naar Kubernetes
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../14-proxmox-standalone-server/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 14 Proxmox Standalone Server">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                14 Proxmox Standalone Server
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

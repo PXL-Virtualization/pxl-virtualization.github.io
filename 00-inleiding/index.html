@@ -1,0 +1,1293 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/00-inleiding/">
+      
+      
+      
+        <link rel="prev" href="./..">
+      
+      
+        <link rel="next" href="../01-rhel-10-in-vmware-workstation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>0 Inleiding - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              0 Inleiding
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#01-herhaling-virtualisatie-containers-en-orkestratie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.1 Herhaling: virtualisatie, containers en orkestratie
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#02-demo-1-een-webserver-in-een-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.2 Demo 1: een webserver in een container
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#03-demo-2-een-eigen-image-bouwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.3 Demo 2: een eigen image bouwen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.3 Demo 2: een eigen image bouwen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#031-stap-een-coderen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.3.1 Stap één: coderen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#032-stap-twee-podman-image-aanmaken-en-opslaan" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.3.2 Stap twee: Podman-image aanmaken en opslaan
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#033-stap-drie-podman-container-uitvoeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        0.3.3 Stap drie: Podman-container uitvoeren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="0-inleiding">0 Inleiding<a class="headerlink" href="#0-inleiding" title="Permanent link">&para;</a></h1>
+<h2 id="01-herhaling-virtualisatie-containers-en-orkestratie">0.1 Herhaling: virtualisatie, containers en orkestratie<a class="headerlink" href="#01-herhaling-virtualisatie-containers-en-orkestratie" title="Permanent link">&para;</a></h2>
+<p>Dit hoofdstuk is een herhaling van wat je vorig academiejaar zag. We frissen eerst kort de begrippen op en gaan daarna meteen aan de slag met twee demo's in Podman.</p>
+<p><strong>Virtualisatie.</strong> Een hypervisor (bv. Proxmox) laat meerdere virtuele machines (VM's) draaien op één fysieke server. Dat benut de hardware veel beter, maar elke VM heeft een volledig eigen besturingssysteem, met de bijhorende overhead aan CPU, RAM, schijfruimte, patches en licenties.</p>
+<p><img alt="" src="../assets/h00/image1.png" /></p>
+<p><strong>Containers.</strong> Containers gaan een stap verder: ze delen de kernel van één besturingssysteem op de host en bevatten enkel de applicatie en haar afhankelijkheden. Daardoor zijn ze licht, starten ze in een fractie van een seconde en zijn ze eenvoudig te verplaatsen. Een container start je vanuit een image: een vooraf verpakte applicatie.</p>
+<p><img alt="" src="../assets/h00/image2.png" /></p>
+<p><strong>Docker en Podman.</strong> Dit zijn de bekendste tools om images te bouwen en containers te draaien. Docker werkt met een centrale daemon; Podman (Red Hat) werkt daemonless en ondersteunt rootless containers. De commando's zijn grotendeels gelijk: wat je met Docker doet, doe je meestal met Podman op dezelfde manier.</p>
+<p><img alt="" src="../assets/h00/image3.png" /></p>
+<p>Docker heeft sinds versie 20.10 (2020) een stabiele rootless mode. Het verschil met Podman zit in hoe het werkt en of het standaard aanstaat.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Docker</strong></th>
+<th><strong>Podman</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standaard</td>
+<td>Daemon draait als root</td>
+<td>Rootless, zonder daemon</td>
+</tr>
+<tr>
+<td>Rootless</td>
+<td>Aparte installatie nodig (dockerd-rootless-setuptool.sh install)</td>
+<td>Werkt meteen voor elke gewone gebruiker</td>
+</tr>
+<tr>
+<td>Hoe</td>
+<td>Elke gebruiker krijgt een eigen dockerd die als die gebruiker draait</td>
+<td>Geen daemon: elk Podman-commando is een gewoon proces van de gebruiker</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orkestratie.</strong> Om veel containers over meerdere servers (nodes) te beheren, heb je een orchestration tool nodig. Die bepaalt waar containers draaien, schaalt automatisch op en af, en start containers opnieuw op een andere node als er één uitvalt. Kubernetes (K8s) is hier de standaard; Docker Swarm is eenvoudiger en ingebouwd in Docker, maar wordt veel minder gebruikt.</p>
+<p><img alt="" src="../assets/h00/image4.png" /></p>
+<h2 id="02-demo-1-een-webserver-in-een-container">0.2 Demo 1: een webserver in een container<a class="headerlink" href="#02-demo-1-een-webserver-in-een-container" title="Permanent link">&para;</a></h2>
+<p>Met een eenvoudige demo laten we zien hoe containers werken met Podman.</p>
+<p>Voor deze demo gebruiken we ServerXX.</p>
+<p>We downloaden nu de image nginx (webserver).</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>image<span class="w"> </span>pull<span class="w"> </span>docker.io/library/nginx:latest
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image5.png" /></p>
+<p>We hebben nu een Podman-image gedownload met de naam nginx. Zie een image als een vooraf verpakte applicatie. Een image bevat alles wat nodig is om een applicatie te draaien. In dit geval bevat onze image een webserver die statische inhoud aanbiedt.</p>
+<p>We vragen de lijst met images op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>image<span class="w"> </span>ls
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image6.png" /></p>
+<p>We achterhalen het IP-adres van de netwerkkaart.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>nmcli<span class="w"> </span>device<span class="w"> </span>show<span class="w"> </span>ens160<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">'IP4.ADDRESS'</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image7.png" /></p>
+<p>Om een container van deze image te starten, gebruiken we een commando dat instructies geeft om een nieuwe container te starten, gebaseerd op de gedownloade image, met een specifieke naam en gekoppeld aan een bepaalde netwerkpoort op de containerhost. We kiezen op de containerhost voor poort 8080. Zodra de container draait, krijgen we een uniek ID als bevestiging. Dit proces duurt slechts een fractie van een seconde.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>web<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80<span class="w"> </span>nginx
+</span><span id="__span-3-2"><span class="go">07eaf1bfc326ae6184ecd982734e5986962c5e460c1fbe4387d68dfaac2488ef</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image8.png" /></p>
+<p>Om te controleren of de webserver draait, gebruiken we het IP-adres van de VM en de blootgestelde poort, in dit geval poort 8080.</p>
+<p>Door deze gegevens in een browser in te voeren, kunnen we de webserver direct zien draaien.</p>
+<p><img alt="" src="../assets/h00/image9.png" /></p>
+<p>Samenvattend: we hebben een image gedownload (denk aan een vooraf verpakte applicatie), die we hebben gestart als een container. Na het starten hebben we gecontroleerd of alles correct werkt door de webserver te bezoeken via de browser.</p>
+<p>We kunnen de container ook eenvoudig stoppen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>stop<span class="w"> </span>web
+</span><span id="__span-4-2"><span class="go">web</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image10.png" /></p>
+<p>Je zal zien dat de webpagina nu niet meer bereikbaar is.</p>
+<p><img alt="" src="../assets/h00/image11.png" /></p>
+<p>We kunnen de container nu opnieuw starten.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>start<span class="w"> </span>web
+</span><span id="__span-5-2"><span class="go">web</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image12.png" /></p>
+<p>Uiteraard zal de webpagina nu opnieuw bereikbaar zijn.</p>
+<p><img alt="" src="../assets/h00/image9.png" /></p>
+<p>Omdat containers lichter en sneller zijn dan virtuele machines, kunnen we de container eenvoudig stoppen en starten met enkele commando's. Dit maakt het beheer van applicaties bijzonder efficiënt. Containers bieden flexibiliteit: je kan ze stoppen, herstarten en zelfs verwijderen, allemaal met eenvoudige commando’s.</p>
+<h2 id="03-demo-2-een-eigen-image-bouwen">0.3 Demo 2: een eigen image bouwen<a class="headerlink" href="#03-demo-2-een-eigen-image-bouwen" title="Permanent link">&para;</a></h2>
+<h3 id="031-stap-een-coderen">0.3.1 Stap één: coderen<a class="headerlink" href="#031-stap-een-coderen" title="Permanent link">&para;</a></h3>
+<p>In het onderstaande voorbeeld schrijven we code en bouwen we die om tot een Podman-image.<br>Een image is als een gestopte container, of een sjabloon voor hoe je een container bouwt. We bouwen een image, zetten die in een registry en starten er een container van op.</p>
+<p><img alt="" src="../assets/h00/image13.png" /></p>
+<p>In dit voorbeeld kiezen we voor Bash. Misschien begrijp je nog niet alles, maar het is maar een demo. Later wordt alles duidelijker als je zelf aan de slag gaat.</p>
+<ul>
+<li>Maak een nieuwe directory voor je project, bijvoorbeeld docker-linux, en ga naar deze directory.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~$ </span>mkdir<span class="w"> </span>docker-linux
+</span></code></pre></div>
+<ul>
+<li>Maak in deze directory een bestand genaamd Dockerfile aan zonder extensie.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>touch<span class="w"> </span>docker-linux/Dockerfile
+</span></code></pre></div>
+<ul>
+<li>De inhoud van de containerfile is de volgende.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>docker-linux/Dockerfile
+</span><span id="__span-8-2"><span class="gp"># </span>Gebruik<span class="w"> </span>een<span class="w"> </span>officiële<span class="w"> </span>Fedora<span class="w"> </span>image<span class="w"> </span>als<span class="w"> </span>basis
+</span><span id="__span-8-3"><span class="go">FROM fedora:latest</span>
+</span><span id="__span-8-4"><span class="gp"># </span>Stel<span class="w"> </span>werkdirectory<span class="w"> </span><span class="k">in</span>
+</span><span id="__span-8-5"><span class="go">WORKDIR /app</span>
+</span><span id="__span-8-6"><span class="gp"># </span>Schrijf<span class="w"> </span>een<span class="w"> </span>shell<span class="w"> </span>commando<span class="w"> </span>dat<span class="w"> </span><span class="s2">"Hello, World"</span><span class="w"> </span>print
+</span><span id="__span-8-7"><span class="go">CMD ["echo", "Hello, World"]</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image14.png" /></p>
+<p>Uitleg van de Dockerfile:</p>
+<ul>
+<li>
+<p>FROM fedora:latest<br>Dit commando gebruikt een officiële Fedora-image als basis. Deze image bevat Bash en is geschikt voor Linux-omgevingen.</p>
+</li>
+<li>
+<p>WORKDIR /app<br>Stelt de werkdirectory binnen de container in. Dit is in dit geval optioneel.</p>
+</li>
+<li>
+<p>CMD ["echo", "Hello, World"]<br>Dit commando voert echo uit om de tekst "Hello, World" naar de standaarduitvoer te schrijven.<br>Het CMD-commando bepaalt wat er wordt uitgevoerd wanneer de container start.</p>
+</li>
+</ul>
+<h3 id="032-stap-twee-podman-image-aanmaken-en-opslaan">0.3.2 Stap twee: Podman-image aanmaken en opslaan<a class="headerlink" href="#032-stap-twee-podman-image-aanmaken-en-opslaan" title="Permanent link">&para;</a></h3>
+<p>Ga naar de directory waarin de Dockerfile staat.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@serverXX:~$ </span><span class="nb">cd</span><span class="w"> </span>docker-linux/
+</span></code></pre></div>
+<p>Bouw de Podman-image met de naam hallo-test vanuit Bash:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~/docker-linux$ </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>hallo-test<span class="w"> </span>.
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image15.png" /></p>
+<p>We hebben nu een image.</p>
+<p>Wanneer je “podman build -t hallo-test .” uitvoert, doet Podman het volgende:</p>
+<ul>
+<li>
+<p>Lezen van de Dockerfile<br>Podman zoekt in de huidige directory (.) naar een bestand genaamd Dockerfile.</p>
+</li>
+<li>
+<p>Uitvoeren van instructies<br>Podman voert de instructies in de Dockerfile één voor één uit. Dat kan bijvoorbeeld het ophalen van een basisimage, het kopiëren van bestanden of het installeren van software zijn.</p>
+</li>
+<li>
+<p>Image bouwen<br>Elke uitgevoerde instructie creëert een laag in de nieuwe image. Zodra alle stappen zijn uitgevoerd, resulteert dit in een complete image.</p>
+</li>
+<li>
+<p>Image taggen<br>De voltooide image wordt opgeslagen met de naam en tag die je hebt opgegeven (hallo-test in dit geval).</p>
+</li>
+<li>
+<p>Lokaal opslaan<br>De nieuwe image wordt lokaal op je computer opgeslagen.</p>
+<ul>
+<li>Je kan een image ook bewaren op het internet, bijvoorbeeld op Docker Hub. We komen daar later op terug.</li>
+</ul>
+</li>
+</ul>
+<p>Je kan de lokale images als volgt opvragen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">student@serverXX:~/docker-linux$ </span>podman<span class="w"> </span>images
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image16.png" /></p>
+<h3 id="033-stap-drie-podman-container-uitvoeren">0.3.3 Stap drie: Podman-container uitvoeren<a class="headerlink" href="#033-stap-drie-podman-container-uitvoeren" title="Permanent link">&para;</a></h3>
+<p>Je kunt deze image nu gebruiken om containers te draaien met het commando podman run. Het maakt nu trouwens niet meer uit in welke directory je je bevindt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@serverXX:~/docker-linux$ </span><span class="nb">cd</span>
+</span><span id="__span-12-2"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>hallo-test
+</span><span id="__span-12-3"><span class="go">Hello, World</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h00/image17.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="./.." class="md-footer__link md-footer__link--prev" aria-label="Vorige: Start">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                Start
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../01-rhel-10-in-vmware-workstation/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 1 RHEL 10 in VMware Workstation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                1 RHEL 10 in VMware Workstation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

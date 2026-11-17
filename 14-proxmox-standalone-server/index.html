@@ -1,0 +1,1798 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/14-proxmox-standalone-server/">
+      
+      
+      
+        <link rel="prev" href="../13-installatie-proxmox-en-eerste-stappen/">
+      
+      
+        <link rel="next" href="../15-vms-en-containers-in-proxmox/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>14 Proxmox Standalone Server - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              14 Proxmox Standalone Server
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#141-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#142-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#143-belangrijke-instellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3 Belangrijke instellingen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.3 Belangrijke instellingen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1431-systeem-software-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.1 Systeem software-updates
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1432-netwerkconfiguratie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.2 Netwerkconfiguratie
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.3.2 Netwerkconfiguratie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14321-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.2.1 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14322-standaardconfiguratie-met-behulp-van-een-brug" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.2.2 Standaardconfiguratie met behulp van een brug
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14323-masquerading-nat" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.2.3 Masquerading (NAT)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1433-tijdsynchronisatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.3.3 Tijdsynchronisatie
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#144-overzicht-nodebeheer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4 Overzicht nodebeheer
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.4 Overzicht nodebeheer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1441-de-knoppen-bovenaan" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.1 De knoppen bovenaan
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1442-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.2 Summary
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1443-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.3 Network
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1444-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.4 Disks
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1445-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.5 Firewall
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1446-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.6 Updates
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1447-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.7 Certificates
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1448-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.8 Shell
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1449-time-subscription-en-task-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.4.9 Time, Subscription en Task History
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#145-overzicht-van-het-datacenterbeheer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5 Overzicht van het datacenterbeheer
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14.5 Overzicht van het datacenterbeheer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1451-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.1 Summary
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1452-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.2 Storage
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1453-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.3 Backup
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1454-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.4 Permissions
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1455-tweefactorauthenticatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.5 Tweefactorauthenticatie
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1456-software-defined-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.6 Software Defined Networking
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1457-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.7 Firewall
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1458-nog-meer-op-datacenterniveau" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        14.5.8 Nog meer op datacenterniveau
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Proxmox
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="14-proxmox-standalone-server">14 Proxmox Standalone Server<a class="headerlink" href="#14-proxmox-standalone-server" title="Permanent link">&para;</a></h1>
+<h2 id="141-doelstellingen">14.1 Doelstellingen<a class="headerlink" href="#141-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>uitleggen wat een standalone Proxmox-server is en wanneer je beter voor een cluster kiest;</p>
+</li>
+<li>
+<p>het systeem bijwerken en uitleggen waarom de tijd daarbij correct moet staan;</p>
+</li>
+<li>
+<p>de netwerkconfiguratie van Proxmox lezen: de fysieke netwerkkaart, de Linux bridge vmbr0 en de plaats van het IP-adres;</p>
+</li>
+<li>
+<p>uitleggen waarom een virtuele machine zich gedraagt alsof ze rechtstreeks aan het fysieke netwerk hangt, en waarom een hostingprovider dat vaak blokkeert;</p>
+</li>
+<li>
+<p>beschrijven wat masquerading (NAT) doet en wanneer je het nodig hebt;</p>
+</li>
+<li>
+<p>uitleggen waarom alle nodes van een cluster dezelfde tijd nodig hebben, en nagaan welke NTP-servers chrony gebruikt;</p>
+</li>
+<li>
+<p>de onderdelen van het nodebeheer benoemen: samenvatting, netwerk, opslag, firewall, updates, certificaten, tijd en takenlogboek;</p>
+</li>
+<li>
+<p>de onderdelen van het datacenterbeheer benoemen: cluster, opslag, back-up, replicatie, toegangsbeheer, high availability, SDN en firewall;</p>
+</li>
+<li>
+<p>onder Datacenter en Permissions tweefactorauthenticatie met TOTP instellen en weer uitschakelen, en de rol van herstelsleutels uitleggen;</p>
+</li>
+<li>
+<p>het verschil uitleggen tussen LVM en LVM-thin;</p>
+</li>
+<li>
+<p>met enkele CLI-opdrachten de server controleren en de virtuele machines oplijsten;</p>
+</li>
+</ul>
+<h2 id="142-inleiding">14.2 Inleiding<a class="headerlink" href="#142-inleiding" title="Permanent link">&para;</a></h2>
+<p>Een Proxmox standalone server is een Proxmox server die geen deel uitmaakt van een cluster.</p>
+<p>Dit betekent dat de server zelfstandig werkt en niet gekoppeld is aan andere Proxmox-nodes. Standalone servers zijn ideaal voor kleinere omgevingen of situaties waarin clustering of high availability (HA) niet vereist is. Je bereikt hem zoals in het vorige hoofdstuk: via de webinterface op poort 8006 of via SSH.</p>
+<h2 id="143-belangrijke-instellingen">14.3 Belangrijke instellingen<a class="headerlink" href="#143-belangrijke-instellingen" title="Permanent link">&para;</a></h2>
+<h3 id="1431-systeem-software-updates">14.3.1 Systeem software-updates<a class="headerlink" href="#1431-systeem-software-updates" title="Permanent link">&para;</a></h3>
+<p>Om foutloos te kunnen updaten moet je klok juist staan. Staat de tijd niet juist, dan aanvaardt de server de handtekeningen van de repository's niet en mislukt de update.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">root@pve:~# </span>systemctl<span class="w"> </span>restart<span class="w"> </span>chronyd
+</span><span id="__span-0-2"><span class="gp">root@pve:~# </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>dist-upgrade
+</span></code></pre></div>
+<p>Let op het verschil tussen de twee upgradecommando's:</p>
+<ul>
+<li>
+<p>apt-get upgrade werkt enkel pakketten bij waarvoor niets extra geïnstalleerd of verwijderd moet worden. Brengt een nieuwe versie een extra afhankelijkheid mee, dan slaat apt dat pakket over en meldt hij The following packages have been kept back;</p>
+</li>
+<li>
+<p>apt-get dist-upgrade lost die afhankelijkheden wel op en mag daarvoor pakketten bijplaatsen of weghalen.</p>
+</li>
+</ul>
+<p>Bij Proxmox gebruik je altijd dist-upgrade. Een nieuwe kernel komt namelijk binnen als een nieuw pakket, bijvoorbeeld proxmox-kernel-6.17, en met upgrade zou je die nooit krijgen. In recentere versies van apt heet hetzelfde commando apt full-upgrade.</p>
+<p>De naam dist-upgrade betekent hier niet dat je naar een nieuwe Debian-versie overstapt. Zolang daar bij Suites (zie 13.7.2) trixie vermeld staat, blijf je op Debian 13 en dus op Proxmox VE 9.</p>
+<p><img alt="" src="../assets/h14/image1.png" /></p>
+<p>Je kan hetzelfde resultaat via de GUI bekomen.</p>
+<p><img alt="" src="../assets/h14/image2.png" /></p>
+<h3 id="1432-netwerkconfiguratie">14.3.2 Netwerkconfiguratie<a class="headerlink" href="#1432-netwerkconfiguratie" title="Permanent link">&para;</a></h3>
+<h4 id="14321-inleiding">14.3.2.1 Inleiding<a class="headerlink" href="#14321-inleiding" title="Permanent link">&para;</a></h4>
+<p>Je kan het netwerk op twee manieren instellen: via de webinterface, of door het bestand /etc/network/interfaces met de hand te bewerken. Wij doen het via de webinterface. Die beschermt je tegen fouten, en een typfout in dat bestand kan de server onbereikbaar maken.</p>
+<p>Een Linux bridge-interface (vaak vmbrX genoemd) is nodig om gasten te verbinden met het onderliggende fysieke netwerk. Het kan worden gezien als een virtuele switch waarmee de gasten en fysieke interfaces zijn verbonden. Deze sectie biedt enkele voorbeelden van hoe het netwerk kan worden ingesteld.</p>
+<h4 id="14322-standaardconfiguratie-met-behulp-van-een-brug">14.3.2.2 Standaardconfiguratie met behulp van een brug<a class="headerlink" href="#14322-standaardconfiguratie-met-behulp-van-een-brug" title="Permanent link">&para;</a></h4>
+<p>Bridges zijn als fysieke netwerkswitches die in software zijn geïmplementeerd. Net zoals je op één fysieke switch meerdere toestellen aansluit, kan je er meerdere VM’s en containers aan koppelen.</p>
+<p>Het installatieprogramma maakt één bridge met de naam vmbr0 en koppelt die aan de eerste fysieke netwerkkaart van de server. In onze opstelling is dat nic0.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">root@pve:~# </span>ip<span class="w"> </span>a
+</span><span id="__span-1-2"><span class="go">…</span>
+</span><span id="__span-1-3"><span class="go">2: nic0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel master vmbr0 state UP group default qlen 1000</span>
+</span><span id="__span-1-4"><span class="go">    link/ether 00:0c:29:88:ff:3a brd ff:ff:ff:ff:ff:ff</span>
+</span><span id="__span-1-5"><span class="go">    altname enp2s1</span>
+</span><span id="__span-1-6"><span class="go">    altname enx000c2988ff3a</span>
+</span><span id="__span-1-7"><span class="go">3: vmbr0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span>
+</span><span id="__span-1-8"><span class="go">    link/ether 00:0c:29:88:ff:3a brd ff:ff:ff:ff:ff:ff</span>
+</span><span id="__span-1-9"><span class="go">    inet 192.168.112.144/24 scope global vmbr0</span>
+</span><span id="__span-1-10"><span class="go">       valid_lft forever preferred_lft forever</span>
+</span><span id="__span-1-11"><span class="go">    inet6 fe80::20c:29ff:fe88:ff3a/64 scope link proto kernel_ll</span>
+</span><span id="__span-1-12"><span class="go">       valid_lft forever preferred_lft forever</span>
+</span></code></pre></div>
+<p>Vier dingen zijn hier van belang:</p>
+<ul>
+<li>
+<p>Bij nic0 staat master vmbr0. De fysieke kaart is dus een poort op de bridge geworden en werkt niet langer zelfstandig.</p>
+</li>
+<li>
+<p>Onder nic0 staat geen inet-regel: de kaart heeft geen IP-adres.</p>
+</li>
+<li>
+<p>Dat adres staat bij vmbr0: 192.168.112.144/24. Dat is het adres waarmee je de webinterface bereikt.</p>
+</li>
+<li>
+<p>Allebei hebben ze hetzelfde MAC-adres, 00:0c:29:88:ff:3a. De bridge neemt dat over van haar poort, zodat het netwerk geen verschil merkt.</p>
+</li>
+</ul>
+<p>Straks hang je daar virtuele machines en containers aan. Elke gast krijgt dan zijn eigen poort op die bridge, met een eigen MAC-adres en een eigen IP-adres in hetzelfde netwerk als de server. Voor de buitenwereld lijkt elke gast daardoor een apart toestel, ook al loopt al dat verkeer over één netwerkkaart.</p>
+<p>Onderstaande figuur vat samen hoe dat op onze server in elkaar zit.</p>
+<p><img alt="" src="../assets/h14/image3.png" /></p>
+<p>In ons geval krijgen de VM’s IP-nummers in het subnet 192.168.112.0/24.</p>
+<p>In de webinsterface klik je links op de node pve, dan op System en daarna op Network.</p>
+<p><img alt="" src="../assets/h14/image4.png" /></p>
+<p>Klik je op de netwerkkaart nic0, dan zie je dat die geen IP-adres heeft.</p>
+<p><img alt="" src="../assets/h14/image5.png" /></p>
+<p>Zoals je verwacht staat daar geen IP-adres (nic0) en is het IP-adres gekoppeld aan de bridge.</p>
+<p><img alt="" src="../assets/h14/image6.png" /></p>
+<p>Je ziet ook de gateway en dat er een brug wordt gemaakt naar de netwerkkaart (nic0). De gateway kan je uiteraard ook opvragen via de CLI.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">root@pve:~# </span>ip<span class="w"> </span>route
+</span><span id="__span-2-2"><span class="go">default via 192.168.112.2 dev vmbr0 proto kernel onlink</span>
+</span><span id="__span-2-3"><span class="go">192.168.112.0/24 dev vmbr0 proto kernel scope link src 192.168.112.144</span>
+</span></code></pre></div>
+<p>Wat je in de webinterface instelt, komt terecht in één tekstbestand op de server. Daar staat de echte configuratie; de webinterface schrijft er enkel in. Je kan dus altijd nakijken wat er precies veranderd is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">root@pve:~# </span>nano<span class="w"> </span>/etc/network/interfaces
+</span></code></pre></div>
+<p><img alt="" src="../assets/h14/image7.png" /></p>
+<p>Pas dit bestand liever niet met de hand aan: een typfout merk je vaak pas bij de volgende herstart, en dan is je server onbereikbaar. Moet het toch, voer dan erna onmiddellijk ifreload -a uit. De wijziging wordt zo actief zonder herstart, en je merkt meteen of de instellingen kloppen.</p>
+<h4 id="14323-masquerading-nat">14.3.2.3 Masquerading (NAT)<a class="headerlink" href="#14323-masquerading-nat" title="Permanent link">&para;</a></h4>
+<p>De opstelling hierboven werkt omdat het netwerk meerdere MAC-adressen op één kabel aanvaardt. Elke VM heeft namelijk een eigen MAC-adres, en al dat verkeer loopt over dezelfde netwerkkaart van de server. In VMware en op een thuisnetwerk is dat geen probleem.</p>
+<p>Bij een hostingprovider en bij de PXL ligt dat anders. Die ziet op jouw poort plots een tweede en een derde MAC-adres opduiken. Die houdt dat voor een aanval of een fout aangesloten kabel en legt de poort stil. Daarom laten de meeste providers maar één MAC-adres per poort toe.</p>
+<p>De uitweg heet masquerading. Dat is een vorm van NAT. Je zet je VM’s dan in een eigen intern netwerk op een tweede bridge die aan geen enkele netwerkkaart hangt. De Proxmox-host vertaalt hun verkeer naar zijn eigen IP-adres en stuurt de antwoorden naar de juiste VM terug. Naar buiten toe blijft er zo één IP-adres en één MAC-adres over: dat van de server.</p>
+<p>Daar staat wel iets tegenover. De VM’s zijn van buitenaf niet langer rechtstreeks bereikbaar want ze hebben geen eigen adres op het netwerk meer. Als je dan toch een webserver in een VM publiceren maak je gebruik van port forwarding. Het is hetzelfde idee als -p 8080:80 bij Podman: één poort van de host wordt doorgegeven aan iets (een VM of container) die erachter zit.</p>
+<p>Wij hebben op dit moment masquerading niet nodig. VMware aanvaardt meerdere MAC-adressen op één poort. We houden dus de standaardconfiguratie met vmbr0.</p>
+<p><img alt="" src="../assets/h14/image8.png" /></p>
+<p>We stellen dit later in.</p>
+<h3 id="1433-tijdsynchronisatie">14.3.3 Tijdsynchronisatie<a class="headerlink" href="#1433-tijdsynchronisatie" title="Permanent link">&para;</a></h3>
+<p>In het vorige hoofdstuk heb je de klok van deze server al correct gezet: je controleerde ze met timedatectl, herstartte de tijddienst met systemctl restart chronyd en dwong zo nodig een sprong af met chronyc makestep. Daar ging het om deze ene server. Hier kijken we naar de bron: waar haalt chrony zijn tijd vandaan?</p>
+<p>Die tijd moet kloppen, zeker zodra je met een cluster werkt. De nodes melden elkaar voortdurend dat ze nog meedoen, en Ceph doet hetzelfde voor de opslag. Lopen hun klokken uit elkaar, dan vertrouwen ze die berichten niet meer. En apt weigert je pakketlijsten zodra de tijd te ver afwijkt, zoals je in hoofdstuk 13 gemerkt hebt.</p>
+<p>Proxmox gebruikt sinds versie 7 chrony als NTP-daemon. Welke tijdservers chrony aanspreekt, staat in één bestand:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">root@pve:~# </span>cat<span class="w"> </span>/etc/chrony/chrony.conf
+</span><span id="__span-4-2"><span class="go">…</span>
+</span><span id="__span-4-3"><span class="gp"># </span>Use<span class="w"> </span>Debian<span class="w"> </span>vendor<span class="w"> </span>zone.
+</span><span id="__span-4-4"><span class="go">pool 2.debian.pool.ntp.org iburst</span>
+</span><span id="__span-4-5"><span class="go">…</span>
+</span></code></pre></div>
+<p>Standaard staat daar een pool: een naam die naar een wisselende groep tijdservers verwijst. Chrony kiest er zelf een paar uit en schakelt over wanneer er één wegvalt. Met iburst stuurt hij bij het opstarten meteen een reeks aanvragen, zodat de klok binnen enkele seconden gelijk staat in plaats van na een kwartier.</p>
+<p>Je kan ook zelf servers opgeven, bijvoorbeeld een tijdserver van je eigen netwerk:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1">server ntp1.example.com iburst
+</span><span id="__span-5-2">server ntp2.example.com iburst
+</span><span id="__span-5-3">server ntp3.example.com iburst
+</span></code></pre></div>
+<p>Wij laten de standaardinstelling staan.</p>
+<p>Met chronyc tracking zie je met welke server chrony praat en hoe groot het verschil is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">root@pve:~# </span>chronyc<span class="w"> </span>tracking
+</span><span id="__span-6-2"><span class="go">…</span>
+</span><span id="__span-6-3"><span class="go">System time     : 37687.238281250 seconds slow of NTP time</span>
+</span><span id="__span-6-4"><span class="go">…</span>
+</span></code></pre></div>
+<p>System time geeft het verschil aan tussen de klok van je server en de echte tijd: 37687 seconden, ofwel 10 uur en 28 minuten achter. Typisch voor een VM die uit een snapshot of uit pauze komt.</p>
+<p>We zetten dat recht.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">root@pve:~# </span>systemctl<span class="w"> </span>restart<span class="w"> </span>chronyd
+</span><span id="__span-7-2"><span class="gp">root@pve:~# </span>chronyc<span class="w"> </span>tracking
+</span><span id="__span-7-3"><span class="go">…</span>
+</span><span id="__span-7-4"><span class="go">System time     : 0.000162361 seconds slow of NTP time</span>
+</span><span id="__span-7-5"><span class="go">…</span>
+</span></code></pre></div>
+<p>Opgelost. 0,000162 seconden is 0,16 milliseconde.</p>
+<h2 id="144-overzicht-nodebeheer">14.4 Overzicht nodebeheer<a class="headerlink" href="#144-overzicht-nodebeheer" title="Permanent link">&para;</a></h2>
+<p>Klik je links op de node pve, dan opent het beheer van die ene server. Alles wat deze machine aanbelangt staat in dat menu. We lopen de onderdelen een voor een af.</p>
+<h3 id="1441-de-knoppen-bovenaan">14.4.1 De knoppen bovenaan<a class="headerlink" href="#1441-de-knoppen-bovenaan" title="Permanent link">&para;</a></h3>
+<p>Bovenaan het venster staan twee rijen knoppen. De bovenste hoort bij de hele interface, de onderste bij de node die je links geselecteerd hebt.</p>
+<p><img alt="" src="../assets/h14/image9.png" /></p>
+<p>In de bovenste rij staat Documentation: die opent de volledige Proxmox-handleiding. Ze staat lokaal op de server geïnstalleerd. Je kan ze dus ook raadplegen op een machine zonder internetverbinding. Ernaast staan Create VM en Create CT, waarmee je een virtuele machine of een container aanmaakt. Daarmee ga je in het volgende hoofdstuk aan de slag.</p>
+<p>De rij eronder geldt voor de node zelf, hier pve. Met Reboot en Shutdown herstart of stop je de server. Shell opent een terminal in de browser. Met Bulk Actions start, stop of migreer je in één keer alle virtuele machines van deze node.</p>
+<h3 id="1442-summary">14.4.2 Summary<a class="headerlink" href="#1442-summary" title="Permanent link">&para;</a></h3>
+<p>Onder Summary volg je de node in realtime: het verbruik van processor, geheugen en opslag, en hoe lang de server al draait.</p>
+<p><img alt="" src="../assets/h14/image10.png" /></p>
+<h3 id="1443-network">14.4.3 Network<a class="headerlink" href="#1443-network" title="Permanent link">&para;</a></h3>
+<p>Onder Network staan de fysieke netwerkkaarten, zoals nic0, en de virtuele bridges, zoals vmbr0. Je hebt ze hierboven al bekeken.</p>
+<p><img alt="" src="../assets/h14/image11.png" /></p>
+<p>Virtuele machines koppel je aan zo'n bridge om op het netwerk te raken. Onthoud daarbij de vuistregel: het IP-adres hoort op de bridge, niet op de fysieke kaart. Extra bridges maak je hier aan. Daar komen we later op terug.</p>
+<h3 id="1444-disks">14.4.4 Disks<a class="headerlink" href="#1444-disks" title="Permanent link">&para;</a></h3>
+<p>Onder Disks zie je de fysieke schijven van de server, weergegeven als /dev/sdX. Je kan er een schijf toevoegen, partitioneren of opnemen in een Logical Volume Manager (LVM).</p>
+<p><img alt="" src="../assets/h14/image12.png" /></p>
+<ul>
+<li>
+<p>Onder Disks zie je het volgende:<br>LVM: klassieke logische volumes, goede prestaties, maar geen snapshots en geen flexibele ruimteverdeling.</p>
+</li>
+<li>
+<p>LVM-Thin: LVM met thin provisioning en snapshots; standaard en meest gebruikte keuze voor VM's in Proxmox.</p>
+</li>
+<li>
+<p>Directory: gewone map op een bestandssysteem (ext4/xfs); ideaal voor ISO's, back-ups en templates.</p>
+</li>
+<li>
+<p>ZFS: geavanceerd bestandssysteem met snapshots, compressie en databescherming; vraagt meer RAM maar biedt de meeste functies.</p>
+</li>
+</ul>
+<p>Proxmox ondersteunt daarnaast Ceph, een gedistribueerd opslagsysteem dat gegevens over meerdere nodes verspreidt en repliceert. Dat komt in hoofdstuk 17 aan bod.</p>
+<p><img alt="" src="../assets/h14/image13.png" /></p>
+<h3 id="1445-firewall">14.4.5 Firewall<a class="headerlink" href="#1445-firewall" title="Permanent link">&para;</a></h3>
+<p>Onder Firewall staan de regels die bepalen welk netwerkverkeer deze node binnen en buiten mag.</p>
+<p>We stellen hier nu niets in. Hoofdstuk 19 gaat volledig over de firewall van Proxmox.</p>
+<p><img alt="" src="../assets/h14/image14.png" /></p>
+<h3 id="1446-updates">14.4.6 Updates<a class="headerlink" href="#1446-updates" title="Permanent link">&para;</a></h3>
+<p>Onder Updates beheert Proxmox de pakketten met apt zoals reeds besproken.</p>
+<p><img alt="" src="../assets/h14/image15.png" /></p>
+<p>Je controleert hier of er updates klaarstaan en je installeert ze met een klik. Dat heb je in het vorige hoofdstuk al gedaan vanaf de commandoregel.</p>
+<p><img alt="" src="../assets/h14/image16.png" /></p>
+<h3 id="1447-certificates">14.4.7 Certificates<a class="headerlink" href="#1447-certificates" title="Permanent link">&para;</a></h3>
+<p>Proxmox maakt bij de installatie zijn eigen certificaten aan. Je ziet er hier twee:</p>
+<ul>
+<li>
+<p>pve-root-ca.pem — de certificaatautoriteit (CA) die Proxmox voor zichzelf heeft opgezet. Die ondertekent de certificaten van alle nodes. Kijk naar de kolom Expires: tien jaar geldig.</p>
+</li>
+<li>
+<p>pve-ssl.pem — het certificaat van deze node zelf, ondertekend door die CA. Dit is wat je browser te zien krijgt wanneer je naar poort 8006 surft. Het is twee jaar geldig en wordt automatisch vernieuwd.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h14/image17.png" /></p>
+<p>In de kolom Subject Alternative Names staat waarvoor dat tweede certificaat geldig is: 127.0.0.1, localhost, pve, pve.localdomain en het IP-adres 192.168.112.144. Surf je naar een naam of adres dat daar niet bij staat, dan klaagt je browser ook over de naam en niet enkel over de uitgever.</p>
+<p>En daar zit meteen de reden van de waarschuwing die je bij het aanmelden kreeg. Het certificaat op zich is in orde, maar je browser kent de CA die het ondertekend heeft niet: die bestaat alleen op jouw server. Voeg je pve-root-ca.pem toe aan de vertrouwde root-certificaten van je besturingssysteem, dan verdwijnt de waarschuwing — en meteen ook voor elke andere node die diezelfde CA later ondertekent.</p>
+<p>In Powershell voer je onderstaande uit:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1">PS C:\WINDOWS\system32&gt; scp root@192.168.112.144:/etc/pve/pve-root-ca.pem .
+</span><span id="__span-8-2">PS C:\WINDOWS\system32&gt; Import-Certificate -FilePath "C:\Users\stijn\pve-root-ca.pem" -CertStoreLocation Cert:\LocalMachine\Root
+</span></code></pre></div>
+<p>Eronder staat ACME, het protocol waarmee je automatisch een certificaat aanvraagt bij een publieke certificaatautoriteit zoals Let’s Encrypt. Zo’n certificaat vertrouwt elke browser meteen, zonder dat je iets moet installeren. Maar dan moet je server wel een echte domeinnaam hebben die publiek te bereiken is, want de certificaatautoriteit controleert of jij die naam effectief beheert. Met een IP-adres in een labonetwerk lukt dat niet, dus laten we dit ongemoeid. Je ziet dan ook No Account available en No Domains configured staan.</p>
+<h3 id="1448-shell">14.4.8 Shell<a class="headerlink" href="#1448-shell" title="Permanent link">&para;</a></h3>
+<p>Onder Shell open je een terminal op de node, rechtstreeks in de browser en dus zonder SSH.</p>
+<p><img alt="" src="../assets/h14/image18.png" /></p>
+<h3 id="1449-time-subscription-en-task-history">14.4.9 Time, Subscription en Task History<a class="headerlink" href="#1449-time-subscription-en-task-history" title="Permanent link">&para;</a></h3>
+<p>Onder System, Time staan de tijdzone en de tijd van de node.</p>
+<p><img alt="" src="../assets/h14/image19.png" /></p>
+<p>Met Edit pas je de tijdzone aan.</p>
+<p>Subscription toont de status van je abonnement. Bij ons staat daar notfound: There is no subscription key omdat we werken met de gratis no-subscription-repository. Dat is ook de reden voor het venster No valid subscription dat je bij elke aanmelding kreeg; in hoofdstuk 13 heb je dat met het post-install-script uitgezet.</p>
+<p>Als je wel een abonnement koopt geef je bij de bestelling het Server ID op dat je hier ziet staan.</p>
+<p><img alt="" src="../assets/h14/image20.png" /></p>
+<p>Onderaan het venster loopt het takenlogboek. Via Task History raadpleeg je ook oudere taken; met View/Output en View/Status zie je wat een taak precies gedaan heeft.</p>
+<p><img alt="" src="../assets/h14/image21.png" /></p>
+<h2 id="145-overzicht-van-het-datacenterbeheer">14.5 Overzicht van het datacenterbeheer<a class="headerlink" href="#145-overzicht-van-het-datacenterbeheer" title="Permanent link">&para;</a></h2>
+<p>Wanneer je in de webinterface links bovenaan op Datacenter klikt, beheer je niet één specifieke server, maar het centrale niveau van je hele Proxmox VE-omgeving.</p>
+<p>Sommige onderdelen komen pas in een cluster tot hun recht. Op je eigen server kan je nu al aan de slag met:</p>
+<ul>
+<li>
+<p>Storage: opslag bekijken en externe opslag toevoegen;</p>
+</li>
+<li>
+<p>Backup: back-upopdrachten inplannen;</p>
+</li>
+<li>
+<p>Permissions: gebruikers, rollen en tweefactorauthenticatie;</p>
+</li>
+<li>
+<p>Firewall: regels voor het hele datacenter;</p>
+</li>
+<li>
+<p>Notifications: instellen waar meldingen naartoe gaan.</p>
+</li>
+</ul>
+<p>Cluster, Replication, High Availability en Ceph hebben een cluster nodig; die onderdelen bekijken we in hoofdstuk 17.</p>
+<p><img alt="" src="../assets/h14/image22.png" /></p>
+<h3 id="1451-summary">14.5.1 Summary<a class="headerlink" href="#1451-summary" title="Permanent link">&para;</a></h3>
+<p>Summary geeft de toestand van het geheel in één oogopslag:</p>
+<ul>
+<li>
+<p>hoeveel nodes er online (in dit geval uiteraard één) of offline zijn;</p>
+</li>
+<li>
+<p>hoeveel virtuele machines draaien (in dit geval uiteraard geen) en hoeveel er stilliggen;</p>
+</li>
+<li>
+<p>hetzelfde voor de LXC-containers (in dit geval uiteraard geen);</p>
+</li>
+<li>
+<p>het processorgebruik van alle nodes samen;</p>
+</li>
+<li>
+<p>het gebruik van geheugen en opslag over alle nodes.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h14/image23.png" /></p>
+<h3 id="1452-storage">14.5.2 Storage<a class="headerlink" href="#1452-storage" title="Permanent link">&para;</a></h3>
+<p>Onder Storage staat de opslag die aan het datacenter gekoppeld is. Elke opslag krijgt een naam en wordt op één of meer nodes beschikbaar gesteld.</p>
+<p><img alt="" src="../assets/h14/image24.png" /></p>
+<ul>
+<li>
+<p>Local: de lokale opslag van de node, onder /var/lib/vz. Daar komen je ISO-bestanden, containertemplates en back-ups terecht.</p>
+</li>
+<li>
+<p>local-lvm: de opslag voor de schijven van je virtuele machines en containers. Het is een LVM-thin pool: een schijf van 32 GB neemt pas ruimte in naarmate ze echt gevuld raakt, terwijl gewone LVM die 32 GB meteen vastlegt.</p>
+</li>
+</ul>
+<p>Met Add voeg je externe opslag toe: NFS, SMB/CIFS, iSCSI, CephFS en nog een reeks andere. In een cluster is dat de manier om opslag te delen tussen nodes, en dat heb je nodig voor live migratie en high availability.</p>
+<p><img alt="" src="../assets/h14/image25.png" /></p>
+<h3 id="1453-backup">14.5.3 Backup<a class="headerlink" href="#1453-backup" title="Permanent link">&para;</a></h3>
+<p>Backup maakt geautomatiseerde back-upschema's aan voor geselecteerde VM's of containers. Je bepaalt hier naar welke opslag de back-up gaat, op welke tijdstippen dit gebeurt (bijv. dagelijks om 02:00) en hoeveel retentie-exemplaren bewaard moeten blijven.</p>
+<p><img alt="" src="../assets/h14/image26.png" /></p>
+<p>Probeer het zelf. Je hebt nog geen virtuele machines, maar de opdracht kan je al aanmaken:</p>
+<ul>
+<li>
+<p>klik op Add. Kies bij Node de server pve en bij Storage de opslag local;</p>
+</li>
+<li>
+<p>bij Schedule geef je op wanneer de back-up loopt, bijvoorbeeld elke dag om 21:00;</p>
+</li>
+<li>
+<p>bij Selection mode kies je All, zodat elke machine die je later aanmaakt vanzelf mee in de back-up zit;</p>
+</li>
+<li>
+<p>bij Mode kies je Snapshot: de machine blijft draaien terwijl de back-up loopt. Stop zet ze even af, Suspend pauzeert ze;<br><img alt="" src="../assets/h14/image27.png" /></p>
+</li>
+<li>
+<p>onder Retention leg je vast hoeveel back-ups je bijhoudt, bijvoorbeeld de laatste zeven.<br><img alt="" src="../assets/h14/image28.png" /></p>
+</li>
+</ul>
+<p>De opdracht verschijnt in de lijst en loopt vanaf dan vanzelf. Na hoofdstuk 15 kan je ze met Run now meteen eens uitproberen.</p>
+<h3 id="1454-permissions">14.5.4 Permissions<a class="headerlink" href="#1454-permissions" title="Permanent link">&para;</a></h3>
+<p>Onder Permissions regel je wie wat mag:</p>
+<ul>
+<li>
+<p>Users en Groups: de gebruikers en de groepen waarin je ze bundelt;</p>
+</li>
+<li>
+<p>Roles: wat iemand mag doen, bijvoorbeeld enkel virtuele machines beheren en niets aan de opslag veranderen;</p>
+</li>
+<li>
+<p>Pools: VM's en containers groeperen, zodat je rechten in één keer aan zo'n groep toekent;</p>
+</li>
+<li>
+<p>Realms: waar de aanmelding gecontroleerd wordt. Linux PAM gebruikt de accounts van de server zelf; je kan ook een Active Directory- of LDAP-server koppelen;</p>
+</li>
+<li>
+<p>API Tokens: een sleutel waarmee een script of een extern systeem de Proxmox-API aanspreekt, zonder wachtwoord;</p>
+</li>
+<li>
+<p>Two Factor: tweefactorauthenticatie.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h14/image29.png" /></p>
+<p>Tweefactorauthenticatie werken we nu uit.</p>
+<p>Maak een gebruiker die enkel virtuele machines mag bedienen, maar niets aan de server mag veranderen:</p>
+<ul>
+<li>ga naar Users en klik op Add. Kies als realm Proxmox VE authentication server, geef als naam student en een wachtwoord. Zo'n gebruiker bestaat enkel binnen Proxmox en niet in Linux;</li>
+</ul>
+<p><img alt="" src="../assets/h14/image30.png" /></p>
+<ul>
+<li>ga naar Permissions, klik op Add en dan op User Permission.</li>
+</ul>
+<p><img alt="" src="../assets/h14/image31.png" /></p>
+<ul>
+<li>Kies als pad /vms, als gebruiker student@pve en als rol PVEVMUser;</li>
+</ul>
+<p><img alt="" src="../assets/h14/image32.png" /></p>
+<ul>
+<li>meld je af en opnieuw aan als student@pve.</li>
+</ul>
+<p><img alt="" src="../assets/h14/image33.png" /></p>
+<ul>
+<li>bekijk wat student nu nog te zien krijgt.</li>
+</ul>
+<p><img alt="" src="../assets/h14/image34.png" /></p>
+<p>Student ziet bijna niets:</p>
+<ul>
+<li>
+<p>in de boom staan enkel het datacenter en de node pve. De opslag local en local-lvm eronder is verdwenen;</p>
+</li>
+<li>
+<p>onder Datacenter blijven enkel Search, Users, API Tokens en Two Factor over. Daar beheert student alleen zijn eigen account: zijn wachtwoord, zijn eigen tokens en zijn eigen tweefactorauthenticatie;</p>
+</li>
+<li>
+<p>Create VM en Create CT bovenaan zijn grijs. De rol PVEVMUser mag bestaande virtuele machines bedienen: starten, stoppen, de console openen, een cd-rom wisselen en een back-up nemen. Een nieuwe machine aanmaken mag ze niet; daarvoor heb je de rol PVEVMAdmin nodig.</p>
+</li>
+</ul>
+<p>Virtuele machines zijn er nog niet. Die maken we in hoofdstuk 15. Meld je daarna nog eens aan als student@pve: de machine staat er dan wel, en je kan ze starten en stoppen, maar niet aan haar instellingen komen.</p>
+<p>Een rol zegt wat iemand mag, een pad zegt waarop, en samen vormen ze een permissie.</p>
+<h3 id="1455-tweefactorauthenticatie">14.5.5 Tweefactorauthenticatie<a class="headerlink" href="#1455-tweefactorauthenticatie" title="Permanent link">&para;</a></h3>
+<p>We werken Two Factor even uit. Met tweefactorauthenticatie (2FA) beveilig je de toegang tot de webinterface: naast je wachtwoord heb je dan een extra code nodig. Je vindt het onder Datacenter, Permissions en dan Two Factor.</p>
+<p><img alt="" src="../assets/h14/image35.png" /></p>
+<p>Proxmox ondersteunt onder meer TOTP, WebAuthn en herstelsleutels. Klik op Add om er een toe te voegen.</p>
+<p><img alt="" src="../assets/h14/image36.png" /></p>
+<blockquote>
+<p>We kiezen hier voor TOTP (Time-based One-Time Password): de app genereert dan een code die maar korte tijd geldig blijft. Je kan daarvoor bijvoorbeeld Google Authenticator gebruiken. Zodra je de QR-code scant, staat de account in de app.<img alt="" src="../assets/h14/image37.png" /></p>
+<p><img alt="" src="../assets/h14/image38.png" /></p>
+</blockquote>
+<p>Meld je daarna opnieuw aan, dan vraagt Proxmox na je wachtwoord om de code die op dat moment in je app staat.</p>
+<p><img alt="" src="../assets/h14/image39.png" /></p>
+<p>Wil je dat weer uitschakelen, dan verwijder je de tweefactorauthenticatie en meld je je opnieuw gewoon met je wachtwoord aan.<img alt="" src="../assets/h14/image40.png" /></p>
+<p>Je kan ook herstelsleutels downloaden via Recovery keys. Elke sleutel werkt maar één keer. Heb je ze allemaal opgebruikt, dan raak je nog altijd binnen zolang je je 2FA-app hebt; nieuwe sleutels krijg je pas als je de tweefactorauthenticatie opnieuw instelt.<img alt="" src="../assets/h14/image41.png" /></p>
+<h3 id="1456-software-defined-networking">14.5.6 Software Defined Networking<a class="headerlink" href="#1456-software-defined-networking" title="Permanent link">&para;</a></h3>
+<p>Software Defined Networking (SDN) laat je netwerken voor virtuele machines centraal op datacenterniveau beschrijven, in plaats van op elke node apart een bridge aan te maken.</p>
+<p><img alt="" src="../assets/h14/image42.png" /></p>
+<p>In onze opstelling met één node en één bridge hebben we dit niet nodig.</p>
+<h3 id="1457-firewall">14.5.7 Firewall<a class="headerlink" href="#1457-firewall" title="Permanent link">&para;</a></h3>
+<p>Onder Firewall vind je dezelfde instellingen terug, maar dan voor het hele datacenter. Ook dat komt in hoofdstuk 19 aan bod.</p>
+<p><img alt="" src="../assets/h14/image43.png" /></p>
+<h3 id="1458-nog-meer-op-datacenterniveau">14.5.8 Nog meer op datacenterniveau<a class="headerlink" href="#1458-nog-meer-op-datacenterniveau" title="Permanent link">&para;</a></h3>
+<p>Verder vind je in dit menu nog:</p>
+<ul>
+<li>
+<p>Metrics Server: stuurt meetgegevens door naar een extern systeem zoals InfluxDB of Graphite, voor grafieken en dashboards;</p>
+</li>
+<li>
+<p>Resource Mappings: PCI- en USB-apparaten van een node beschikbaar maken aan een virtuele machine;</p>
+</li>
+<li>
+<p>Directory Mappings: mappen van de host beschikbaar stellen aan virtuele machines en containers;</p>
+</li>
+<li>
+<p>Notifications: waar Proxmox meldingen naartoe stuurt, bijvoorbeeld over een mislukte back-up;</p>
+</li>
+<li>
+<p>Support: enkel bruikbaar met een geldig abonnement.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 13 Installatie Proxmox en eerste stappen">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                13 Installatie Proxmox en eerste stappen
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../15-vms-en-containers-in-proxmox/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 15 VM&#x27;s en containers in Proxmox">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                15 VM's en containers in Proxmox
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

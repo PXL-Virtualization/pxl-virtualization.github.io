@@ -1,0 +1,1931 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/11-kubernetes/">
+      
+      
+      
+        <link rel="prev" href="../10-podman-pods/">
+      
+      
+        <link rel="next" href="../12-van-podman-naar-kubernetes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>11 Kubernetes - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              11 Kubernetes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#111-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-waarvoor-dient-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.2 Waarvoor dient Kubernetes?
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.2 Waarvoor dient Kubernetes?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1121-van-losse-containers-naar-orkestratie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.2.1 Van losse containers naar orkestratie
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1122-wanneer-zet-je-het-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.2.2 Wanneer zet je het in?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1123-alternatieven" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.2.3 Alternatieven
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-architectuur" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3 Architectuur
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 Architectuur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1131-cluster-en-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3.1 Cluster en nodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1132-de-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3.2 De control plane
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1133-de-worker-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3.3 De worker nodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1134-de-gewenste-toestand" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3.4 De gewenste toestand
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1135-k8s-k3s-en-k3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.3.5 k8s, k3s en k3d
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114-de-bouwstenen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4 De bouwstenen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.4 De bouwstenen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1141-overzicht" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4.1 Overzicht
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1142-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4.2 Pod
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1143-replicaset-en-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4.3 ReplicaSet en Deployment
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1144-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4.4 Service
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1145-wat-er-nog-meer-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.4.5 Wat er nog meer is
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115-werken-met-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.5 Werken met kubectl
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116-aan-de-slag" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6 Aan de slag
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 Aan de slag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1161-vooraf-de-virtuele-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.1 Vooraf: de virtuele machine
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1162-stap-1-een-cluster-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.2 Stap 1: een cluster aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1163-stap-2-een-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.3 Stap 2: een pod
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1164-stap-3-een-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.4 Stap 3: een deployment
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1165-stap-4-schalen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.5 Stap 4: schalen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1166-stap-5-een-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.6 Stap 5: een service
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1167-opruimen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.6.7 Opruimen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117-hoe-het-verder-gaat" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        11.7 Hoe het verder gaat
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="11-kubernetes">11 Kubernetes<a class="headerlink" href="#11-kubernetes" title="Permanent link">&para;</a></h1>
+<h2 id="111-doelstellingen">11.1 Doelstellingen<a class="headerlink" href="#111-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>uitleggen waarvoor een container-orchestrator dient en wanneer Kubernetes zinvol is;</p>
+</li>
+<li>
+<p>de onderdelen van een Kubernetes-cluster benoemen en hun rol beschrijven;</p>
+</li>
+<li>
+<p>het verschil uitleggen tussen k8s, k3s en k3d;</p>
+</li>
+<li>
+<p>de begrippen pod, ReplicaSet, deployment en service correct gebruiken;</p>
+</li>
+<li>
+<p>het verschil uitleggen tussen de imperatieve en de declaratieve werkwijze;</p>
+</li>
+<li>
+<p>een eenvoudig manifestbestand lezen en de belangrijkste velden benoemen;</p>
+</li>
+<li>
+<p>met kubectl een cluster bevragen en objecten aanmaken, tonen en verwijderen;</p>
+</li>
+<li>
+<p>een applicatie uitrollen met een deployment, ze schalen en de self-healing aantonen;</p>
+</li>
+<li>
+<p>een applicatie bereikbaar maken met een service.</p>
+</li>
+</ul>
+<h2 id="112-waarvoor-dient-kubernetes">11.2 Waarvoor dient Kubernetes?<a class="headerlink" href="#112-waarvoor-dient-kubernetes" title="Permanent link">&para;</a></h2>
+<h3 id="1121-van-losse-containers-naar-orkestratie">11.2.1 Van losse containers naar orkestratie<a class="headerlink" href="#1121-van-losse-containers-naar-orkestratie" title="Permanent link">&para;</a></h3>
+<p>De tijd dat we manueel containers starten en stoppen is stilaan voorbij. In grotere omgevingen worden containers beheerd door een orchestration tool.</p>
+<p>Kubernetes is het belangrijkste opensourceplatform om containergebaseerde applicaties automatisch uit te rollen, te schalen en te beheren. Het zorgt ervoor dat applicaties betrouwbaar draaien op een cluster van computers, ongeacht waar die staan: in de cloud of on-premise.</p>
+<p>In de vorige hoofdstukken deed jij dat werk zelf: jij koos op welke server een container draaide, jij startte containers opnieuw op na een crash en jij besliste hoeveel kopieën er draaiden. Precies die taken neemt Kubernetes over.</p>
+<p><img alt="" src="../assets/h11/image1.png" /></p>
+<p>Kubernetes kan onder meer:</p>
+<ul>
+<li>
+<p>containers starten en stoppen;</p>
+</li>
+<li>
+<p>op- en afschalen naargelang de vraag;</p>
+</li>
+<li>
+<p>het verkeer verdelen over de beschikbare kopieën van je applicatie (load balancing);</p>
+</li>
+<li>
+<p>zichzelf herstellen bij fouten;</p>
+</li>
+<li>
+<p>een nieuwe versie gecontroleerd uitrollen zonder dat de dienst stilvalt.</p>
+</li>
+</ul>
+<p>Het kernidee is dat jij beschrijft welke toestand je wil, en dat Kubernetes zelf uitzoekt hoe en waar het die toestand bereikt en behoudt.</p>
+<h3 id="1122-wanneer-zet-je-het-in">11.2.2 Wanneer zet je het in?<a class="headerlink" href="#1122-wanneer-zet-je-het-in" title="Permanent link">&para;</a></h3>
+<p>Kubernetes is krachtig, maar het opzetten en onderhouden ervan kost veel werk. Het loont pas wanneer je applicatie uit meerdere onderdelen bestaat en verspreid over meerdere servers moet draaien.</p>
+<p><img alt="" src="../assets/h11/image2.png" /></p>
+<p>Voor één webserver op één machine volstaat wat je in de vorige hoofdstukken geleerd hebt: een pod of een compose-bestand met Podman.</p>
+<h3 id="1123-alternatieven">11.2.3 Alternatieven<a class="headerlink" href="#1123-alternatieven" title="Permanent link">&para;</a></h3>
+<p>Kubernetes is niet de enige orchestrator, maar wel veruit de meest gebruikte. Enkele alternatieven:</p>
+<ul>
+<li>
+<p>Docker Swarm: eenvoudiger te beheren, maar minder schaalbaar dan Kubernetes;</p>
+</li>
+<li>
+<p>Amazon ECS: de beheerde orchestrator van AWS, populair bij wie volledig in de AWS-cloud werkt;</p>
+</li>
+<li>
+<p>OpenShift: gebaseerd op Kubernetes, ontwikkeld door Red Hat, met extra functionaliteit voor ontwikkelaars en beveiliging.</p>
+</li>
+</ul>
+<h2 id="113-architectuur">11.3 Architectuur<a class="headerlink" href="#113-architectuur" title="Permanent link">&para;</a></h2>
+<h3 id="1131-cluster-en-nodes">11.3.1 Cluster en nodes<a class="headerlink" href="#1131-cluster-en-nodes" title="Permanent link">&para;</a></h3>
+<p>Binnen Kubernetes is een cluster een groep machines die samenwerken om containers te draaien en te beheren. Zo'n machine heet een node. Een node kan een fysieke machine zijn, maar evengoed een virtuele machine in een cloudomgeving.</p>
+<p>Er zijn twee soorten nodes. De worker nodes voeren het werk uit: daar draaien de containers. De control plane node coördineert en controleert het cluster: hij beslist wat er waar draait.</p>
+<p><img alt="" src="../assets/h11/image3.png" /></p>
+<h3 id="1132-de-control-plane">11.3.2 De control plane<a class="headerlink" href="#1132-de-control-plane" title="Permanent link">&para;</a></h3>
+<p>De control plane is het brein van het cluster. Kubernetes is niet één programma, maar een verzameling diensten die samenwerken:</p>
+<ul>
+<li>
+<p>API-server: het centrale aanspreekpunt van het cluster. Alle communicatie loopt hierlangs: jouw kubectl-commando’s, maar evengoed de meldingen van de nodes en de andere onderdelen. Die praten onderling niet rechtstreeks met elkaar, alles passeert via de API-server. De API-server luistert standaard op poort 6443.</p>
+</li>
+<li>
+<p>etcd: de database waarin de volledige configuratie en de toestand van het cluster bewaard worden.</p>
+</li>
+<li>
+<p>Controller manager: een verzameling controllers die de werkelijke toestand van het cluster voortdurend vergelijken met de gewenste toestand en het verschil wegwerken. Staat er in je bestand replicas: 6 terwijl er maar vier kopieën draaien, dan is het een controller die er twee bijstart.</p>
+</li>
+<li>
+<p>Scheduler: : kiest voor elke nieuwe pod een geschikte, gezonde node. De controller bepaalt dus dat er een pod bij moet, de scheduler waar die terechtkomt.</p>
+</li>
+<li>
+<p>Cloud controller manager: de koppeling met een cloudprovider, bijvoorbeeld voor load balancers en opslag.</p>
+</li>
+</ul>
+<p>In een testopstelling volstaat één control plane node. In productie draaien er altijd meerdere (drie of vijf), zodat het cluster blijft werken als er één uitvalt. Op een control plane node draai je in principe geen gebruikersapplicaties.</p>
+<h3 id="1133-de-worker-nodes">11.3.3 De worker nodes<a class="headerlink" href="#1133-de-worker-nodes" title="Permanent link">&para;</a></h3>
+<p>De worker nodes zijn de werkpaarden van het cluster. Zij hosten de applicaties. Een worker node vraagt voortdurend aan de API-server of er werk voor hem is, voert dat werk uit en rapporteert zijn status terug.</p>
+<p>Op elke worker node draaien drie onderdelen:</p>
+<ul>
+<li>
+<p>kubelet: de agent die zich bij de API-server aanmeldt, nieuwe taken ontvangt en ervoor zorgt dat de containers van een pod correct draaien.</p>
+</li>
+<li>
+<p>container runtime: de software die de containers effectief start en stopt. Kubernetes doet dat niet zelf: de kubelet geeft de opdracht door aan de runtime die op die node draait, meestal containerd of CRI-O.</p>
+</li>
+<li>
+<p>kube-proxy: die zorgt voor de netwerkregels en stuurt het verkeer naar de juiste containers.</p>
+</li>
+</ul>
+<p>Vroeger praatte Kubernetes rechtstreeks met Docker. Vandaag gebruikt het containerd of CRI-O. containerd komt uit de kern van Docker en is later geschonken aan de Cloud Native Computing Foundation. Het is een algemene runtime, die ook buiten Kubernetes dienstdoet. CRI-O is van nul geschreven, met maar één doel: Kubernetes bedienen.</p>
+<p>Op de worker nodes van een hedendaags cluster draait dus geen Docker meer. Daar staat containerd of CRI-O, en de kubelet praat daar rechtstreeks mee.</p>
+<h3 id="1134-de-gewenste-toestand">11.3.4 De gewenste toestand<a class="headerlink" href="#1134-de-gewenste-toestand" title="Permanent link">&para;</a></h3>
+<p>Het is belangrijk om te begrijpen hoe die onderdelen samenwerken. Jij dient een beschrijving in van wat je wil: bijvoorbeeld drie kopieën van een webserver. Die beschrijving komt in etcd terecht als de gewenste toestand. De controllers vergelijken die onophoudelijk met de werkelijke toestand en grijpen in zodra er een verschil is.</p>
+<p><img alt="" src="../assets/h11/image4.png" /></p>
+<p>Dat is meteen ook de verklaring voor de self-healing waar Kubernetes om bekendstaat: het herstellen van een weggevallen pod is precies dezelfde lus als het uitrollen ervan.</p>
+<h3 id="1135-k8s-k3s-en-k3d">11.3.5 k8s, k3s en k3d<a class="headerlink" href="#1135-k8s-k3s-en-k3d" title="Permanent link">&para;</a></h3>
+<p>Kubernetes wordt vaak afgekort tot k8s (acht letters tussen de k en de s). Een volledige k8s-installatie over meerdere machines valt buiten de doelstellingen van deze cursus. We werken met k3s, een lichtgewicht Kubernetes-distributie waarbij control plane en worker node op één machine mogen staan.</p>
+<p>Concreet gebruiken we k3d. Dat is een hulpprogramma dat een k3s-cluster opstart in Docker-containers. Zo heb je in enkele seconden een cluster met meerdere nodes op één virtuele machine.</p>
+<p><img alt="" src="../assets/h11/image5.png" /></p>
+<h2 id="114-de-bouwstenen">11.4 De bouwstenen<a class="headerlink" href="#114-de-bouwstenen" title="Permanent link">&para;</a></h2>
+<h3 id="1141-overzicht">11.4.1 Overzicht<a class="headerlink" href="#1141-overzicht" title="Permanent link">&para;</a></h3>
+<p>Kubernetes beheert geen containers rechtstreeks. Er zitten enkele lagen tussen, en elke laag voegt iets toe aan de laag eronder.</p>
+<p><img alt="" src="../assets/h11/image6.png" /></p>
+<h3 id="1142-pod">11.4.2 Pod<a class="headerlink" href="#1142-pod" title="Permanent link">&para;</a></h3>
+<p>Een pod is de kleinste eenheid die je in Kubernetes kan beheren. Het is een afgeschermde omgeving waarin één of meer containers draaien. De pod zelf draait geen applicatie: de container doet dat. De pod regelt de omgeving eromheen.</p>
+<p>Dit is vergelijkbaar met een pod in Podman. De containers in een pod delen:</p>
+<ul>
+<li>
+<p>de netwerkstack: ze hebben samen één IP-adres en bereiken elkaar via localhost;</p>
+</li>
+<li>
+<p>de opslag die aan de pod gekoppeld is;</p>
+</li>
+<li>
+<p>dezelfde node: containers van één pod draaien altijd samen op dezelfde machine.</p>
+</li>
+</ul>
+<p>In de regel geef je elke applicatie of microservice een eigen pod, zodat je ze apart kan schalen. Meerdere containers in één pod is voor gevorderde toepassingen, bijvoorbeeld een hulpcontainer naast de eigenlijke applicatie.</p>
+<p>Een pod heeft een eindige levensduur en doorloopt daarbij een aantal statussen:</p>
+<ul>
+<li>
+<p>Pending: de pod is aangemaakt, maar de containers draaien nog niet.</p>
+</li>
+<li>
+<p>Running: minstens één container draait.</p>
+</li>
+<li>
+<p>Succeeded: alle containers zijn netjes beëindigd en worden niet opnieuw gestart.</p>
+</li>
+<li>
+<p>Failed: minstens één container is met een fout gestopt.</p>
+</li>
+<li>
+<p>Unknown: de status is niet te bepalen, meestal omdat de node onbereikbaar is.</p>
+</li>
+</ul>
+<p>Een bestaande pod pas je niet aan. Moet er iets wijzigen, dan verdwijnt de oude pod en komt er een nieuwe in de plaats, met een nieuw IP-adres. Onthoud dat goed: het verklaart waarom we verderop services nodig hebben.</p>
+<h3 id="1143-replicaset-en-deployment">11.4.3 ReplicaSet en Deployment<a class="headerlink" href="#1143-replicaset-en-deployment" title="Permanent link">&para;</a></h3>
+<p>Een Deployment is de resource waarmee je een applicatie uitrolt, bijwerkt en beheert. Je geeft aan hoeveel pods er moeten draaien en welk image ze gebruiken; Kubernetes zorgt dat het aantal klopt.</p>
+<p>Een Deployment doet dat niet zelf, maar via een ReplicaSet. Die telt de pods en start er een nieuwe zodra er één wegvalt. Dat is de self-healing. Bij een update maakt de Deployment een nieuwe ReplicaSet aan naast de oude, wat het mogelijk maakt om gecontroleerd te updaten en om terug te draaien.</p>
+<p>In de praktijk maak je dus zelden een losse pod aan. Je beschrijft een Deployment, en de pods volgen vanzelf.</p>
+<h3 id="1144-service">11.4.4 Service<a class="headerlink" href="#1144-service" title="Permanent link">&para;</a></h3>
+<p>Het netwerk binnen een cluster is plat: elke pod kan elke andere pod bereiken. Toch is het geen goed idee om pods rechtstreeks op hun IP-adres aan te spreken.</p>
+<p>Stel dat een webserver-pod verbinding maakt met een database-pod via diens IP-adres. Zodra die database-pod herstart of vervangen wordt, krijgt hij een ander IP-adres en ligt de verbinding eruit. En draaien er meerdere kopieën van je webserver, dan heb je bovendien één adres nodig waarachter ze allemaal zitten.</p>
+<p>Daarvoor dient een Service: een vast aanspreekpunt voor een groep pods. Een Service heeft een vast IP-adres binnen het cluster, een vaste DNS-naam en één of meer poorten. Welke pods erachter zitten, bepaalt de Service aan de hand van labels.</p>
+<p><img alt="" src="../assets/h11/image7.png" /></p>
+<p>Een Service bestaat in drie types:</p>
+<ul>
+<li>
+<p>ClusterIP: het standaardtype, enkel binnen het cluster bereikbaar.</p>
+</li>
+<li>
+<p>NodePort: opent dezelfde poort op elke node, zodat de dienst ook van buitenaf bereikbaar is.</p>
+</li>
+<li>
+<p>LoadBalancer: vraagt een extern IP-adres aan bij de omgeving waarin het cluster draait. Bij een cloudprovider krijg je een echt extern adres; k3s lost het zelf op met een ingebouwde loadbalancer.</p>
+</li>
+</ul>
+<h3 id="1145-wat-er-nog-meer-is">11.4.5 Wat er nog meer is<a class="headerlink" href="#1145-wat-er-nog-meer-is" title="Permanent link">&para;</a></h3>
+<p>Een cluster bevat nog heel wat andere objecten. Je hoeft ze nu niet te kennen, maar het helpt om de namen al eens gezien te hebben:</p>
+<ul>
+<li>
+<p>Namespaces: om objecten te groeperen en van elkaar te scheiden.</p>
+</li>
+<li>
+<p>ConfigMaps en Secrets: voor configuratie en wachtwoorden.</p>
+</li>
+<li>
+<p>PersistentVolumeClaims: voor opslag die een pod overleeft.</p>
+</li>
+<li>
+<p>Ingress: stuurt inkomend webverkeer op poort 80 en 443 naar de juiste Service, op basis van de domeinnaam of het pad. Zo delen meerdere websites één adres, zonder voor elke dienst een aparte NodePort.</p>
+</li>
+</ul>
+<h2 id="115-werken-met-kubectl">11.5 Werken met kubectl<a class="headerlink" href="#115-werken-met-kubectl" title="Permanent link">&para;</a></h2>
+<p>Het cluster zelf beheer je met k3d: aanmaken, stoppen, nodes toevoegen.</p>
+<p>Alles wat je daarna ín het cluster doet, gaat via kubectl. Dat is het standaardhulpmiddel om met een cluster te werken. De opbouw is altijd dezelfde:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1">kubectl [commando] [type] [naam] [opties]
+</span></code></pre></div>
+<p>Enkele voorbeelden:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1">kubectl get pods
+</span><span id="__span-1-2">kubectl get pod nginx-pod2 -o wide
+</span><span id="__span-1-3">kubectl describe pod nginx-pod2
+</span><span id="__span-1-4">kubectl delete pod nginx-pod2
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image8.png" /></p>
+<p>Objecten kan je op twee manieren aanmaken:</p>
+<ul>
+<li>
+<p>imperatief: je typt een commando, bijvoorbeeld kubectl run of kubectl scale. Dat gaat snel, maar de wijziging staat enkel in het cluster.</p>
+</li>
+<li>
+<p>declaratief: je schrijft een manifestbestand in YAML en voert kubectl apply -f uit. Het bestand beschrijft de gewenste toestand.</p>
+</li>
+</ul>
+<p>Tab completion werkt standaard niet in RHEL voor kubectl. Je kan tab completion als volgt instellen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@virt-K8s-XX:~$ </span><span class="nb">source</span><span class="w"> </span>/usr/share/bash-completion/bash_completion
+</span><span id="__span-2-2"><span class="gp">student@virt-K8s-XX:~$ </span><span class="nb">source</span><span class="w"> </span>&lt;<span class="o">(</span>kubectl<span class="w"> </span>completion<span class="w"> </span>bash<span class="o">)</span>
+</span><span id="__span-2-3"><span class="gp">student@virt-K8s-XX:~$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'source &lt;(kubectl completion bash)'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+</span></code></pre></div>
+<p>Wij werken steeds declaratief. De reden is eenvoudig: het bestand is de waarheid. Pas je het cluster imperatief aan, dan loopt het uit de pas met je bestand, en bij de volgende apply wordt je wijziging weer ongedaan gemaakt.</p>
+<p>Een manifestbestand heeft altijd dezelfde vier onderdelen:</p>
+<ul>
+<li>
+<p>apiVersion: welke versie van de API je aanspreekt.</p>
+</li>
+<li>
+<p>kind: welk soort object je maakt.</p>
+</li>
+<li>
+<p>metadata: onder meer de naam en de labels.</p>
+</li>
+<li>
+<p>spec: hoe het object er moet uitzien.</p>
+</li>
+</ul>
+<p>Let op de inspringing: net als bij compose.yml gebruik je spaties, nooit tabs.</p>
+<p>Let ook op de naam van je objecten: die mag enkel kleine letters, cijfers en streepjes bevatten. Zet je er een hoofdletter in, dan weigert kubectl apply het bestand.</p>
+<p>Gebruik die naam daarna ook in je commando's exact zoals hij in het bestand staat. Typ je hem met hoofdletters, dan lijken opdrachten als exec en port-forward gewoon te werken, maar verwijderen lukt niet meer: de pod blijft dan in de toestand Terminating staan en elk volgend commando erover loopt in een timeout.</p>
+<h2 id="116-aan-de-slag">11.6 Aan de slag<a class="headerlink" href="#116-aan-de-slag" title="Permanent link">&para;</a></h2>
+<p>We zetten nu een cluster op en rollen er een website in uit. Onderstaande stappen volgen elkaar op; voer ze in volgorde uit.</p>
+<p><img alt="" src="../assets/h11/image9.png" /></p>
+<h3 id="1161-vooraf-de-virtuele-machine">11.6.1 Vooraf: de virtuele machine<a class="headerlink" href="#1161-vooraf-de-virtuele-machine" title="Permanent link">&para;</a></h3>
+<p>Maak een nieuwe RHEL 10 VM aan die aan volgende eisen voldoet:</p>
+<ul>
+<li>
+<p>Verbind met Red Hat;</p>
+</li>
+<li>
+<p>Installatiebestemming: automatisch;</p>
+</li>
+<li>
+<p>Software selectie: server (geen GUI dus);</p>
+</li>
+<li>
+<p>Hostname virt-K8s-XX (XX zijn je initialen);</p>
+</li>
+<li>
+<p>Gebruiker student met wachtwoord PXL;</p>
+</li>
+<li>
+<p>Statisch IP-adres 192.168.112.10;</p>
+</li>
+<li>
+<p>Bereikbaar via SSH.</p>
+</li>
+</ul>
+<p>Op virt-K8s-XX installeren we drie dingen: Docker, k3d en kubectl. Onderstaande figuur laat zien waarom. k3d draait elke node van je cluster als een container en daarvoor heeft het Docker nodig. Met kubectl bedien je daarna alles wat in dat cluster draait.</p>
+<p>Wat je niet zal installeren is Kubernetes zelf. Dat hoef je hier namelijk niet te installeren: in de containers die k3d aanmaakt, zit k3s, een afgeslankte Kubernetes in één programma. k3d haalt dat kant-en-klaar op. Op een echt cluster gaat het omgekeerd: daar installeer je Kubernetes of k3s op elke machine, en valt k3d weg. Alleen kubectl blijft in alle gevallen hetzelfde.</p>
+<p><img alt="" src="../assets/h11/image10.png" /></p>
+<p>Na Docker voegen we student toe aan de groep docker: k3d geeft zijn opdrachten rechtstreeks aan de Docker-daemon, en alleen root en de leden van die groep mogen daarbij. Een nieuw groepslidmaatschap geldt pas bij een nieuwe aanmelding, sessies die al openstaan zien het niet. Met newgrp docker start je meteen een shell waarin het wel actief is, zodat je hier gewoon kunt verdergaan. Krijg je in een andere, al geopende sessie een permission-fout op de Docker-socket, meld je dan opnieuw aan (bv. een nieuwe SSH-verbinding).</p>
+<p>Installatie docker:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.docker.com/linux/centos/docker-ce.repo
+</span><span id="__span-3-2"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io
+</span><span id="__span-3-3"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>docker
+</span></code></pre></div>
+<p>Toegang tot de socket:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</span><span id="__span-4-2"><span class="gp">student@virt-K8s-XX:~$ </span>newgrp<span class="w"> </span>docker
+</span></code></pre></div>
+<p>Installeer nu k3d:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@virt-K8s-XX:~$ </span>wget<span class="w"> </span>-q<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span>https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</span><span id="__span-5-2"><span class="go">…</span>
+</span><span id="__span-5-3"><span class="go">k3d installed into /usr/local/bin/k3d</span>
+</span><span id="__span-5-4"><span class="go">…</span>
+</span></code></pre></div>
+<p>En tot slot kubectl:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/yum.repos.d/kubernetes.repo<span class="w"> </span>&lt;&lt;<span class="s1">'EOF'</span>
+</span><span id="__span-6-2"><span class="go">[kubernetes]</span>
+</span><span id="__span-6-3"><span class="go">name=Kubernetes</span>
+</span><span id="__span-6-4"><span class="go">baseurl=https://pkgs.k8s.io/core:/stable:/v1.34/rpm/</span>
+</span><span id="__span-6-5"><span class="go">enabled=1</span>
+</span><span id="__span-6-6"><span class="go">gpgcheck=1</span>
+</span><span id="__span-6-7"><span class="go">gpgkey=https://pkgs.k8s.io/core:/stable:/v1.34/rpm/repodata/repomd.xml.key</span>
+</span><span id="__span-6-8"><span class="go">EOF</span>
+</span><span id="__span-6-9"><span class="gp">student@virt-K8s-XX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>kubectl
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image11.png" /></p>
+<h3 id="1162-stap-1-een-cluster-aanmaken">11.6.2 Stap 1: een cluster aanmaken<a class="headerlink" href="#1162-stap-1-een-cluster-aanmaken" title="Permanent link">&para;</a></h3>
+<p>We maken een cluster met één server node (de control plane) en één agent node (de worker).</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@virt-K8s-XX:~$ </span>k3d<span class="w"> </span>cluster<span class="w"> </span>create<span class="w"> </span>demo<span class="w"> </span>--servers<span class="w"> </span><span class="m">1</span><span class="w"> </span>--agents<span class="w"> </span><span class="m">1</span>
+</span></code></pre></div>
+<p>Controleer daarna welke nodes er draaien:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</span><span id="__span-8-2"><span class="go">NAME                STATUS   ROLES           AGE   VERSION</span>
+</span><span id="__span-8-3"><span class="go">k3d-demo-agent-0    Ready    &lt;none&gt;          12s   v1.35.5+k3s1</span>
+</span><span id="__span-8-4"><span class="go">k3d-demo-server-0   Ready    control-plane   16s   v1.35.5+k3s1</span>
+</span></code></pre></div>
+<p>Je ziet twee nodes: één control plane en één worker. Voor kubectl is dit een gewoon cluster. Dat die twee nodes in werkelijkheid Docker-containers op je eigen machine zijn, blijkt nergens uit de uitvoer — enkel de namen verraden dat k3d ze heeft aangemaakt.</p>
+<h3 id="1163-stap-2-een-pod">11.6.3 Stap 2: een pod<a class="headerlink" href="#1163-stap-2-een-pod" title="Permanent link">&para;</a></h3>
+<p>We maken een manifestbestand voor één pod met een nginx-webserver. Let op de spaties.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@virt-K8s-XX:~$ </span>code<span class="w"> </span>pod.yaml
+</span><span id="__span-9-2"><span class="go">apiVersion: v1</span>
+</span><span id="__span-9-3"><span class="go">kind: Pod</span>
+</span><span id="__span-9-4"><span class="go">metadata:</span>
+</span><span id="__span-9-5"><span class="go">  name: nginx-pod</span>
+</span><span id="__span-9-6"><span class="go">  labels:</span>
+</span><span id="__span-9-7"><span class="go">    app: nginx</span>
+</span><span id="__span-9-8"><span class="go">spec:</span>
+</span><span id="__span-9-9"><span class="go">  containers:</span>
+</span><span id="__span-9-10"><span class="go">    - name: nginx</span>
+</span><span id="__span-9-11"><span class="go">      image: nginx</span>
+</span><span id="__span-9-12"><span class="go">      ports:</span>
+</span><span id="__span-9-13"><span class="go">        - containerPort: 80</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image12.png" /></p>
+<p>Regel 1 — apiVersion: v1<br>In welke versie van de API dit object beschreven is. Een Pod zit in de kerngroep, en die heeft geen naam: daarom staat er enkel v1. Een Deployment zou hier apps/v1 hebben.</p>
+<p>Regel 2 — kind: Pod<br>Welk soort object je wil. Dit bepaalt welke velden er verderop in spec mogen staan.</p>
+<p>Regel 3 — metadata:<br>Het begin van het blok met de gegevens die het object identificeren. De dubbele punt zonder waarde betekent: wat hierna ingesprongen staat, hoort hierbij.</p>
+<p>Regel 4 — name: nginx-pod<br>De naam van de pod in het cluster. Die moet uniek zijn binnen de namespace, en je gebruikt hem in commando’s als kubectl describe pod nginx-pod.</p>
+<p>Regel 5 — labels:<br>Het begin van de etiketten. Labels zijn vrij te kiezen sleutel-waardeparen die je op een object plakt.</p>
+<p>Regel 6 — app: nginx<br>Het etiket zelf. Dit lijkt overbodig, maar het is het haakje waarmee een Service deze pod later terugvindt: in het Service-manifest staat selector: app: nginx. Zonder dit label hoort de pod bij geen enkele Service.</p>
+<p>Regel 7 — spec:<br>Vanaf hier beschrijf je hoe het object er moet uitzien. Bij een Pod gaat dat over de containers.</p>
+<p>Regel 8 — containers:<br>Het begin van een lijst. Een pod kan meerdere containers bevatten, dus het is een lijst en geen enkele waarde.</p>
+<p>Regel 9 — - name: nginx<br>Het streepje markeert een item in die lijst: hier begint de eerste container. name is de naam van de container binnen de pod — niet van de pod zelf. Alles wat onder dit streepje ingesprongen staat, hoort bij deze ene container.</p>
+<p>Regel 10 — image: nginx<br>Welk image gebruikt wordt. Dit is een korte naam; Kubernetes vult hem aan tot docker.io/library/nginx:latest. In een cursus of in productie schrijf je hem beter voluit, met een vast versienummer in plaats van latest.</p>
+<p>Regel 11 — ports:<br>Opnieuw het begin van een lijst, deze keer van poorten.</p>
+<p>Regel 12 — - containerPort: 80<br>De poort waarop het proces in de container luistert. Let op: deze regel opent niets en publiceert niets. Het is documentatie voor wie het bestand leest; het echte verkeer loopt via de targetPort van een Service.</p>
+<p>Sla het bestand op door &lt;Ctrl&gt; + S te typen.</p>
+<p>Rol de pod uit en bekijk het resultaat:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>pod.yaml
+</span><span id="__span-10-2"><span class="go">pod/nginx-pod created</span>
+</span><span id="__span-10-3"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-o<span class="w"> </span>wide
+</span><span id="__span-10-4"><span class="go">NAME        READY   STATUS    RESTARTS   AGE   IP          NODE               NOMINATED NODE   READINESS GATES</span>
+</span><span id="__span-10-5"><span class="go">nginx-pod   1/1     Running   0          15s   10.42.0.5   k3d-demo-agent-0   &lt;none&gt;           &lt;none&gt;</span>
+</span></code></pre></div>
+<p>De pod draait (je moet hier wel even voor wachten), heeft een eigen IP-adres gekregen en is op de worker node terechtgekomen.</p>
+<p>NOMINATED NODE heeft te maken met voorrang: moet een pod met hoge prioriteit wachten, dan duidt de scheduler alvast een node aan waar hij terechtkomt. READINESS GATES zijn extra voorwaarden die je in een pod kan opgeven voor hij als klaar geldt. Geen van beide speelt hier een rol, vandaar twee keer &lt;none&gt;.</p>
+<p>Met describe zie je alle details, onder meer de gebeurtenissen die tot de start geleid hebben:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>nginx-pod
+</span></code></pre></div>
+<p>Je kan ook een commando uitvoeren in de container van de pod. Alles na de twee streepjes wordt in de container (er is hier maar één) uitgevoerd:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>nginx-pod<span class="w"> </span>--<span class="w"> </span>bash
+</span><span id="__span-12-2"><span class="gp">root@nginx-pod:/# </span><span class="nb">exit</span>
+</span></code></pre></div>
+<p>Zitten er meerdere containers in, dan neemt kubectl de eerste uit het manifest tenzij je de container expliciet op met -c aangeeft.</p>
+<p><img alt="" src="../assets/h11/image13.png" /></p>
+<p>Verwijder de pod weer. Hij blijft weg: een losse pod heeft geen controller die over hem waakt. Zoiets maak je pas met een Deployment, en dat is het volgende dat we bekijken.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>nginx-pod
+</span><span id="__span-13-2"><span class="go">pod "nginx-pod" deleted</span>
+</span></code></pre></div>
+<h3 id="1164-stap-3-een-deployment">11.6.4 Stap 3: een deployment<a class="headerlink" href="#1164-stap-3-een-deployment" title="Permanent link">&para;</a></h3>
+<p>Een losse pod is dus kwetsbaar. We maken nu een deployment aan die drie kopieën van dezelfde webserver bewaakt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">student@virt-K8s-XX:~$ </span>code<span class="w"> </span>dep.yaml
+</span><span id="__span-14-2"><span class="go">apiVersion: apps/v1</span>
+</span><span id="__span-14-3"><span class="go">kind: Deployment</span>
+</span><span id="__span-14-4"><span class="go">metadata:</span>
+</span><span id="__span-14-5"><span class="go">  name: nginx-deployment</span>
+</span><span id="__span-14-6"><span class="go">spec:</span>
+</span><span id="__span-14-7"><span class="go">  replicas: 3</span>
+</span><span id="__span-14-8"><span class="go">  selector:</span>
+</span><span id="__span-14-9"><span class="go">    matchLabels:</span>
+</span><span id="__span-14-10"><span class="go">      app: nginx</span>
+</span><span id="__span-14-11"><span class="go">  template:</span>
+</span><span id="__span-14-12"><span class="go">    metadata:</span>
+</span><span id="__span-14-13"><span class="go">      labels:</span>
+</span><span id="__span-14-14"><span class="go">        app: nginx</span>
+</span><span id="__span-14-15"><span class="go">    spec:</span>
+</span><span id="__span-14-16"><span class="go">      containers:</span>
+</span><span id="__span-14-17"><span class="go">        - name: nginx</span>
+</span><span id="__span-14-18"><span class="go">          image: nginx:latest</span>
+</span><span id="__span-14-19"><span class="go">          ports:</span>
+</span><span id="__span-14-20"><span class="go">            - containerPort: 80</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image14.png" /></p>
+<p>Regel 1 — apiVersion: apps/v1<br>Een Deployment zit niet in de kerngroep maar in de groep apps, en daarom staat de groepsnaam erbij. Bij de pod van daarnet volstond v1.</p>
+<p>Regel 2 — kind: Deployment<br>Welk soort object. Dit bepaalt welke velden er in spec mogen staan — bij een Deployment zijn dat andere dan bij een Pod.</p>
+<p>Regel 3 — metadata:<br>De gegevens die dit object identificeren.</p>
+<p>Regel 4 — name: nginx-deployment<br>De naam van de Deployment. Let op: de pods die eruit voortkomen heten anders. Die krijgen deze naam met twee willekeurige stukken erachter, bijvoorbeeld nginx-deployment-7c79c4bf97-k2xqm.</p>
+<p>Regel 5 — spec:<br>Vanaf hier beschrijf je wat de Deployment moet doen.</p>
+<p>Regel 6 — replicas: 3<br>Hoeveel kopieën van de pod er moeten draaien. Dit is de gewenste toestand: valt er één weg, dan start de ReplicaSet er vanzelf een nieuwe. Dit getal is ook wat je aanpast om te schalen.</p>
+<p>Regel 7 — selector:<br>Hier geef je aan welke pods bij deze Deployment horen. Een Deployment beheert namelijk geen pods omdat hij ze gemaakt heeft, maar omdat hun labels overeenkomen.</p>
+<p>Regel 8 — matchLabels:<br>De manier waarop die selectie gebeurt: alle pods met de labels die hieronder staan.</p>
+<p>Regel 9 — app: nginx:<br>Het label waarop geselecteerd wordt.</p>
+<p>Regel 10 —Het deel onder template is een pod-template: het beschrijft hoe elke pod eruit moet zien. Je hebt dus geen apart podbestand meer nodig. De selector bepaalt welke pods bij deze deployment horen en moet overeenkomen met de labels in de template.</p>
+<p>Sla het bestand op door &lt;Ctrl&gt; + S te typen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>dep.yaml
+</span><span id="__span-15-2"><span class="go">deployment.apps/nginx-deployment created</span>
+</span><span id="__span-15-3"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+</span><span id="__span-15-4"><span class="go">NAME               READY   UP-TO-DATE   AVAILABLE   AGE</span>
+</span><span id="__span-15-5"><span class="go">nginx-deployment   3/3     3            3           35s</span>
+</span><span id="__span-15-6"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+</span><span id="__span-15-7"><span class="go">NAME                                READY   STATUS    RESTARTS   AGE</span>
+</span><span id="__span-15-8"><span class="go">nginx-deployment-59f86b59ff-6kjpg   1/1     Running   0          30s</span>
+</span><span id="__span-15-9"><span class="go">nginx-deployment-59f86b59ff-hl5gh   1/1     Running   0          30s</span>
+</span><span id="__span-15-10"><span class="go">nginx-deployment-59f86b59ff-xw8rn   1/1     Running   0          30s</span>
+</span></code></pre></div>
+<p>De kolom READY toont hoeveel pods klaar zijn van het aantal dat je gevraagd hebt, AVAILABLE hoeveel er effectief beschikbaar zijn.</p>
+<p>Test nu de self-healing door zelf een pod te verwijderen:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>nginx-deployment-59f86b59ff-6kjpg
+</span><span id="__span-16-2"><span class="go">pod "nginx-deployment-59f86b59ff-6kjpg" deleted from default namespace</span>
+</span><span id="__span-16-3"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+</span><span id="__span-16-4"><span class="go">NAME                                READY   STATUS    RESTARTS   AGE</span>
+</span><span id="__span-16-5"><span class="go">nginx-deployment-59f86b59ff-8jtwq   1/1     Running   0          18s</span>
+</span><span id="__span-16-6"><span class="go">nginx-deployment-59f86b59ff-hl5gh   1/1     Running   0          2m34s</span>
+</span><span id="__span-16-7"><span class="go">nginx-deployment-59f86b59ff-xw8rn   1/1     Running   0          2m34s</span>
+</span></code></pre></div>
+<p>Er staan opnieuw drie pods, maar aan de kolom AGE zie je dat er één pas gestart is. De ReplicaSet heeft de weggevallen pod meteen vervangen: dat is de self-healing.</p>
+<h3 id="1165-stap-4-schalen">11.6.5 Stap 4: schalen<a class="headerlink" href="#1165-stap-4-schalen" title="Permanent link">&para;</a></h3>
+<p>Schalen doe je door het aantal replicas aan te passen in het manifestbestand en het opnieuw toe te passen. Zet replicas op 6:</p>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">student@virt-K8s-XX:~$ </span>code<span class="w"> </span>dep.yaml
+</span><span id="__span-17-2"><span class="go">…</span>
+</span><span id="__span-17-3"><span class="go">spec:</span>
+</span><span id="__span-17-4"><span class="go">  replicas: 6</span>
+</span><span id="__span-17-5"><span class="go">…</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image15.png" /></p>
+</blockquote>
+<p>Sla het bestand op door &lt;Ctrl&gt; + S te typen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>dep.yaml
+</span><span id="__span-18-2"><span class="go">deployment.apps/nginx-deployment configured</span>
+</span><span id="__span-18-3"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+</span><span id="__span-18-4"><span class="go">NAME               READY   UP-TO-DATE   AVAILABLE   AGE</span>
+</span><span id="__span-18-5"><span class="go">nginx-deployment   6/6     6            6           8m</span>
+</span></code></pre></div>
+<p>Kubernetes herkent aan de naam dat het om dezelfde deployment gaat en past enkel aan wat gewijzigd is. Merk op dat er created stond bij de eerste apply en configured bij de tweede.</p>
+<p>Hetzelfde kan imperatief met kubectl scale, maar dan loopt je bestand uit de pas. Doe dat dus niet.</p>
+<h3 id="1166-stap-5-een-service">11.6.6 Stap 5: een service<a class="headerlink" href="#1166-stap-5-een-service" title="Permanent link">&para;</a></h3>
+<p>De pods draaien, maar niemand kan ze bereiken. We zetten er een service voor, van het type NodePort.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">student@virt-K8s-XX:~$ </span>code<span class="w"> </span>svc.yaml
+</span><span id="__span-19-2"><span class="go">apiVersion: v1</span>
+</span><span id="__span-19-3"><span class="go">kind: Service</span>
+</span><span id="__span-19-4"><span class="go">metadata:</span>
+</span><span id="__span-19-5"><span class="go">  name: nginx-svc</span>
+</span><span id="__span-19-6"><span class="go">spec:</span>
+</span><span id="__span-19-7"><span class="go">  type: NodePort</span>
+</span><span id="__span-19-8"><span class="go">  selector:</span>
+</span><span id="__span-19-9"><span class="go">    app: nginx</span>
+</span><span id="__span-19-10"><span class="go">  ports:</span>
+</span><span id="__span-19-11"><span class="go">    - port: 8080</span>
+</span><span id="__span-19-12"><span class="go">      targetPort: 80</span>
+</span><span id="__span-19-13"><span class="go">      nodePort: 30050</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h11/image16.png" /></p>
+<p>Regel 1 — apiVersion: v1<br>Een Service zit in de kerngroep, dus geen groepsnaam. Dat is meteen het verschil met de Deployment van daarnet, die apps/v1 had.</p>
+<p>Regel 2 — kind: Service<br>Het soort object.</p>
+<p>Regel 3 — metadata:<br>De gegevens die de Service identificeren.</p>
+<p>Regel 4 — name: nginx-svc<br>De naam van de Service. Die is hier meer dan een etiket: het is ook de DNS-naam binnen het cluster. Een andere pod bereikt deze dienst met http://nginx-svc:8080.</p>
+<p>Regel 5 — spec:<br>Hoe de Service er moet uitzien.</p>
+<p>Regel 6 — type: NodePort<br>Het soort Service. NodePort opent dezelfde poort op elke node, zodat je de dienst ook van buiten het cluster bereikt. Laat je deze regel weg, dan krijg je ClusterIP en is de dienst enkel intern bereikbaar. Belangrijk: een NodePort-service houdt daarnaast gewoon zijn ClusterIP — het type voegt iets toe, het vervangt niets.</p>
+<p>Regel 7 — selector:<br>Welke pods achter deze Service zitten.</p>
+<p>Regel 8 — app: nginx<br>Het label waarop geselecteerd wordt. Dit moet overeenkomen met de labels in de template van je Deployment, niet met de naam van de Deployment of van de pods. De Service weet dus niet van het bestaan van je Deployment af: ze zoekt enkel pods met dit etiket, van waar die ook komen.</p>
+<p>Regel 9 — ports:<br>De lijst met poorten die deze Service aanbiedt.</p>
+<p>Regel 10 — - port: 8080<br>Het streepje opent het eerste item van die lijst. port is de poort van de Service zelf, op het ClusterIP. Dit is het nummer dat andere pods gebruiken: nginx-svc:8080.</p>
+<p>Regel 11 — targetPort: 80<br>De poort in de pod waar het verkeer naartoe gaat, dus de poort waarop nginx luistert. Let op de inspringing: deze regel staat onder het streepje en hoort dus bij hetzelfde item. Laat je targetPort weg, dan gebruikt Kubernetes dezelfde waarde als port, en dan klopt het hier niet meer.</p>
+<p>Regel 12 — nodePort: 30050<br>De poort die op elke node opengaat voor verkeer van buitenaf. Dit mag enkel bij het type NodePort, en het nummer moet in het bereik 30000-32767 liggen. Laat je de regel weg, dan kiest Kubernetes zelf een vrij nummer.</p>
+<p>De drie poorten horen bij de drie stappen die een verzoek aflegt, van buiten het cluster tot in de container:</p>
+<p>buiten → node:30050 → Service:8080 → pod:80</p>
+<ul>
+<li>
+<p>nodePort (30050) is waar het verkeer het cluster binnenkomt, op het IP-adres van gelijk welke node. Deze poort bestaat alleen bij het type NodePort. Kubernetes beperkt ze tot het bereik 30000-32767, zodat ze niet in de weg zit van gewone diensten op de node.</p>
+</li>
+<li>
+<p>port (8080) is de poort van de Service zelf, op het ClusterIP. Dit is wat andere pods gebruiken wanneer ze http://nginx-svc:8080 aanspreken. Een NodePort-service heeft dus ook een ClusterIP: het type voegt iets toe, het vervangt niets.</p>
+</li>
+<li>
+<p>targetPort (80) is de poort van de container in de pods die deze Service via zijn selector heeft uitgekozen. Daar eindigt het verkeer.</p>
+</li>
+</ul>
+<p>Let op de selector: die verwijst naar het label app: nginx uit de pod-template van de deployment. Zo weet de service welke pods erbij horen.</p>
+<p><img alt="" src="../assets/h11/image17.png" /></p>
+<p>Sla het bestand op door &lt;Ctrl&gt; + S te typen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>svc.yaml
+</span><span id="__span-20-2"><span class="go">service/nginx-svc created</span>
+</span><span id="__span-20-3"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>-o<span class="w"> </span>wide
+</span><span id="__span-20-4"><span class="go">NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE   SELECTOR</span>
+</span><span id="__span-20-5"><span class="go">kubernetes   ClusterIP   10.43.0.1       &lt;none&gt;        443/TCP          24m   &lt;none&gt;</span>
+</span><span id="__span-20-6"><span class="go">nginx-svc    NodePort    10.43.216.108   &lt;none&gt;        8080:30050/TCP   8s    app=nginx</span>
+</span></code></pre></div>
+<p>De service kubernetes heb je niet zelf gemaakt: die bestaat in elk cluster. De kolom EXTERNAL-IP blijft leeg; alleen een LoadBalancer krijgt daar een adres.</p>
+<p>Een NodePort opent poort 30050 op elke node. Bij k3d zijn die nodes containers, en dus staat die poort open op de containers, niet op virt-K8s-XX zelf. Jouw virtuele machine is immers geen node: ze is de machine waarop die node-containers draaien. Vandaar dat curl localhost:30050 hier niets oplevert, en dat je de pagina ook niet in je browser op de Windows-host te zien krijgt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">student@virt-K8s-XX:~$ </span>curl<span class="w"> </span>localhost:30050
+</span><span id="__span-21-2"><span class="go">curl: (7) Failed to connect to localhost port 30050 after 0 ms: Could not connect to server</span>
+</span></code></pre></div>
+<p>We lossen dat op met een port-forward:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/nginx-svc<span class="w"> </span><span class="m">30050</span>:8080<span class="w"> </span><span class="p">&amp;</span>
+</span><span id="__span-22-2"><span class="go">Forwarding from 127.0.0.1:30050 -&gt; 80</span>
+</span><span id="__span-22-3"><span class="gp">student@virt-K8s-XX:~$ </span>curl<span class="w"> </span>localhost:30050
+</span><span id="__span-22-4"><span class="go">Handling connection for 30050</span>
+</span><span id="__span-22-5"><span class="go">&lt;!DOCTYPE html&gt;</span>
+</span><span id="__span-22-6"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-22-7"><span class="go">&lt;head&gt;</span>
+</span><span id="__span-22-8"><span class="go">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span>
+</span><span id="__span-22-9"><span class="go">…</span>
+</span></code></pre></div>
+<p>De pagina komt binnen. Voer het commando enkele keren na elkaar uit: de service verdeelt het verkeer over de zes pods, en jij merkt daar niets van.</p>
+<p>De &amp; op het einde zet de port-forward op de achtergrond, zodat je in dezelfde terminal verder kan werken. Hij blijft wel draaien. Met jobs zie je welke taken er op de achtergrond staan, en met kill %1 stop je de eerste.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">student@virt-K8s-XX:~$ </span><span class="nb">jobs</span>
+</span><span id="__span-23-2"><span class="go">[1]+  Running    kubectl port-forward svc/nginx-svc 30050:8080 &amp;</span>
+</span><span id="__span-23-3"><span class="gp">student@virt-K8s-XX:~$ kill %</span><span class="m">1</span>
+</span></code></pre></div>
+<p>Vergeet je dat, dan blijft die verbinding openstaan en blijft poort 30050 bezet. Een volgende port-forward op dezelfde poort mislukt dan met de melding address already in use.</p>
+<p>Bij een echte Kubernetes-installatie is die port-forward niet nodig. Dan bereik je de dienst rechtstreeks via het IP-adres van eender welke node, op poort 30050.</p>
+<h3 id="1167-opruimen">11.6.7 Opruimen<a class="headerlink" href="#1167-opruimen" title="Permanent link">&para;</a></h3>
+<p>Verwijder de objecten en tot slot het cluster zelf:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">student@virt-K8s-XX:~$ </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>svc.yaml<span class="w"> </span>-f<span class="w"> </span>dep.yaml
+</span><span id="__span-24-2"><span class="gp">student@virt-K8s-XX:~$ </span>k3d<span class="w"> </span>cluster<span class="w"> </span>delete<span class="w"> </span>demo
+</span></code></pre></div>
+<p>Merk op dat het verwijderen van een deployment ook al zijn pods verwijdert, en dat het verwijderen van het cluster alles wist wat erin zat.</p>
+<h2 id="117-hoe-het-verder-gaat">11.7 Hoe het verder gaat<a class="headerlink" href="#117-hoe-het-verder-gaat" title="Permanent link">&para;</a></h2>
+<p>Wat je in dit hoofdstuk gezien hebt, is de kern van Kubernetes: een cluster van nodes, objecten die je declaratief beschrijft, en controllers die de gewenste toestand bewaken. Alles wat daarna komt, bouwt daarop verder:</p>
+<ul>
+<li>
+<p>namespaces om resources van verschillende teams of omgevingen binnen één cluster te scheiden;</p>
+</li>
+<li>
+<p>rolling updates en rollback om een nieuwe versie stap voor stap uit te rollen en terug te draaien als het misloopt;</p>
+</li>
+<li>
+<p>ConfigMaps en Secrets om configuratie en wachtwoorden buiten je image te houden;</p>
+</li>
+<li>
+<p>PersistentVolumes en PersistentVolumeClaims voor gegevens die een pod moeten overleven;</p>
+</li>
+<li>
+<p>Ingress om meerdere websites achter één adres en één certificaat te plaatsen;</p>
+</li>
+<li>
+<p>Helm om complete applicaties als één pakket te installeren.</p>
+</li>
+</ul>
+<p>De commando's en de manifestbestanden die je hier geleerd hebt, blijven daarbij ongewijzigd. Wie met k3d overweg kan, kan ook met een beheerd cluster bij een cloudprovider overweg.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../10-podman-pods/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 10 Podman pods">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                10 Podman pods
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../12-van-podman-naar-kubernetes/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 12 Van Podman naar Kubernetes">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                12 Van Podman naar Kubernetes
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

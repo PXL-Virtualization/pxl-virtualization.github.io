@@ -1,0 +1,1401 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/07-visual-studio-code/">
+      
+      
+      
+        <link rel="prev" href="../06-podman-images/">
+      
+      
+        <link rel="next" href="../08-podman-compose/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>7 Visual Studio Code - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7 Visual Studio Code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#71-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-chocolatey-installeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.3 Chocolatey installeren
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#74-visual-studio-code-installeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.4 Visual Studio Code installeren
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#75-visual-studio-code-voor-het-eerst-starten" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.5 Visual Studio Code voor het eerst starten
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#76-verbinding-maken-via-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.6 Verbinding maken via SSH
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.6 Verbinding maken via SSH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#761-de-ssh-verbinding-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.6.1 De SSH-verbinding testen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#762-de-ssh-host-toevoegen-in-visual-studio-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.6.2 De SSH-host toevoegen in Visual Studio Code
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#77-container-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.7 Container Tools
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#78-voorbeeld-podman-bestanden-en-mappen-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.8 Voorbeeld podman: bestanden en mappen aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#79-voorbeeld-podman-de-terminal-gebruiken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        7.9 Voorbeeld podman: de terminal gebruiken
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../00-inleiding/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="7-visual-studio-code">7 Visual Studio Code<a class="headerlink" href="#7-visual-studio-code" title="Permanent link">&para;</a></h1>
+<h2 id="71-doelstellingen">7.1 Doelstellingen<a class="headerlink" href="#71-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>Chocolatey installeren op Windows 11 vanuit een PowerShell-venster met beheerdersrechten;</p>
+</li>
+<li>
+<p>Visual Studio Code installeren met choco install;</p>
+</li>
+<li>
+<p>Visual Studio Code een eerste keer instellen en zelf een thema kiezen;</p>
+</li>
+<li>
+<p>controleren of je vanaf Windows met ssh kan aanmelden op serverXX;</p>
+</li>
+<li>
+<p>uitleggen waarom je daarvoor het IP-adres gebruikt en niet de naam van de server;</p>
+</li>
+<li>
+<p>in Visual Studio Code een SSH-host toevoegen en kiezen in welk configuratiebestand die bewaard wordt;</p>
+</li>
+<li>
+<p>via Open a Remote Window verbinding maken met serverXX en er een map openen;</p>
+</li>
+<li>
+<p>de extensie Container Tools installeren;</p>
+</li>
+<li>
+<p>op de server mappen en bestanden aanmaken en bewerken vanuit Visual Studio Code;</p>
+</li>
+<li>
+<p>in een project op de server een Containerfile en een index.html schrijven;</p>
+</li>
+<li>
+<p>de ingebouwde terminal gebruiken om op de server een image te bouwen en een container te starten;</p>
+</li>
+<li>
+<p>met curl controleren of je website in de container bereikbaar is.</p>
+</li>
+</ul>
+<h2 id="72-inleiding">7.2 Inleiding<a class="headerlink" href="#72-inleiding" title="Permanent link">&para;</a></h2>
+<p>We werken in deze volgorde:</p>
+<ul>
+<li>
+<p>de installatie van Chocolatey;</p>
+</li>
+<li>
+<p>de installatie van Visual Studio Code via Chocolatey;</p>
+</li>
+<li>
+<p>de eerste instellingen van Visual Studio Code;</p>
+</li>
+<li>
+<p>een verbinding maken met serverXX via SSH;</p>
+</li>
+<li>
+<p>werken met mappen en bestanden op de server;</p>
+</li>
+<li>
+<p>werken met de terminal van de server vanuit Visual Studio Code.</p>
+</li>
+</ul>
+<h2 id="73-chocolatey-installeren">7.3 Chocolatey installeren<a class="headerlink" href="#73-chocolatey-installeren" title="Permanent link">&para;</a></h2>
+<p>De installatie is eenvoudig. Je vindt ze op de website van Chocolatey, bij <a href="https://chocolatey.org/install">Chocolatey Software | Installing Chocolatey</a>.</p>
+<p>We voeren het onderstaande uit op de host, dus op Windows 11, in een PowerShell-venster met beheerdersrechten.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1">PS C:\Windows\system32&gt; Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+</span></code></pre></div>
+<p><img alt="" src="../assets/h07/image1.png" /></p>
+<h2 id="74-visual-studio-code-installeren">7.4 Visual Studio Code installeren<a class="headerlink" href="#74-visual-studio-code-installeren" title="Permanent link">&para;</a></h2>
+<p>Voer hiervoor het onderstaande commando uit met beheerdersrechten.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1">PS C:\Windows\system32&gt; choco install vscode
+</span></code></pre></div>
+<p><img alt="" src="../assets/h07/image2.png" /></p>
+<p>Typ A als er gevraagd wordt om het script uit te voeren.</p>
+<p>Na enige tijd is Visual Studio Code geïnstalleerd.</p>
+<h2 id="75-visual-studio-code-voor-het-eerst-starten">7.5 Visual Studio Code voor het eerst starten<a class="headerlink" href="#75-visual-studio-code-voor-het-eerst-starten" title="Permanent link">&para;</a></h2>
+<p>Start Visual Studio Code via het startmenu en kies voor Continue without Signing in.<br><img alt="" src="../assets/h07/image3.png" /><br><br>Daarna kan je je Color Theme kiezen. Zelf werk ik het liefst met een licht thema, maar dat is persoonlijke smaak. De keuze is aan jou. Kies daarna voor Get Started.</p>
+<p><img alt="" src="../assets/h07/image4.png" /></p>
+<h2 id="76-verbinding-maken-via-ssh">7.6 Verbinding maken via SSH<a class="headerlink" href="#76-verbinding-maken-via-ssh" title="Permanent link">&para;</a></h2>
+<h3 id="761-de-ssh-verbinding-testen">7.6.1 De SSH-verbinding testen<a class="headerlink" href="#761-de-ssh-verbinding-testen" title="Permanent link">&para;</a></h3>
+<p>Voor je SSH instelt in Visual Studio Code, controleer je best eerst of je vanaf Windows kan aanmelden op je server. Gebruik daarvoor het IP-adres: de naam serverXX is op de Windows-host niet bekend. Je zou dat kunnen oplossen via het bestand hosts (C:\Windows\System32\drivers\etc\hosts), maar dat doen we hier niet.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="go">PS C:\Users\stijn&gt; ssh</span>
+</span><span id="__span-2-2"><span class="go">…</span>
+</span><span id="__span-2-3"><span class="go">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span>
+</span><span id="__span-2-4"><span class="go">…</span>
+</span><span id="__span-2-5"><span class="go">student@192.168.112.100's password:</span>
+</span><span id="__span-2-6"><span class="go">…</span>
+</span><span id="__span-2-7"><span class="gp">student@serverXX:~$</span>
+</span></code></pre></div>
+<h3 id="762-de-ssh-host-toevoegen-in-visual-studio-code">7.6.2 De SSH-host toevoegen in Visual Studio Code<a class="headerlink" href="#762-de-ssh-host-toevoegen-in-visual-studio-code" title="Permanent link">&para;</a></h3>
+<p>Klik nu linksonder op het icoon Open a Remote Window.</p>
+<p><img alt="" src="../assets/h07/image5.png" /></p>
+<p>Kies nu bovenaan in de balk voor SSH.</p>
+<p><img alt="" src="../assets/h07/image6.png" /></p>
+<p>Visual Studio Code installeert nu een extensie die daarvoor nodig is.</p>
+<p>Klik opnieuw linksonder op het icoon Open a Remote Window.</p>
+<p><img alt="" src="../assets/h07/image5.png" /></p>
+<p>Kies nu voor Connect to Host…</p>
+<p><img alt="" src="../assets/h07/image7.png" /></p>
+<p>Je krijgt nu onderstaand venster. Klik op + Add New SSH Host…</p>
+<p><img alt="" src="../assets/h07/image8.png" /></p>
+<p>Typ nu het onderstaande en druk op Enter.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1">ssh student@192.168.112.100
+</span></code></pre></div>
+<p><img alt="" src="../assets/h07/image9.png" /></p>
+<p>Er wordt gevraagd in welk configuratiebestand die gegevens bewaard moeten worden.</p>
+<p>Kies je eigen configuratiebestand (C:\Users\&lt;gebruiker&gt;\.ssh\config) en niet het globale bestand (C:\ProgramData\ssh\ssh_config).</p>
+<p><img alt="" src="../assets/h07/image10.png" /></p>
+<p>Rechtsonder zie je dat de host toegevoegd is.</p>
+<p>Klik nu op Connect.</p>
+<p><img alt="" src="../assets/h07/image11.png" /></p>
+<p>Kies Linux als platform.</p>
+<p><img alt="" src="../assets/h07/image12.png" /></p>
+<p>Geef het wachtwoord in.</p>
+<p><img alt="" src="../assets/h07/image13.png" /></p>
+<p>Onderaan verschijnt de melding dat je het platform later nog kan wijzigen. Dat is hier niet nodig, dus klik op Don’t Show Again.</p>
+<p><img alt="" src="../assets/h07/image14.png" /></p>
+<p>Linksonder zie je dat je via SSH verbonden bent met de server.</p>
+<p><img alt="" src="../assets/h07/image15.png" /></p>
+<p>Klik nu linksboven op <img alt="" src="../assets/h07/image16.png" />.</p>
+<p>Nu kan je een map op de server openen door op Open Folder te klikken.</p>
+<p><img alt="" src="../assets/h07/image17.png" /></p>
+<p>Wij kiezen de thuismap van student en klikken op OK.</p>
+<p><img alt="" src="../assets/h07/image18.png" /></p>
+<p>Geef aan dat je de eigenaars van de bestanden in de map vertrouwt.</p>
+<p><img alt="" src="../assets/h07/image19.png" /></p>
+<p>Geef opnieuw je wachtwoord in en druk op Enter.</p>
+<p><img alt="" src="../assets/h07/image20.png" /></p>
+<p>Links zie je nu de mappenstructuur van de server.</p>
+<p><img alt="" src="../assets/h07/image21.png" /></p>
+<h2 id="77-container-tools">7.7 Container Tools<a class="headerlink" href="#77-container-tools" title="Permanent link">&para;</a></h2>
+<p>Om extensies te installeren klik je links op Extensions (<img alt="" src="../assets/h07/image22.png" />).</p>
+<p>We zoeken nu linksboven naar Container Tools.</p>
+<p>Container Tools verschijnt in de lijst. Klik erop om er rechts meer informatie over te zien.</p>
+<p><img alt="" src="../assets/h07/image23.png" /></p>
+<p>Klik op Install om de extensie te installeren.</p>
+<h2 id="78-voorbeeld-podman-bestanden-en-mappen-aanmaken">7.8 Voorbeeld podman: bestanden en mappen aanmaken<a class="headerlink" href="#78-voorbeeld-podman-bestanden-en-mappen-aanmaken" title="Permanent link">&para;</a></h2>
+<p>Klik terug op <img alt="" src="../assets/h07/image24.png" /> linksboven.</p>
+<p>Bovenaan kan je eenvoudig bestanden en mappen toevoegen. Let wel op waar je muisaanwijzer staat: een nieuwe map komt terecht in de map die op dat moment geselecteerd is.</p>
+<p><img alt="" src="../assets/h07/image25.png" /></p>
+<p>Zorg er dus voor dat je de hoofdmap geselecteerd hebt door erop te klikken.</p>
+<p><img alt="" src="../assets/h07/image26.png" /></p>
+<p>We maken de map podmanproject1 aan in de thuismap van student.</p>
+<p>Klik hiervoor op het icoon <img alt="" src="../assets/h07/image27.png" />. Geef dan, in dit geval, podmanproject1 in.</p>
+<p>De map verschijnt meteen in de structuur aan de linkerkant.</p>
+<p><img alt="" src="../assets/h07/image28.png" /></p>
+<p>Nu maken we in podmanproject1 het bestand aan met de instructies om een image te bouwen. We geven het de naam Containerfile.</p>
+<p>Selecteer hiervoor podmanproject1 en klik bovenaan op het icoon <img alt="" src="../assets/h07/image29.png" />. Geef nu de naam Containerfile in en druk op Enter.</p>
+<p><img alt="" src="../assets/h07/image30.png" /></p>
+<p>Rechts zie je nu een leeg bestand Containerfile.</p>
+<p><img alt="" src="../assets/h07/image31.png" /></p>
+<p>We geven dat bestand onderstaande inhoud.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1">FROM registry.access.redhat.com/ubi10/ubi
+</span><span id="__span-4-2"># Installeer httpd (Apache)
+</span><span id="__span-4-3">RUN dnf install -y httpd &amp;&amp; dnf clean all
+</span><span id="__span-4-4"># Kopieer de website bestanden naar de document root van Apache
+</span><span id="__span-4-5">COPY website/index.html /var/www/html/
+</span><span id="__span-4-6"># Open standaard HTTP-poort
+</span><span id="__span-4-7">EXPOSE 80
+</span><span id="__span-4-8"># webserver starten
+</span><span id="__span-4-9">CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
+</span></code></pre></div>
+<p><img alt="" src="../assets/h07/image32.png" /></p>
+<p>Sla het bestand op via File, Save. Je zal zien dat het bolletje is verdwenen naast de bestandsnaam.</p>
+<p>We maken nu een webpagina index.html in een submap website. Die map komt overeen met de locatie in de regel COPY website/index.html /var/www/html/ uit je Containerfile.</p>
+<p>Selecteer daarvoor links podmanproject1 en klik weer bovenaan op <img alt="" src="../assets/h07/image33.png" />.</p>
+<p>Typ nu website en druk op Enter.</p>
+<p>De map website staat nu uiteraard ook in je mappenstructuur.</p>
+<p><img alt="" src="../assets/h07/image34.png" /></p>
+<p>Maak hierin een nieuw bestand aan door eerst website te selecteren en te klikken op <img alt="" src="../assets/h07/image35.png" />.</p>
+<p><img alt="" src="../assets/h07/image36.png" /></p>
+<p>Typ als bestandsnaam index.html en druk op Enter.</p>
+<p><img alt="" src="../assets/h07/image37.png" /></p>
+<p>Geef het bestand index.html de volgende inhoud.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1">&lt;html&gt;
+</span><span id="__span-5-2">&lt;head&gt;
+</span><span id="__span-5-3">    &lt;title&gt;Podman test&lt;/title&gt;
+</span><span id="__span-5-4">&lt;/head&gt;
+</span><span id="__span-5-5">&lt;body&gt;
+</span><span id="__span-5-6">    &lt;h1&gt; Podman test&lt;/h1&gt;
+</span><span id="__span-5-7">&lt;/body&gt;
+</span><span id="__span-5-8">&lt;/html&gt;
+</span></code></pre></div>
+<p><img alt="" src="../assets/h07/image38.png" /></p>
+<p>Ook dit bestand slaan we op via File, Save (Ctrl + S).</p>
+<h2 id="79-voorbeeld-podman-de-terminal-gebruiken">7.9 Voorbeeld podman: de terminal gebruiken<a class="headerlink" href="#79-voorbeeld-podman-de-terminal-gebruiken" title="Permanent link">&para;</a></h2>
+<p>Klik bovenaan in de menubalk op View, Terminal.</p>
+<p>Staat de menubalk niet volledig op het scherm, klik dan eerst op de drie puntjes.</p>
+<p><img alt="" src="../assets/h07/image39.png" /></p>
+<p>Onderaan opent een bash-shell op de server, in je thuismap.</p>
+<p>Ga naar de map podmanproject1.</p>
+<p><img alt="" src="../assets/h07/image40.png" /></p>
+<p>We bouwen nu het image, op de manier die je gewend bent.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~/podmanproject1$ </span>podman<span class="w"> </span>image<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>podmanproject1<span class="w"> </span>.
+</span></code></pre></div>
+<p>Daarna starten we een container op basis van dat image.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~/podmanproject1$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>web<span class="w"> </span>--hostname<span class="w"> </span>web<span class="w"> </span>-p<span class="w"> </span><span class="m">9000</span>:80<span class="w"> </span>podmanproject1
+</span><span id="__span-7-2"><span class="go">83086aac9e6c8193df5270255ce9cb94534c6b5ef0f6a74f3dc5c9c8d1897f89</span>
+</span></code></pre></div>
+<p>Tot slot controleren we of de website bereikbaar is.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~/podmanproject1$ </span>curl<span class="w"> </span>http://127.0.0.1:9000
+</span><span id="__span-8-2"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-8-3"><span class="go">&lt;head&gt;</span>
+</span><span id="__span-8-4"><span class="go">    &lt;title&gt;Podman test&lt;/title&gt;</span>
+</span><span id="__span-8-5"><span class="go">&lt;/head&gt;</span>
+</span><span id="__span-8-6"><span class="go">&lt;body&gt;</span>
+</span><span id="__span-8-7"><span class="go">    &lt;h1&gt; Podman test&lt;/h1&gt;</span>
+</span><span id="__span-8-8"><span class="go">&lt;/body&gt;</span>
+</span><span id="__span-8-9"><span class="go">&lt;/html&gt;</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../06-podman-images/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 6 Podman images">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                6 Podman images
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../08-podman-compose/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 8 Podman Compose">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                8 Podman Compose
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

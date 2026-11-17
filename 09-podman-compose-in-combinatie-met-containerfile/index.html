@@ -1,0 +1,1490 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/09-podman-compose-in-combinatie-met-containerfile/">
+      
+      
+      
+        <link rel="prev" href="../08-podman-compose/">
+      
+      
+        <link rel="next" href="../10-podman-pods/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>9 Podman Compose in combinatie met Containerfile - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              9 Podman Compose in combinatie met Containerfile
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#91-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#92-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#93-voorbeeld-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.3 Voorbeeld 1
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.3 Voorbeeld 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#931-containerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.3.1 Containerfile
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#932-bash-script-scriptsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.3.2 Bash script (script.sh)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#933-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.3.3 compose.yml
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#934-uitvoer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.3.4 Uitvoer
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#94-voorbeeld-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4 Voorbeeld 2
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.4 Voorbeeld 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#941-containerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4.1 Containerfile
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#942-indexhtml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4.2 Index.html
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#943-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4.3 Compose.yml
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#944-uitvoer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4.4 Uitvoer
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#945-opruimen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        9.4.5 Opruimen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../00-inleiding/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="9-podman-compose-in-combinatie-met-containerfile">9 Podman Compose in combinatie met Containerfile<a class="headerlink" href="#9-podman-compose-in-combinatie-met-containerfile" title="Permanent link">&para;</a></h1>
+<h2 id="91-doelstellingen">9.1 Doelstellingen<a class="headerlink" href="#91-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>uitleggen hoe een Containerfile en een compose-bestand samenwerken;</p>
+</li>
+<li>
+<p>de belangrijkste instructies van een Containerfile herkennen: FROM, COPY, RUN, WORKDIR, CMD of ENTRYPOINT en HEALTHCHECK;</p>
+</li>
+<li>
+<p>in een compose-bestand met build, context en dockerfile een image laten bouwen in plaats van een bestaand image te gebruiken;</p>
+</li>
+<li>
+<p>met de sleutel image zelf een naam geven aan het image dat Compose bouwt;</p>
+</li>
+<li>
+<p>voor een service een containernaam, een netwerk en een poortkoppeling instellen;</p>
+</li>
+<li>
+<p>een eigen bash-script in een image plaatsen en het laten uitvoeren bij het starten van de container;</p>
+</li>
+<li>
+<p>een eigen webserver bouwen op basis van registry.access.redhat.com/ubi10/httpd-24 met een eigen index.html;</p>
+</li>
+<li>
+<p>uitleggen waarom EXPOSE niet hetzelfde is als een poort publiceren;</p>
+</li>
+<li>
+<p>uitleggen waarom een container met httpd-24 blijft draaien zonder dat je daar zelf iets voor moet doen;</p>
+</li>
+<li>
+<p>een compose-omgeving bouwen en starten met podman-compose up --build en het resultaat controleren met curl.</p>
+</li>
+</ul>
+<h2 id="92-inleiding">9.2 Inleiding<a class="headerlink" href="#92-inleiding" title="Permanent link">&para;</a></h2>
+<p>Een Containerfile en een compose-bestand vullen elkaar aan. Samen maken ze het bouwen, instellen en beheren van containers eenvoudiger.</p>
+<p>Een Containerfile is een recept met instructies om een image te bouwen. Het bevat alle stappen die daarvoor nodig zijn, zoals eerder behandeld:</p>
+<ul>
+<li>
+<p>het basisimage (FROM);</p>
+</li>
+<li>
+<p>het kopiëren van bestanden (COPY);</p>
+</li>
+<li>
+<p>het installeren van software (RUN);</p>
+</li>
+<li>
+<p>het startcommando (CMD of ENTRYPOINT);</p>
+</li>
+<li>
+<p>een statuscontrole (HEALTHCHECK).</p>
+</li>
+</ul>
+<p>Met een compose-bestand beschrijf je daarna een of meer containers op basis van zulke images. In dat bestand kan je:</p>
+<ul>
+<li>
+<p>verschillende services beschrijven, zoals een database en een toepassing;</p>
+</li>
+<li>
+<p>netwerken en volumes aanmaken;</p>
+</li>
+<li>
+<p>poorten publiceren en omgevingsvariabelen instellen.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h09/image1.png" /></p>
+<h2 id="93-voorbeeld-1">9.3 Voorbeeld 1<a class="headerlink" href="#93-voorbeeld-1" title="Permanent link">&para;</a></h2>
+<p>We bouwen een eenvoudige container die een bash-script uitvoert.</p>
+<p>Maak eerst een map vb1 aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>mkdir<span class="w"> </span>vb1
+</span></code></pre></div>
+<p>Daarin komen drie bestanden: het Containerfile met het recept voor het image, het script dat in de container moet draaien, en het compose-bestand.</p>
+<h3 id="931-containerfile">9.3.1 Containerfile<a class="headerlink" href="#931-containerfile" title="Permanent link">&para;</a></h3>
+<p>We vertrekken van het image registry.access.redhat.com/ubi10/ubi en voegen er een eenvoudig bash-script aan toe.</p>
+<p>student@serverXX:~$ nano vb1/Containerfile</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1">FROM registry.access.redhat.com/ubi10/ubi
+</span><span id="__span-1-2">COPY script.sh /scripts/script.sh
+</span><span id="__span-1-3">RUN chmod +x /scripts/script.sh
+</span><span id="__span-1-4">WORKDIR /scripts
+</span><span id="__span-1-5">CMD ["/bin/bash", "./script.sh"]
+</span></code></pre></div>
+<p>Dit bestand doet het volgende:</p>
+<ul>
+<li>
+<p>het vertrekt van registry.access.redhat.com/ubi10/ubi als basisimage;</p>
+</li>
+<li>
+<p>het kopieert het bash-script script.sh naar de container;</p>
+</li>
+<li>
+<p>het geeft dat script uitvoerrechten;</p>
+</li>
+<li>
+<p>het stelt de werkmap in op /scripts;</p>
+</li>
+<li>
+<p>het voert het script uit zodra de container start.</p>
+</li>
+</ul>
+<h3 id="932-bash-script-scriptsh">9.3.2 Bash script (script.sh)<a class="headerlink" href="#932-bash-script-scriptsh" title="Permanent link">&para;</a></h3>
+<p>Hieronder zie je het script dat in de container draait. Het zet enkel een bericht op het scherm.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>vb1/script.sh
+</span><span id="__span-2-2"><span class="gp">#</span>!/bin/bash
+</span><span id="__span-2-3"><span class="go">echo "Hallo, dit is een bash-script dat draait in een RHEL-container!"</span>
+</span></code></pre></div>
+<h3 id="933-composeyml">9.3.3 compose.yml<a class="headerlink" href="#933-composeyml" title="Permanent link">&para;</a></h3>
+<p>Dit is het compose-bestand. Het bouwt zelf een image op basis van het recept hierboven, in plaats van een kant-en-klaar image op te halen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>vb1/compose.yml
+</span><span id="__span-3-2"><span class="go">services:</span>
+</span><span id="__span-3-3"><span class="go">  bashrunner:</span>
+</span><span id="__span-3-4"><span class="go">    build:</span>
+</span><span id="__span-3-5"><span class="go">      context: .</span>
+</span><span id="__span-3-6"><span class="go">      dockerfile: Containerfile</span>
+</span><span id="__span-3-7"><span class="go">    container_name: bashrunner</span>
+</span><span id="__span-3-8"><span class="go">    networks:</span>
+</span><span id="__span-3-9"><span class="go">      - bashnet</span>
+</span><span id="__span-3-10">
+</span><span id="__span-3-11"><span class="go">networks:</span>
+</span><span id="__span-3-12"><span class="go">  bashnet:</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h09/image2.png" /></p>
+<p>Dit compose-bestand doet het volgende:</p>
+<ul>
+<li>
+<p>het beschrijft een service met de naam bashrunner;</p>
+</li>
+<li>
+<p>het bouwt het image met het recept uit de huidige map;</p>
+</li>
+<li>
+<p>het plaatst de container in een netwerk met de naam bashnet.</p>
+</li>
+</ul>
+<h3 id="934-uitvoer">9.3.4 Uitvoer<a class="headerlink" href="#934-uitvoer" title="Permanent link">&para;</a></h3>
+<p>Voer het volgende uit in de map waar je compose-bestand staat:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span><span class="nb">cd</span><span class="w"> </span>vb1
+</span><span id="__span-4-2"><span class="gp">student@serverXX:~/vb1$ </span>podman-compose<span class="w"> </span>up<span class="w"> </span>--build
+</span><span id="__span-4-3"><span class="go">…</span>
+</span><span id="__span-4-4"><span class="go">COMMIT vb1_bashrunner</span>
+</span><span id="__span-4-5"><span class="go">…</span>
+</span><span id="__span-4-6"><span class="go">[bashrunner] | Hallo, dit is een bash-script dat draait in een RHEL-container!</span>
+</span></code></pre></div>
+<p>Omdat we zelf geen naam voor het image opgegeven hebben, krijgt het de naam &lt;projectnaam&gt;_&lt;servicenaam&gt;. Podman Compose leidt die projectnaam af van de map waarin het compose-bestand staat. Vandaar de naam vb1_bashrunner.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~/vb1$ </span>podman<span class="w"> </span>images
+</span><span id="__span-5-2"><span class="go">REPOSITORY                                  TAG         IMAGE ID      CREATED         SIZE</span>
+</span><span id="__span-5-3"><span class="go">localhost/vb1_bashrunner                    latest      2e1c566ac4b2  25 seconds ago  220 MB</span>
+</span></code></pre></div>
+<p>Een tweede keer starten gaat sneller: het image bestaat nu al, dus je hoeft niet opnieuw te bouwen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~/vb1$ </span>podman-compose<span class="w"> </span>up
+</span><span id="__span-6-2"><span class="go">[bashrunner] | Hallo, dit is een bash-script dat draait in een RHEL-container!</span>
+</span></code></pre></div>
+<h2 id="94-voorbeeld-2">9.4 Voorbeeld 2<a class="headerlink" href="#94-voorbeeld-2" title="Permanent link">&para;</a></h2>
+<p>Nu bouwen we zelf een eenvoudige webserver op basis van UBI 10 met Apache.</p>
+<p>Maak een map vb2 aan met daarin:</p>
+<ul>
+<li>
+<p>het bestand Containerfile;</p>
+</li>
+<li>
+<p>de map mywebsite met daarin het bestand index.html;</p>
+</li>
+<li>
+<p>het bestand compose.yml.</p>
+</li>
+</ul>
+<p>We maken eerst de map en de submap aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>vb2/mywebsite
+</span></code></pre></div>
+<h3 id="941-containerfile">9.4.1 Containerfile<a class="headerlink" href="#941-containerfile" title="Permanent link">&para;</a></h3>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>vb2/Containerfile
+</span><span id="__span-8-2"><span class="go">FROM registry.access.redhat.com/ubi10/httpd-24</span>
+</span><span id="__span-8-3"><span class="go">COPY mywebsite/ /var/www/html/</span>
+</span><span id="__span-8-4"><span class="go">EXPOSE 8080</span>
+</span></code></pre></div>
+<p>In deze Containerfile:</p>
+<ul>
+<li>
+<p>gebruiken we een httpd-webserver op basis van UBI 10;</p>
+</li>
+<li>
+<p>plaatsen we de inhoud van de map mywebsite in /var/www/html;</p>
+</li>
+<li>
+<p>documenteren we dat de container op poort 8080 luistert.</p>
+</li>
+</ul>
+<p>EXPOSE publiceert die poort niet en is ook niet verplicht. Het dient als documentatie: wie je image later gebruikt, ziet zo meteen op welke poort de toepassing luistert. Publiceren doe je met ports in je compose-bestand, of met -p bij podman run.</p>
+<p>Je hoeft de container zelf niet draaiende te houden. Het image httpd-24 start de webserver als hoofdproces, en zolang dat proces draait, blijft ook de container draaien.</p>
+<h3 id="942-indexhtml">9.4.2 Index.html<a class="headerlink" href="#942-indexhtml" title="Permanent link">&para;</a></h3>
+<p>We plaatsen dit bestand in de map mywebsite.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>vb2/mywebsite/index.html
+</span><span id="__span-9-2"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-9-3"><span class="go">&lt;head&gt;</span>
+</span><span id="__span-9-4"><span class="go">    &lt;title&gt;Voorbeeld 2 website&lt;/title&gt;</span>
+</span><span id="__span-9-5"><span class="go">&lt;/head&gt;</span>
+</span><span id="__span-9-6"><span class="go">&lt;body&gt;</span>
+</span><span id="__span-9-7"><span class="go">    &lt;h1&gt;Welkom bij Voorbeeld 2 website!&lt;/h1&gt;</span>
+</span><span id="__span-9-8"><span class="go">&lt;/body&gt;</span>
+</span><span id="__span-9-9"><span class="go">&lt;/html&gt;</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h09/image3.png" /></p>
+<h3 id="943-composeyml">9.4.3 Compose.yml<a class="headerlink" href="#943-composeyml" title="Permanent link">&para;</a></h3>
+<p>We geven het compose-bestand de volgende inhoud.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~$ </span>nano<span class="w"> </span>vb2/compose.yml
+</span><span id="__span-10-2"><span class="go">services:</span>
+</span><span id="__span-10-3"><span class="go">  webserver:</span>
+</span><span id="__span-10-4"><span class="go">    build:</span>
+</span><span id="__span-10-5"><span class="go">      context: .</span>
+</span><span id="__span-10-6"><span class="go">      dockerfile: Containerfile</span>
+</span><span id="__span-10-7"><span class="go">    image: wwwimage</span>
+</span><span id="__span-10-8"><span class="go">    container_name: webserver</span>
+</span><span id="__span-10-9"><span class="go">    ports:</span>
+</span><span id="__span-10-10"><span class="go">      - "8080:8080"</span>
+</span><span id="__span-10-11"><span class="go">    networks:</span>
+</span><span id="__span-10-12"><span class="go">      - webnet</span>
+</span><span id="__span-10-13">
+</span><span id="__span-10-14"><span class="go">networks:</span>
+</span><span id="__span-10-15"><span class="go">  webnet:</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h09/image4.png" /></p>
+<p>In dit compose-bestand:</p>
+<ul>
+<li>
+<p>beschrijven we een service webserver die het image bouwt met de Containerfile;</p>
+</li>
+<li>
+<p>geven we het image dat gebouwd wordt zelf een naam: wwwimage;</p>
+</li>
+<li>
+<p>koppelen we poort 8080 van de container aan poort 8080 van de server, zodat je de website kan bezoeken via http://localhost:8080;</p>
+</li>
+<li>
+<p>draait de container in het netwerk webnet.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h09/image5.png" /></p>
+<h3 id="944-uitvoer">9.4.4 Uitvoer<a class="headerlink" href="#944-uitvoer" title="Permanent link">&para;</a></h3>
+<p>Voer in de map vb2 het volgende commando uit om het image te bouwen en de container te starten:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">student@serverXX:~$ </span><span class="nb">cd</span><span class="w"> </span>vb2
+</span><span id="__span-11-2"><span class="gp">student@serverXX:~/vb2$ </span>podman-compose<span class="w"> </span>up<span class="w"> </span>--build
+</span></code></pre></div>
+<p>Zoals je ziet blijft de webserver draaien. Je terminalvenster blijft dus bezet.</p>
+<p><img alt="" src="../assets/h09/image6.png" /></p>
+<p>Open daarom een tweede terminalvenster en vraag de pagina op met curl.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@serverXX:~$ </span>curl<span class="w"> </span>localhost:8080
+</span><span id="__span-12-2"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-12-3"><span class="go">&lt;head&gt;</span>
+</span><span id="__span-12-4"><span class="go">    &lt;title&gt;Voorbeeld 2 website&lt;/title&gt;</span>
+</span><span id="__span-12-5"><span class="go">&lt;/head&gt;</span>
+</span><span id="__span-12-6"><span class="go">&lt;body&gt;</span>
+</span><span id="__span-12-7"><span class="go">    &lt;h1&gt;Welkom bij Voorbeeld 2 website!&lt;/h1&gt;</span>
+</span><span id="__span-12-8"><span class="go">&lt;/body&gt;</span>
+</span><span id="__span-12-9"><span class="go">&lt;/html&gt;</span>
+</span></code></pre></div>
+<p>Je ziet dat de webpagina beschikbaar is.</p>
+<h3 id="945-opruimen">9.4.5 Opruimen<a class="headerlink" href="#945-opruimen" title="Permanent link">&para;</a></h3>
+<p>Stop de omgeving met Ctrl+C in het eerste terminalvenster en ruim daarna alles op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">student@serverXX:~/vb2$ </span>podman-compose<span class="w"> </span>down
+</span></code></pre></div>
+<p>De containers en het netwerk zijn nu weg. Het image dat je gebouwd hebt, blijft wel bestaan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">student@serverXX:~/vb2$ </span>podman<span class="w"> </span>images
+</span><span id="__span-14-2"><span class="go">REPOSITORY                                  TAG         IMAGE ID      CREATED             SIZE</span>
+</span><span id="__span-14-3"><span class="go">localhost/wwwimage                          latest      b9c514e57fb4  About a minute ago  285 MB</span>
+</span></code></pre></div>
+<p>Wil je ook dat image verwijderen, dan doe je dat met podman rmi.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">student@serverXX:~/vb2$ </span>podman<span class="w"> </span>rmi<span class="w"> </span>wwwimage
+</span><span id="__span-15-2"><span class="go">Untagged: localhost/wwwimage:latest</span>
+</span><span id="__span-15-3"><span class="go">Deleted: b9c514e57fb4f21caff73a23d54d509f55ee359b576327cf5d45e5610ee8c6ff</span>
+</span><span id="__span-15-4"><span class="go">Deleted: 5b4d79f1db6de1a924b855cd978604aeaecc4f8e4b9ed5bbb96af75b03cdc46d</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../08-podman-compose/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 8 Podman Compose">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                8 Podman Compose
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../10-podman-pods/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 10 Podman pods">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                10 Podman pods
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1550 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/03-beheer-op-afstand/">
+      
+      
+      
+        <link rel="prev" href="../02-installatie-docker-en-podman/">
+      
+      
+        <link rel="next" href="../04-containers-en-container-images/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>3 Beheer op afstand - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3 Beheer op afstand
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-verbinding-maken-met-je-server-vanaf-je-hostcomputer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.2 Verbinding maken met je Server vanaf je hostcomputer
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Verbinding maken met je Server vanaf je hostcomputer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-let-op-met-het-ip-adres" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.2.1 Let op met het IP-adres!
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-oorzaak-probleem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.2.2 Oorzaak probleem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323-probleem-oplossen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.2.3 Probleem oplossen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3 SSH
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 SSH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3.1 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-ssh-server-installeren-en-configureren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3.2 SSH-server installeren en configureren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-verbinding-maken-met-ssh-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3.3 Verbinding maken met SSH-server
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.3 Verbinding maken met SSH-server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3331-met-wachtwoord" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3.3.1 Met wachtwoord
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3332-zonder-wachtwoord" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.3.3.2 Zonder wachtwoord
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-remote-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4 Remote Docker
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Remote Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341-commandos-uitvoeren-via-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4.1 Commando’s uitvoeren via ssh
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-docker-en-podman-bedienen-vanaf-een-andere-computer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4.2 Docker en Podman bedienen vanaf een andere computer
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4.2 Docker en Podman bedienen vanaf een andere computer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3421-voorbereiding-op-de-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4.2.1 Voorbereiding op de server
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3422-docker-context-aanmaken-op-de-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4.2.2 Docker context aanmaken op de client
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3423-podman-via-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3.4.2.3 Podman via SSH
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../00-inleiding/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="3-beheer-op-afstand">3 Beheer op afstand<a class="headerlink" href="#3-beheer-op-afstand" title="Permanent link">&para;</a></h1>
+<h2 id="31-doelstellingen">3.1 Doelstellingen<a class="headerlink" href="#31-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>een IP-conflict herkennen en oplossen met nmcli;</p>
+</li>
+<li>
+<p>uitleggen wat SSH doet en de SSH-server op de server controleren;</p>
+</li>
+<li>
+<p>vanaf de client met een wachtwoord verbinding maken via SSH en de melding over de host key verklaren;</p>
+</li>
+<li>
+<p>een sleutelpaar aanmaken met ssh-keygen en de publieke sleutel plaatsen met ssh-copy-id, zodat aanmelden zonder wachtwoord werkt;</p>
+</li>
+<li>
+<p>vanaf de client Docker- en Podman-commando’s op de server uitvoeren via ssh;</p>
+</li>
+<li>
+<p>uitleggen wat een Docker-context is en er een aanmaken, kiezen en gebruiken vanaf de client;</p>
+</li>
+<li>
+<p>de Podman-socket op de server inschakelen en vanaf de client een verbinding toevoegen met podman system connection.</p>
+</li>
+</ul>
+<h2 id="32-verbinding-maken-met-je-server-vanaf-je-hostcomputer">3.2 Verbinding maken met je Server vanaf je hostcomputer<a class="headerlink" href="#32-verbinding-maken-met-je-server-vanaf-je-hostcomputer" title="Permanent link">&para;</a></h2>
+<h3 id="321-let-op-met-het-ip-adres">3.2.1 Let op met het IP-adres!<a class="headerlink" href="#321-let-op-met-het-ip-adres" title="Permanent link">&para;</a></h3>
+<p>We veranderen als test het IP-adres van ServerXX naar 192.168.112.1 en bekijken wat er dan misloopt.</p>
+<p>We vragen eerst de huidige verbindingsnaam op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>show
+</span><span id="__span-0-2"><span class="go">[sudo] wachtwoord voor student:</span>
+</span><span id="__span-0-3"><span class="go">Warning: nmcli (1.52.0) and NetworkManager (1.48.10) versions don't match. Restarting NetworkManager is advised.</span>
+</span><span id="__span-0-4"><span class="go">NAME     UUID                                  TYPE      DEVICE</span>
+</span><span id="__span-0-5"><span class="go">ens160   8f18258e-ee43-3d8a-8ed6-b452b3bc8045  ethernet  ens160</span>
+</span><span id="__span-0-6"><span class="go">docker0  22924712-c569-41ed-b3d2-3321eeff411a  bridge    docker0</span>
+</span><span id="__span-0-7"><span class="go">lo       4b771ea1-a470-470f-84ed-a6ef80af6342  loopback  lo</span>
+</span></code></pre></div>
+<p>Zoals je ziet, heet de verbinding ens160: docker0 is de bridge van Docker en lo is de loopback-interface.</p>
+<p>We stellen nu het nieuwe IP-adres in.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>mod<span class="w"> </span>ens160<span class="w"> </span>ipv4.addresses<span class="w"> </span><span class="m">192</span>.168.112.1/24
+</span></code></pre></div>
+<p>Probeer de netwerkverbinding te herstarten.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>down<span class="w"> </span>ens160<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>up<span class="w"> </span>ens160
+</span><span id="__span-2-2"><span class="go">…</span>
+</span><span id="__span-2-3"><span class="go">Fout: Activeren van verbinding is mislukt: Reserveren van de IP-configuratie is mislukt (geen beschikbare adressen, time-out, enz.)</span>
+</span><span id="__span-2-4"><span class="go">Hint: use 'journalctl -xe NM_CONNECTION=2318b781-c803-36d2-8642-bb3d5bb513f9 + NM_DEVICE=ens160' to get more details.</span>
+</span></code></pre></div>
+<h3 id="322-oorzaak-probleem">3.2.2 Oorzaak probleem<a class="headerlink" href="#322-oorzaak-probleem" title="Permanent link">&para;</a></h3>
+<p>Er is een IP-conflict: het adres 192.168.112.1 is al in gebruik.</p>
+<p>Klik in VMware Workstation op Edit, Virtual Network Editor…, klik rechtsonder op Change Settings en bevestig met Ja.</p>
+<p><img alt="" src="../assets/h03/image1.png" /></p>
+<p>Selecteer VMnet8 (NAT). Je ziet dat Connect a host virtual adapter to this network aangevinkt is (zo ingesteld in Bijlage A). Daardoor krijgt je host een virtuele netwerkkaart in dit subnet.</p>
+<p><img alt="" src="../assets/h03/image2.png" /></p>
+<p>Klik erna op OK.</p>
+<p>Open nu de netwerkverbindingen op je host (normaal een Windows 11-computer).</p>
+<p><img alt="" src="../assets/h03/image3.png" /></p>
+<p>Bekijk het IP-adres van de virtuele netwerkkaart VMware Network Adapter VMnet8, zoals hieronder aangegeven.</p>
+<p><img alt="" src="../assets/h03/image4.png" /></p>
+<p>Dat is precies het IP-adres dat we net aan de server gaven! Daar zit het probleem: VMware geeft de host in het NAT-subnet standaard het adres eindigend op .1 (en de gateway het adres .2).</p>
+<h3 id="323-probleem-oplossen">3.2.3 Probleem oplossen<a class="headerlink" href="#323-probleem-oplossen" title="Permanent link">&para;</a></h3>
+<p>We vragen het IP-adres van ens160 op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>nmcli<span class="w"> </span>-g<span class="w"> </span>IP4.ADDRESS<span class="w"> </span>dev<span class="w"> </span>show<span class="w"> </span>ens160
+</span></code></pre></div>
+<p>Je krijgt geen uitvoer: door het conflict kan het IP-adres niet toegewezen worden.</p>
+<p>Om dit op te lossen, geven we ens160 op de server opnieuw het IP-adres 192.168.112.100/24.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>mod<span class="w"> </span>ens160<span class="w"> </span>ipv4.addresses<span class="w"> </span><span class="m">192</span>.168.112.100/24
+</span><span id="__span-4-2"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>up<span class="w"> </span>ens160
+</span><span id="__span-4-3"><span class="go">Verbinding is met succes geactiveerd (actief D-Bus-pad: /org/freedesktop/NetworkManager/ActiveConnection/6)</span>
+</span></code></pre></div>
+<p>Vanaf je server kan je nu opnieuw op het internet.</p>
+<p><img alt="" src="../assets/h03/image5.png" /></p>
+<p>Ping nu vanaf de host naar je server. Ook dat lukt nu.</p>
+<p><img alt="" src="../assets/h03/image6.png" /></p>
+<h2 id="33-ssh">3.3 SSH<a class="headerlink" href="#33-ssh" title="Permanent link">&para;</a></h2>
+<h3 id="331-inleiding">3.3.1 Inleiding<a class="headerlink" href="#331-inleiding" title="Permanent link">&para;</a></h3>
+<p>Met SSH log je veilig (versleuteld) in op een andere computer. Via SSH kan je opdrachten uitvoeren, bestanden kopiëren en interactieve shells openen. Dit kwam al uitgebreid aan bod in Linux Advanced; we herhalen het hier beknopt.</p>
+<h3 id="332-ssh-server-installeren-en-configureren">3.3.2 SSH-server installeren en configureren<a class="headerlink" href="#332-ssh-server-installeren-en-configureren" title="Permanent link">&para;</a></h3>
+<p>De SSH-server is standaard al geïnstalleerd en actief. Is dat niet zo, installeer hem dan als volgt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssh-server
+</span></code></pre></div>
+<p>Start de SSH-service.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>sshd
+</span></code></pre></div>
+<p>Laat de SSH-service automatisch starten bij het opstarten van het systeem.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>sshd
+</span></code></pre></div>
+<p>Open de firewall voor SSH, ook na een herstart (op RHEL staat SSH standaard al open).</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--add-service<span class="o">=</span>ssh<span class="w"> </span>--zone<span class="o">=</span>public
+</span><span id="__span-8-2"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>firewall-cmd<span class="w"> </span>--reload
+</span></code></pre></div>
+<h3 id="333-verbinding-maken-met-ssh-server">3.3.3 Verbinding maken met SSH-server<a class="headerlink" href="#333-verbinding-maken-met-ssh-server" title="Permanent link">&para;</a></h3>
+<h4 id="3331-met-wachtwoord">3.3.3.1 Met wachtwoord<a class="headerlink" href="#3331-met-wachtwoord" title="Permanent link">&para;</a></h4>
+<p>We maken vanaf client&lt;jeinitialen&gt; verbinding met server&lt;jeinitialen&gt;.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">[student@clientXX ~]$ </span>ssh<span class="w"> </span>student@192.168.112.100
+</span><span id="__span-9-2"><span class="go">The authenticity of host '192.168.112.100 (192.168.112.100)' can't be established.</span>
+</span><span id="__span-9-3"><span class="go">ED25519 key fingerprint is SHA256:F1750QXtB+sxrh3GrCCpXqTM6MZ+uzzmXhXFMbmRDD8.</span>
+</span><span id="__span-9-4"><span class="go">This key is not known by any other names</span>
+</span><span id="__span-9-5"><span class="go">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  # eerste keer</span>
+</span><span id="__span-9-6"><span class="go">Warning: Permanently added '192.168.112.100' (ED25519) to the list of known hosts.</span>
+</span><span id="__span-9-7"><span class="gp">student@192.168.112.100's password: # </span>geef<span class="w"> </span>wachtwoord<span class="w"> </span><span class="k">in</span><span class="w"> </span>van<span class="w"> </span>student<span class="w"> </span>op<span class="w"> </span><span class="m">192</span>.168.112.100
+</span><span id="__span-9-8"><span class="go">…</span>
+</span><span id="__span-9-9"><span class="gp">student@serverXX:~$</span>
+</span></code></pre></div>
+<p>Met exit keer je terug naar client&lt;jeinitialen&gt;.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~$ </span><span class="nb">exit</span>
+</span><span id="__span-10-2"><span class="go">uitgelogd</span>
+</span><span id="__span-10-3"><span class="go">Connection to 192.168.112.100 closed.</span>
+</span><span id="__span-10-4"><span class="gp">[student@clientXX ~]$</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h03/image7.png" /></p>
+<h4 id="3332-zonder-wachtwoord">3.3.3.2 Zonder wachtwoord<a class="headerlink" href="#3332-zonder-wachtwoord" title="Permanent link">&para;</a></h4>
+<p>Zoals je in Linux Advanced zag, kan je ook een sleutelpaar gebruiken, zodat je geen wachtwoord meer moet ingeven.</p>
+<ul>
+<li>Maak het sleutelpaar aan op de client.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">[student@clientXX ~]$ </span>ssh-keygen
+</span><span id="__span-11-2"><span class="go">Generating public/private rsa key pair.</span>
+</span><span id="__span-11-3"><span class="go">Enter file in which to save the key (/home/student/.ssh/id_rsa): &lt;Enter&gt;</span>
+</span><span id="__span-11-4"><span class="go">Enter passphrase (empty for no passphrase): &lt;Enter&gt;</span>
+</span><span id="__span-11-5"><span class="go">Enter same passphrase again: &lt;Enter&gt;</span>
+</span><span id="__span-11-6"><span class="go">Your identification has been saved in /home/student/.ssh/id_rsa</span>
+</span><span id="__span-11-7"><span class="go">Your public key has been saved in /home/student/.ssh/id_rsa.pub</span>
+</span><span id="__span-11-8"><span class="go">The key fingerprint is:</span>
+</span><span id="__span-11-9"><span class="go">SHA256:NkwuIpRJav9p2errYVPAdfkc72Kd3FRzh3eC8qXOFnk student@clientXX</span>
+</span><span id="__span-11-10"><span class="go">The key's randomart image is:</span>
+</span><span id="__span-11-11"><span class="go">+---[RSA 3072]----+</span>
+</span><span id="__span-11-12"><span class="go">|  .    . ..  . . |</span>
+</span><span id="__span-11-13"><span class="go">| o o. . ..... +.*|</span>
+</span><span id="__span-11-14"><span class="go">|..+  o  . ooo+ o*|</span>
+</span><span id="__span-11-15"><span class="go">|...   .+   o=.E. |</span>
+</span><span id="__span-11-16"><span class="go">|  ... ..S  o+o+  |</span>
+</span><span id="__span-11-17"><span class="go">|   ...=o . o+= . |</span>
+</span><span id="__span-11-18"><span class="go">|     O .  ...    |</span>
+</span><span id="__span-11-19"><span class="go">|    o +          |</span>
+</span><span id="__span-11-20"><span class="go">|    o=.          |</span>
+</span><span id="__span-11-21"><span class="go">+----[SHA256]-----+</span>
+</span></code></pre></div>
+<ul>
+<li>Kopieer daarna de publieke sleutel naar het account op de server waarmee je zonder wachtwoord wilt verbinden.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">[student@clientXX ~]$ </span>ssh-copy-id<span class="w"> </span>student@192.168.112.100
+</span><span id="__span-12-2"><span class="go">/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: ssh-add -L</span>
+</span><span id="__span-12-3"><span class="go">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed</span>
+</span><span id="__span-12-4"><span class="go">/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys</span>
+</span><span id="__span-12-5"><span class="go">student@192.168.112.100's password: &lt;geef het wachtwoord van de student in&gt;</span>
+</span><span id="__span-12-6">
+</span><span id="__span-12-7"><span class="go">Number of key(s) added: 1</span>
+</span><span id="__span-12-8">
+</span><span id="__span-12-9"><span class="go">Now try logging into the machine, with: "ssh 'student@192.168.112.100'"</span>
+</span><span id="__span-12-10"><span class="go">and check to make sure that only the key(s) you wanted were added.</span>
+</span></code></pre></div>
+<p>Je kan nu verbinding maken zonder wachtwoord.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">[student@clientXX ~]$ </span>ssh
+</span><span id="__span-13-2"><span class="go">…</span>
+</span><span id="__span-13-3"><span class="gp">student@serverXX:~$</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h03/image8.png" /></p>
+<h2 id="34-remote-docker">3.4 Remote Docker<a class="headerlink" href="#34-remote-docker" title="Permanent link">&para;</a></h2>
+<p>Je kan Docker en Podman ook vanaf een andere computer beheren. Vroeger stelde men daarvoor de Docker-daemon open via een TCP-poort (2375), maar dat is erg onveilig: iedereen die de poort kan bereiken, krijgt in de praktijk root-toegang tot de server. Vandaag gebruik je daarvoor dus normaliter SSH. Eerst bekijken we hoe je gewoon commando’s via ssh uitvoert, daarna hoe je Docker en Podman rechtstreeks op afstand aanstuurt.</p>
+<h3 id="341-commandos-uitvoeren-via-ssh">3.4.1 Commando’s uitvoeren via ssh<a class="headerlink" href="#341-commandos-uitvoeren-via-ssh" title="Permanent link">&para;</a></h3>
+<p>Na het inloggen via SSH vanaf de client kan je Docker- en Podman-commando’s op de server uitvoeren.</p>
+<p>Je kan ook meteen een commando meegeven aan ssh, bijvoorbeeld een Podman-commando.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">[student@clientXX ~]$ </span>ssh<span class="w"> </span>student@192.168.112.100<span class="w"> </span><span class="s2">"podman version"</span>
+</span><span id="__span-14-2"><span class="go">Client:        Podman Engine</span>
+</span><span id="__span-14-3"><span class="go">Version:       5.8.2</span>
+</span><span id="__span-14-4"><span class="go">API Version:   5.8.2</span>
+</span><span id="__span-14-5"><span class="go">Go Version:    go1.26.5 (Red Hat 1.26.5-1.el10_2)</span>
+</span><span id="__span-14-6"><span class="go">Git Commit:    a476c2b2c35443a3db1a1668ac7b402eb1eb0619</span>
+</span><span id="__span-14-7"><span class="go">Built:         Fri Jul 10 02:00:00 2026</span>
+</span><span id="__span-14-8"><span class="go">Build Origin:  Red Hat, Inc. &lt;http://bugzilla.redhat.com/bugzilla&gt;</span>
+</span><span id="__span-14-9"><span class="go">OS/Arch:       linux/amd64</span>
+</span></code></pre></div>
+<p>Met Docker krijg je een probleem wanneer je docker version meegeeft.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">[student@clientXX ~]$ </span>ssh<span class="w"> </span>student@192.168.112.100<span class="w"> </span><span class="s2">"docker version"</span>
+</span><span id="__span-15-2"><span class="go">Client: Docker Engine - Community</span>
+</span><span id="__span-15-3"><span class="go"> Version:           29.8.1</span>
+</span><span id="__span-15-4"><span class="go"> API version:       1.56</span>
+</span><span id="__span-15-5"><span class="go"> Go version:        go1.26.8</span>
+</span><span id="__span-15-6"><span class="go"> Git commit:        4a63305</span>
+</span><span id="__span-15-7"><span class="go"> Built:             Tue Sep 15 16:29:01 2026</span>
+</span><span id="__span-15-8"><span class="go"> OS/Arch:           linux/amd64</span>
+</span><span id="__span-15-9"><span class="go"> Context:           default</span>
+</span><span id="__span-15-10"><span class="go">permission denied while trying to connect to the docker API at unix:///var/run/docker.sock</span>
+</span></code></pre></div>
+<p>Zoals je ziet, krijg je geen toegang tot de Docker-daemon (permission denied): de socket /var/run/docker.sock is alleen toegankelijk voor root en de groep docker. Je hebt dus sudo nodig.</p>
+<p>We proberen het daarom met sudo.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">[student@clientXX ~]$ </span>ssh<span class="w"> </span>student@192.168.112.100<span class="w"> </span><span class="s2">"sudo docker version"</span>
+</span><span id="__span-16-2"><span class="go">sudo: a terminal is required to read the password; either use ssh's -t option or configure an askpass helper</span>
+</span><span id="__span-16-3"><span class="go">sudo: een wachtwoord is verplicht</span>
+</span></code></pre></div>
+<p>Sudo heeft op de remote host geen interactieve terminal om het wachtwoord te vragen. Daarom krijg je:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1">sudo: een wachtwoord is verplicht
+</span></code></pre></div>
+<p>Je lost dat onder meer op door met de optie -t een interactieve terminal te forceren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">[student@clientXX ~]$ </span>ssh<span class="w"> </span>-t<span class="w"> </span>student@192.168.112.100<span class="w"> </span><span class="s2">"sudo docker version"</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h03/image9.png" /></p>
+<h3 id="342-docker-en-podman-bedienen-vanaf-een-andere-computer">3.4.2 Docker en Podman bedienen vanaf een andere computer<a class="headerlink" href="#342-docker-en-podman-bedienen-vanaf-een-andere-computer" title="Permanent link">&para;</a></h3>
+<p>Je typt Docker-commando's op clientXX, maar je wilt dat ze op serverXX uitgevoerd worden.<br>Daarvoor maak je een context: je geeft Docker het adres van de server en zegt dat het die moet gebruiken.<br>Vanaf dan gaat elk Docker-commando via SSH naar serverXX.<br>Met docker context use default werk je weer op je eigen computer.</p>
+<h4 id="3421-voorbereiding-op-de-server">3.4.2.1 Voorbereiding op de server<a class="headerlink" href="#3421-voorbereiding-op-de-server" title="Permanent link">&para;</a></h4>
+<p>Via een context kan je geen sudo gebruiken. De gebruiker student moet daarom lid zijn van de groep docker om de socket /var/run/docker.sock te mogen gebruiken.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span>student
+</span></code></pre></div>
+<p>Log daarna uit en opnieuw in , zodat het nieuwe groepslidmaatschap actief wordt. Controleer met:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">student@serverXX:~$ </span>groups
+</span><span id="__span-20-2"><span class="go">student wheel docker</span>
+</span><span id="__span-20-3"><span class="gp">student@serverXX:~$ </span>docker<span class="w"> </span>ps
+</span></code></pre></div>
+<blockquote>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1">CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+</span></code></pre></div>
+<p>Opgelet: lid zijn van de groep docker geeft in de praktijk root-rechten op de server, want de Docker-daemon draait als root. Voeg alleen vertrouwde gebruikers toe aan deze groep.</p>
+</blockquote>
+<h4 id="3422-docker-context-aanmaken-op-de-client">3.4.2.2 Docker context aanmaken op de client<a class="headerlink" href="#3422-docker-context-aanmaken-op-de-client" title="Permanent link">&para;</a></h4>
+<p>Op de client heb je enkel de Docker-client (CLI) nodig. Voeg eerst de repository van Docker toe.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">[student@clientXX ~]$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.docker.com/linux/rhel/docker-ce.repo
+</span></code></pre></div>
+<p>We installeren nu enkel de Docker CLI zodat we verbinding kunnen maken met de server.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">[student@clientXX ~]$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce-cli
+</span></code></pre></div>
+<p>De Docker-client is nu beschikbaar, de Docker-daemon (server) niet.</p>
+<p>Zorg er ook voor dat je vanaf de client zonder wachtwoord kan inloggen op de server (zie SSH, Zonder wachtwoord). Maak dan een context aan die naar de server wijst.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>context<span class="w"> </span>create<span class="w"> </span>serverXX<span class="w"> </span>--docker<span class="w"> </span><span class="s2">"host=ssh://student@192.168.112.100"</span>
+</span><span id="__span-24-2"><span class="go">serverXX</span>
+</span><span id="__span-24-3"><span class="go">Successfully created context "serverXX"</span>
+</span></code></pre></div>
+<p>Bekijk de beschikbare contexts. Het sterretje toont welke context actief is.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>context<span class="w"> </span>ls
+</span><span id="__span-25-2"><span class="go">NAME        DESCRIPTION   DOCKER ENDPOINT                 ERROR</span>
+</span><span id="__span-25-3"><span class="go">default *                 unix:///var/run/docker.sock</span>
+</span><span id="__span-25-4"><span class="go">serverXX                  ssh://student@192.168.112.100</span>
+</span></code></pre></div>
+<p>Schakel over naar de context van de server. Vanaf nu worden alle Docker-commando’s op serverXX uitgevoerd, ook al typ je ze op de client.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>context<span class="w"> </span>use<span class="w"> </span>serverXX
+</span><span id="__span-26-2"><span class="go">serverXX</span>
+</span><span id="__span-26-3"><span class="go">Current context is now "serverXX"</span>
+</span><span id="__span-26-4">
+</span><span id="__span-26-5"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>version
+</span><span id="__span-26-6"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>run<span class="w"> </span>hello-world
+</span></code></pre></div>
+<p>In de uitvoer van docker version zie je bij Server de Docker Engine van serverXX. Wil je eenmalig een andere context gebruiken zonder over te schakelen, gebruik dan --context:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-27-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>--context<span class="w"> </span>serverXX<span class="w"> </span>ps
+</span><span id="__span-27-2"><span class="go">CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES</span>
+</span></code></pre></div>
+<p>Hetzelfde kan ook zonder context, met de optie -H:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-28-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>-H<span class="w"> </span>ssh://student@192.168.112.100<span class="w"> </span>ps
+</span></code></pre></div>
+<p>Terugkeren naar de standaardcontext (je eigen computer) doe je zo:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><span class="gp">[student@clientXX ~]$ </span>docker<span class="w"> </span>context<span class="w"> </span>use<span class="w"> </span>default
+</span></code></pre></div>
+<p><img alt="" src="../assets/h03/image10.png" /></p>
+<h4 id="3423-podman-via-ssh">3.4.2.3 Podman via SSH<a class="headerlink" href="#3423-podman-via-ssh" title="Permanent link">&para;</a></h4>
+<p>Podman heeft een gelijkaardige functie. Omdat Podman rootless werkt, is er op de server geen extra groep nodig. Wel moet de Podman-socket van de gebruiker student actief zijn.</p>
+<p>Podman heeft geen daemon die altijd draait. Lokaal is dat geen probleem: elk Podman-commando start zelf wat nodig is. Maar als je vanaf de client Podman --connection serverXX ps typt, moet er op de server iets zijn dat die aanvraag ontvangt. Dat is de Podman-socket: een speciaal bestand waar de client via SSH mee verbindt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-30-1"><span class="gp">student@serverXX:~$ </span>systemctl<span class="w"> </span>--user<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>podman.socket
+</span><span id="__span-30-2"><span class="go">Created symlink '/home/student/.config/systemd/user/sockets.target.wants/podman.socket' → '/usr/lib/systemd/user/podman.socket'.</span>
+</span><span id="__span-30-3"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>loginctl<span class="w"> </span>enable-linger<span class="w"> </span>student
+</span></code></pre></div>
+<p>Door enable-linger blijft de socket van student ook actief wanneer student niet ingelogd is.</p>
+<p>Voeg op de client een verbinding toe en test ze.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-31-1"><span class="gp">[student@clientXX ~]$ </span>podman<span class="w"> </span>system<span class="w"> </span>connection<span class="w"> </span>add<span class="w"> </span>serverXX<span class="w"> </span>ssh://student@192.168.112.100
+</span><span id="__span-31-2"><span class="gp">[student@clientXX ~]$ </span>podman<span class="w"> </span>system<span class="w"> </span>connection<span class="w"> </span>list
+</span><span id="__span-31-3"><span class="go">Name        URI                                                                Identity    Default     ReadWrite</span>
+</span><span id="__span-31-4"><span class="go">serverXX    ssh://student@192.168.112.100:22/run/user/1000/podman/podman.sock              true        true</span>
+</span><span id="__span-31-5"><span class="gp">[student@clientXX ~]$ </span>podman<span class="w"> </span>--connection<span class="w"> </span>serverXX<span class="w"> </span>ps
+</span><span id="__span-31-6"><span class="go">CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES</span>
+</span></code></pre></div>
+<p>Met podman system connection default serverXX maak je deze verbinding de standaard, zodat je --connection niet meer moet meegeven.</p>
+<p><img alt="" src="../assets/h03/image11.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-installatie-docker-en-podman/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 2 Installatie Docker en Podman">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                2 Installatie Docker en Podman
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../04-containers-en-container-images/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 4 Containers en container images">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                4 Containers en container images
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

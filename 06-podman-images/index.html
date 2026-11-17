@@ -1,0 +1,1622 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://stijnj-sys.github.io/virtualization/06-podman-images/">
+      
+      
+      
+        <link rel="prev" href="../05-containernetwerken-en-datavolumes/">
+      
+      
+        <link rel="next" href="../07-visual-studio-code/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>6 Podman images - Cursus Virtualization</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Cursus Virtualization" class="md-header__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cursus Virtualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6 Podman images
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Cursus Virtualization" class="md-nav__button md-logo" aria-label="Cursus Virtualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Cursus Virtualization
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.2 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-webserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.3 Webserver
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64-database-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.4 Database-server
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65-wordpress" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5 WordPress
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 WordPress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#651-images-die-we-gebruiken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.1 Images die we gebruiken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652-podman-volumes-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.2 Podman volumes aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653-podman-netwerk-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.3 Podman netwerk aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#654-container-mariadb" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.4 Container MariaDB
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#655-container-wordpress" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.5 Container WordPress
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#656-website-wordpress-configureren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.5.6 Website WordPress configureren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#66-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6.6 Tips
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../00-inleiding/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Containers met Docker en Podman
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="6-podman-images">6 Podman images<a class="headerlink" href="#6-podman-images" title="Permanent link">&para;</a></h1>
+<h2 id="61-doelstellingen">6.1 Doelstellingen<a class="headerlink" href="#61-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>met podman search images opzoeken in de registries uit registries.conf;</p>
+</li>
+<li>
+<p>uitleggen wat unqualified-search-registries betekent;</p>
+</li>
+<li>
+<p>informatie over een image opvragen met podman inspect en die leesbaar maken met jq;</p>
+</li>
+<li>
+<p>met de optie --format gericht filteren op .Config, .Config.Labels en .Config.Labels.help;</p>
+</li>
+<li>
+<p>de documentatie van een image terugvinden in de Red Hat Ecosystem Catalog, op github.com/sclorg en op Docker Hub;</p>
+</li>
+<li>
+<p>een webserver in een container starten en de inhoud van de website aanleveren via een gekoppelde map;</p>
+</li>
+<li>
+<p>een database-server in een container starten en instellen met environment-variabelen;</p>
+</li>
+<li>
+<p>vanaf de server verbinding maken met de database in de container;</p>
+</li>
+<li>
+<p>uitleggen waarom WordPress en MariaDB elk in een eigen container draaien;</p>
+</li>
+<li>
+<p>named volumes aanmaken voor de gegevens van de database en van de website;</p>
+</li>
+<li>
+<p>een eigen netwerk aanmaken zodat de containers elkaar op naam vinden;</p>
+</li>
+<li>
+<p>een WordPress-omgeving opzetten met twee containers en die afwerken via de webinterface;</p>
+</li>
+<li>
+<p>de documentatie van een officiële image gebruiken om omgevingsvariabelen, poorten en volumes terug te vinden.</p>
+</li>
+</ul>
+<h2 id="62-inleiding">6.2 Inleiding<a class="headerlink" href="#62-inleiding" title="Permanent link">&para;</a></h2>
+<p>In dit hoofdstuk bekijken we een aantal images die veel gebruikt worden: een webserver, een database-server en WordPress. Je leert er telkens bij hoe je de documentatie van zo'n image terugvindt, want daarin staat precies hoe je ze moet gebruiken.</p>
+<p>Let op: lang niet elk image is gebaseerd op RHEL. De officiële images van WordPress en MariaDB op Docker Hub bouwen bijvoorbeeld verder op Debian. In zo'n container werkt dnf dus niet en gebruik je apt. Bij images op basis van Alpine is dat weer apk. Kijk dus altijd eerst na op welke distributie een image gebouwd is voor je er pakketten in installeert.</p>
+<h2 id="63-webserver">6.3 Webserver<a class="headerlink" href="#63-webserver" title="Permanent link">&para;</a></h2>
+<p>Met podman search kan je zoeken naar container images uit de registries die opgegeven zijn in /etc/containers/registries.conf:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>less<span class="w"> </span>-N<span class="w"> </span>/etc/containers/registries.conf
+</span><span id="__span-0-2"><span class="go">…</span>
+</span><span id="__span-0-3"><span class="go">22 unqualified-search-registries = ["registry.access.redhat.com", "registry.redhat.io", "docker.io"]</span>
+</span><span id="__span-0-4"><span class="go">…</span>
+</span></code></pre></div>
+<p>Je ziet heel veel commentaar (regels beginnend met #) maar je ziet op regel 22 een regel zonder #.</p>
+<p>Met unqualified-search-registries geef je aan waar Podman moet zoeken wanneer je een image opgeeft zonder registry.</p>
+<p>We zoeken eens naar een nginx-container.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>search<span class="w"> </span>nginx
+</span><span id="__span-1-2"><span class="go">NAME                                    DESCRIPTION</span>
+</span><span id="__span-1-3"><span class="go">…</span>
+</span></code></pre></div>
+<p>Je ziet zeer veel images.</p>
+<p>We verfijnen dit door te zoeken naar regels waarin ubi10 voorkomt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>search<span class="w"> </span>nginx<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ubi10
+</span><span id="__span-2-2"><span class="go">registry.redhat.io/ubi10/nginx-126                        …</span>
+</span></code></pre></div>
+<p>Zoals jullie weten is authenticatie vereist voor registry.redhat.io/ubi10/nginx-126.</p>
+<p>In de Red Hat Ecosystem Catalog is ook info over UBI-images opgenomen.</p>
+<p>We surfen naar de Red Hat Ecosystem Catalog: https://catalog.redhat.com.</p>
+<p>Kies nu bovenaan voor Containers en typ in het zoekvenster nginx-126 in.</p>
+<p><img alt="" src="../assets/h06/image1.png" /></p>
+<p>Klik op Nginx 1.26 bij ubi10 zoals hierboven staat aangegeven.</p>
+<p>We krijgen nu onderstaande pagina. Klik op Get this image.</p>
+<p><img alt="" src="../assets/h06/image2.png" /></p>
+<p>Je ziet nu dat je het image kan downloaden van registry.redhat.io.</p>
+<p><img alt="" src="../assets/h06/image3.png" /></p>
+<p>Onderaan zie je dat je het ook kan dowloaden zonder aanmelden van registry.access.redhat.com.</p>
+<p><img alt="" src="../assets/h06/image4.png" /></p>
+<p>Bij nieuwe packages is de info vaak niet beschikbaar.</p>
+<p>We pullen het image van <code>registry.access.redhat.</code>com. Zo moet je niet in te loggen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pull<span class="w"> </span>registry.access.redhat.com/ubi10/nginx-126
+</span></code></pre></div>
+<p>Erna inspecteren we <code>ubi10/nginx-126</code>.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>ubi10/nginx-126
+</span></code></pre></div>
+<p>Je krijgt nu een nogal onoverzichtelijke output.</p>
+<p><img alt="" src="../assets/h06/image5.png" /></p>
+<p>Dit komt omdat het JSON-formaat is.</p>
+<p>Je kan dit verbeteren door jq te gebruiken. Dit maakt JSON mooi ingesprongen met kleuren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>ubi10/nginx-126<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image6.png" /></p>
+<p>Je kan de uitvoer ook gericht filteren met --format.</p>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{json .Config}}'</span><span class="w"> </span>ubi10/nginx-126<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span></code></pre></div>
+<p>--format verwacht een Go-template: alles tussen {{ }} wordt vervangen door een waarde uit de inspect-uitvoer. .Config is het veld dat we willen, en json zet dat veld om naar JSON zodat jq het kan opmaken. De aanhalingstekens zijn er voor de shell.</p>
+<p>Je houdt zo alleen het deel Config over, in plaats van de volledige uitvoer.</p>
+</blockquote>
+<p><img alt="" src="../assets/h06/image7.png" /></p>
+<p>Je kan verder verfijnen naar .Config.Labels.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{json .Config.Labels}}'</span><span class="w"> </span>ubi10/nginx-126<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image8.png" /></p>
+<p>Je kan, zoals je ziet, meer info over deze image opvragen: <a href="https://github.com/sclorg/nginx-container">https://github.com/sclorg/nginx-container</a>.</p>
+<p>Ik had het antwoord natuurlijk ook verder kunnen verfijnen naar .Config.Labels.help.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{json .Config.Labels.help}}'</span><span class="w"> </span>ubi10/nginx-126<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span><span id="__span-8-2"><span class="go">"For more information visit https://github.com/sclorg/nginx-container"</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image9.png" /></p>
+<p><img alt="" src="../assets/h06/image10.png" /></p>
+<p>We surfen nu naar <a href="https://github.com/sclorg/nginx-container"><u>https://github.com/sclorg/nginx-container</u></a>.</p>
+<p>Klik nu in die pagina op nginx-1.26.</p>
+<p><img alt="" src="../assets/h06/image11.png" /></p>
+<p>Je vindt op deze webpagina hoe je met een Containerfile een eigen image bouwt bovenop dit image.</p>
+<p><img alt="" src="../assets/h06/image12.png" /></p>
+<p>De werkwijze bestaat uit vijf stappen.</p>
+<ol>
+<li>Haal het basisimage binnen.</li>
+</ol>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pull<span class="w"> </span>ubi10/nginx-126
+</span></code></pre></div>
+<p>Dit hebben we reeds gedaan.</p>
+<ol>
+<li>Haal de broncode van je toepassing op. Red Hat voorziet voorbeelden in zijn eigen repository.</li>
+</ol>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>git-core
+</span><span id="__span-10-2"><span class="gp">student@serverXX:~$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sclorg/nginx-container.git
+</span><span id="__span-10-3"><span class="gp">student@serverXX:~$ </span><span class="nb">cd</span><span class="w"> </span>nginx-container/examples/1.26/
+</span></code></pre></div>
+<ol>
+<li>Bereid de toepassing voor in de Containerfile. Daar horen telkens drie dingen bij: je broncode in het image plaatsen, de configuratiebestanden op de juiste plaats zetten, en het startcommando vastleggen.<br><br><code>student@serverXX:~/nginx-container/examples/1.26$`` ``nano Containerfile</code></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1">FROM registry.access.redhat.com/ubi10/nginx-126
+</span><span id="__span-11-2"># Voeg de bestanden van de toepassing toe
+</span><span id="__span-11-3">ADD test-app/nginx.conf "${NGINX_CONF_PATH}"
+</span><span id="__span-11-4">ADD test-app/nginx-default-cfg/*.conf "${NGINX_DEFAULT_CONF_PATH}"
+</span><span id="__span-11-5">ADD test-app/nginx-cfg/*.conf "${NGINX_CONFIGURATION_PATH}"
+</span><span id="__span-11-6">ADD test-app/*.html .
+</span><span id="__span-11-7"># Start nginx op de voorgrond
+</span><span id="__span-11-8">CMD nginx -g "daemon off;"
+</span></code></pre></div>
+<blockquote>
+<p>De variabelen ${NGINX_CONF_PATH} en de twee andere staan al in het image gedefinieerd. Je hoeft de exacte paden dus niet te kennen; opvragen kan met podman inspect --format '{{json .Config.Env}}' ubi10/nginx-126 | jq. De laatste regel zorgt ervoor dat nginx op de voorgrond draait. Zonder daemon off zou nginx zich naar de achtergrond sturen en zou de container meteen afsluiten.</p>
+</blockquote>
+<ol>
+<li>Bouw het image.</li>
+</ol>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@serverXX:~/nginx-container/examples/1.26$ </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>nginx-app<span class="w"> </span>.
+</span></code></pre></div>
+<ol>
+<li>Start een container met het resultaat.</li>
+</ol>
+<blockquote>
+<p>podman run -d nginx-app (voer dit niet uit)</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="go">Zonder publicatie draait de webserver wel, maar geraak je er van buitenaf niet bij. Je kan enkel testen vanuit de container zelf.</span>
+</span><span id="__span-13-2"><span class="gp">student@serverXX:~/nginx-container/examples/1.26$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>nginx-app
+</span></code></pre></div>
+<p>Check dit.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">student@serverXX:~/nginx-container/examples/1.26$ </span>curl<span class="w"> </span>localhost:8080
+</span><span id="__span-14-2"><span class="go">&lt;html&gt;</span>
+</span><span id="__span-14-3"><span class="go">&lt;head&gt;</span>
+</span><span id="__span-14-4"><span class="go">        &lt;title&gt;Test NGINX passed&lt;/title&gt;</span>
+</span><span id="__span-14-5"><span class="go">&lt;/head&gt;</span>
+</span><span id="__span-14-6"><span class="go">&lt;body&gt;</span>
+</span><span id="__span-14-7"><span class="go">&lt;h1&gt;NGINX is working&lt;/h1&gt;</span>
+</span><span id="__span-14-8"><span class="go">&lt;/body&gt;</span>
+</span><span id="__span-14-9"><span class="go">&lt;/html&gt;</span>
+</span></code></pre></div>
+</blockquote>
+<p>We verwijderen nu deze container.</p>
+<p>student@serverXX:~$ podman rm fa -f</p>
+<p>fa is hier natuurlijk de container ID.</p>
+<p>Op dezelfde webpagina staat ook hoe je onmiddellijk het image kan gebruiken via een gekoppelde directory.</p>
+<p><img alt="" src="../assets/h06/image13.png" /></p>
+<ul>
+<li>Maak eerst de directorystructuur aan.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/wwwdata/html
+</span></code></pre></div>
+<ul>
+<li>Maak de startpagina index.html aan.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">student@serverXX:~$ </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Dit is een eenvoudige website"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/wwwdata/html/index.html
+</span><span id="__span-16-2"><span class="go">Dit is een eenvoudige website</span>
+</span></code></pre></div>
+<ul>
+<li>We controleren de webpagina.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">student@serverXX:~$ </span>cat<span class="w"> </span>/wwwdata/html/index.html
+</span><span id="__span-17-2"><span class="go">Dit is een eenvoudige website</span>
+</span></code></pre></div>
+<ul>
+<li>We starten nu een container op aan de hand van het image.</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>nginx<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-v<span class="w"> </span>/wwwdata/html:/opt/app-root/src:Z<span class="w"> </span>ubi10/nginx-126<span class="w"> </span>nginx<span class="w"> </span>-g<span class="w"> </span><span class="s2">"daemon off;"</span>
+</span><span id="__span-18-2"><span class="go">…</span>
+</span><span id="__span-18-3"><span class="go">45bc04da9ccfc27077875faaad64e09499ab587adb340b06fbb7846b75a2f418</span>
+</span></code></pre></div>
+<p>Er staat een fout in de beschrijving (/wwwdata<strong>/html</strong> i.p.v. /wwwdata) op de webpagina maar het principe is duidelijk.</p>
+<p>We vragen nu de webpagina op.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">student@serverXX:~$ </span>curl<span class="w"> </span>http://192.168.112.100:8080
+</span><span id="__span-19-2"><span class="go">Dit is een eenvoudige website</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image14.png" /></p>
+<h2 id="64-database-server">6.4 Database-server<a class="headerlink" href="#64-database-server" title="Permanent link">&para;</a></h2>
+<p>We zoeken nu eens een mariadb-image.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>search<span class="w"> </span>mariadb<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rhel10
+</span><span id="__span-20-2"><span class="go">registry.redhat.io/rhel10/mariadb-1011                        MariaDB is an open-source relational databas...</span>
+</span><span id="__span-20-3"><span class="go">registry.redhat.io/rhel10/mariadb-118                         MariaDB is an open-source relational databas...</span>
+</span></code></pre></div>
+<p>We zoeken informatie op over deze container image na het inloggen (nodig voor registry.redhat.io) en pullen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>login<span class="w"> </span>registry.redhat.io
+</span><span id="__span-21-2"><span class="go">Username: stijnjacobs</span>
+</span><span id="__span-21-3"><span class="go">Password:</span>
+</span><span id="__span-21-4"><span class="go">Login Succeeded!</span>
+</span><span id="__span-21-5"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>pull<span class="w"> </span>registry.redhat.io/rhel10/mariadb-118
+</span><span id="__span-21-6"><span class="go">…</span>
+</span><span id="__span-21-7"><span class="go">73160d3c62cf1049a14422b281e686ab3a9aee6af04e42f9a6918e9263ebf0a6</span>
+</span><span id="__span-21-8"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{json .Config}}'</span><span class="w"> </span>registry.redhat.io/rhel10/mariadb-118<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image15.png" /></p>
+<p>Hier staat heel duidelijk hoe je de containerimage moet gebruiken!</p>
+<p>Je kan het onderdeel “usage” natuurlijk ook onmiddellijk eruit filteren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{json .Config.Labels.usage}}'</span><span class="w"> </span>registry.redhat.io/rhel10/mariadb-118<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span><span id="__span-22-2"><span class="go">"podman run -d -e MYSQL_USER=user -e MYSQL_PASSWORD=pass -e MYSQL_DATABASE=db -p 3306:3306 rhel10/mariadb-118"</span>
+</span></code></pre></div>
+<p>Aan de hand hiervan kunnen we onderstaande opbouwen.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_USER</span><span class="o">=</span>student<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>abc<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_DATABASE</span><span class="o">=</span>testdb<span class="w"> </span>-p<span class="w"> </span><span class="m">3306</span>:3306<span class="w"> </span>rhel10/mariadb-118
+</span><span id="__span-23-2"><span class="go">17c89d9b9ffdae9508c46b33b39e5d7a4bc2c8b9f8f3becf3a2950fb7ba1e01b</span>
+</span></code></pre></div>
+<p>De database-server is gestart en blijft draaien.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps
+</span><span id="__span-24-2"><span class="go">CONTAINER ID  IMAGE                                         COMMAND    …</span>
+</span><span id="__span-24-3"><span class="go">17c89d9b9ffd  registry.redhat.io/rhel10/mariadb-118:latest     run-mysqld  …</span>
+</span></code></pre></div>
+<p>In de kolom COMMAND zie je run-mysqld staan. Dat is het hoofdproces van de container, een script uit het image dat de database op de voorgrond start. Een container blijft immers maar draaien zolang haar hoofdproces draait: sluit run-mysqld af, dan stopt ook de container.</p>
+<p>Je kan nu uiteraard verbinding maken met deze database vanaf ServerXX. Je moet wel de sql-client installeren.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>mariadb
+</span></code></pre></div>
+<p>We kunnen nu verbinding maken met het wachtwoord abc.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><span class="gp">student@serverXX:~$ </span>mysql<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span>-u<span class="w"> </span>student<span class="w"> </span>-p<span class="w"> </span>testdb
+</span><span id="__span-26-2"><span class="go">Enter password:</span>
+</span><span id="__span-26-3"><span class="go">elcome to the MariaDB monitor.  Commands end with ; or \g.</span>
+</span><span id="__span-26-4"><span class="go">Your MariaDB connection id is 3</span>
+</span><span id="__span-26-5"><span class="go">Server version: 11.8.8-MariaDB MariaDB Server</span>
+</span><span id="__span-26-6">
+</span><span id="__span-26-7"><span class="go">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span>
+</span><span id="__span-26-8">
+</span><span id="__span-26-9"><span class="go">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span>
+</span><span id="__span-26-10">
+</span><span id="__span-26-11"><span class="go">MariaDB [testdb]&gt;</span>
+</span></code></pre></div>
+<p>We gaan nu geen database configureren maar zien dat het mogelijk is. Verlaat MariaDB.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1">MariaDB [testdb]&gt; exit
+</span><span id="__span-27-2">Bye
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image16.png" /></p>
+<h2 id="65-wordpress">6.5 WordPress<a class="headerlink" href="#65-wordpress" title="Permanent link">&para;</a></h2>
+<h3 id="651-images-die-we-gebruiken">6.5.1 Images die we gebruiken<a class="headerlink" href="#651-images-die-we-gebruiken" title="Permanent link">&para;</a></h3>
+<p>Vorig academiejaar hebben jullie WordPress leren installeren in de OLOD Linux Advanced.</p>
+<p>Jullie hebben toen daarvoor:</p>
+<ul>
+<li>
+<p>Een webserver (httpd) geïnstalleerd en geconfigureerd</p>
+<ul>
+<li>
+<p>Httpd gestart.</p>
+</li>
+<li>
+<p>Bestanden WordPress geplaatst in /var/www/html.</p>
+</li>
+<li>
+<p>Rechten en eigenaar aangepast van de WordPress-bestanden.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Een database management system geïnstalleerd en geconfigureerd.</p>
+<ul>
+<li>
+<p>Mariadb gestart.</p>
+</li>
+<li>
+<p>Een database met een user en een wachtwoord aangemaakt.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>PHP geïnstalleerd en geconfigureerd.</p>
+</li>
+<li>
+<p>WordPress geconfigureerd zodat die met de database overweg kan.</p>
+<ul>
+<li>Wp-config.php geconfigureerd voor database.</li>
+</ul>
+</li>
+</ul>
+<p>We gaan WordPress installeren en configureren gebruik makend van containers.</p>
+<p>We gaan nu gebruik maken van de officiële image van WordPress op de Docker Hub: <a href="https://hub.docker.com"><u>https://hub.docker.com</u></a>.</p>
+<p>Typ in de zoekbalk wordpress in en selecteer links Docker Official Image.</p>
+<p><img alt="" src="../assets/h06/image17.png" /></p>
+<p>Je ziet nu het officiële image van WordPress staan. Klik erop.</p>
+<p>Je vindt nu info over hoe je het image gebruikt. Hieronder zie je de voor ons belangrijkste informatie (podman compose zien we volgend hoofdstuk).</p>
+<p><img alt="" src="../assets/h06/image18.png" /></p>
+<ul>
+<li>
+<p>De officiële WordPress Docker image bevat standaard PHP, omdat WordPress in PHP is geschreven.</p>
+</li>
+<li>
+<p>De officiële WordPress Docker image bevat geen databaseserver. De database wordt dus gebruikelijk in een aparte container gedraaid.</p>
+</li>
+</ul>
+<p>Ga terug naar de Docker Hub: <a href="https://hub.docker.com/"><u>https://hub.docker.com/</u></a>.</p>
+<p>Zoek nu naar mariadb.</p>
+<p><img alt="" src="../assets/h06/image19.png" /></p>
+<p>Je ziet nu het officiële image van mariadb staan. Klik erop.</p>
+<p>Je vindt nu info over hoe je het image gebruikt. Hieronder vind je de informatie op de pagina die voor ons belangrijk is.</p>
+<p><img alt="" src="../assets/h06/image20.png" /></p>
+<p>en</p>
+<p><img alt="" src="../assets/h06/image21.png" /></p>
+<p><img alt="" src="../assets/h06/image22.png" /></p>
+<p>Hieronder zie je in één oogopslag hoe we die omgeving opbouwen. Elke stap komt hierna uitgebreid aan bod.</p>
+<p><img alt="" src="../assets/h06/image23.png" /></p>
+<h3 id="652-podman-volumes-aanmaken">6.5.2 Podman volumes aanmaken<a class="headerlink" href="#652-podman-volumes-aanmaken" title="Permanent link">&para;</a></h3>
+<p>Je wil natuurlijk niet dat je de gegevens van de database en de website verliest als een container zich afsluit. We maken hiervoor 2 named volumes aan voor de 2 containers die we zullen gebruiken.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-28-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>mysql-data
+</span><span id="__span-28-2"><span class="go">mysql-data</span>
+</span><span id="__span-28-3"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>wp-content
+</span><span id="__span-28-4"><span class="go">wp-content</span>
+</span></code></pre></div>
+<h3 id="653-podman-netwerk-aanmaken">6.5.3 Podman netwerk aanmaken<a class="headerlink" href="#653-podman-netwerk-aanmaken" title="Permanent link">&para;</a></h3>
+<p>We willen uiteraard dat de 2 containers met elkaar kunnen communiceren. Hiervoor dien je, aangezien we rootless werken, een netwerk aan te maken. Dat is het meest betrouwbaar.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>wpnet
+</span><span id="__span-29-2"><span class="go">wpnet</span>
+</span></code></pre></div>
+<h3 id="654-container-mariadb">6.5.4 Container MariaDB<a class="headerlink" href="#654-container-mariadb" title="Permanent link">&para;</a></h3>
+<p>We zullen nu een container starten met MariaDB.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-30-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>--detach<span class="w"> </span>--network<span class="w"> </span>wpnet<span class="w"> </span>--name<span class="w"> </span>mariadb<span class="w"> </span>-e<span class="w"> </span><span class="nv">MARIADB_ROOT_PASSWORD</span><span class="o">=</span><span class="s1">'ServerXXdocker007'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MARIADB_DATABASE</span><span class="o">=</span><span class="s1">'wordpress'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MARIADB_USER</span><span class="o">=</span><span class="s1">'wp'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MARIADB_PASSWORD</span><span class="o">=</span><span class="s1">'ServerXXdocker1'</span><span class="w"> </span>-v<span class="w"> </span>mysql-data:/var/lib/mysql:Z<span class="w"> </span>docker.io/library/mariadb:latest
+</span><span id="__span-30-2"><span class="go">9db3b5a582b291eeb216a8e5ac26c9402283aad7f751ca21b8654ee5d40a360e</span>
+</span></code></pre></div>
+<p>--detach zorgt ervoor dat de container detached start.</p>
+<p>--name mariadb geeft de container de naam mariadb.</p>
+<p>--network wpnet verbindt de container met een bestaand netwerk dat wpnet heet.</p>
+<p>-e is een environment variable.</p>
+<blockquote>
+<p>MARIADB_ROOT_PASSWORD = wachtwoord van de databasebeheerder root.</p>
+<p>MARIADB_DATABASE = er wordt automatisch een database gemaakt met de naam wordpress.</p>
+</blockquote>
+<p>MARIADB_USER = er wordt een nieuwe gebruiker wp aangemaakt.</p>
+<p>MARIADB_PASSWORD = wachtwoord van die gebruiker (wp).</p>
+<blockquote>
+<p>De directory waarin de database bewaard wordt, wordt opgeslagen in mysql-data.</p>
+</blockquote>
+<p>MariaDB wordt met andere woorden met het netwerk verbonden en er wordt een database aangemaakt met een gebruiker en wachtwoord die daarvan gebruik mogen maken.</p>
+<p>Ter controle kan je kijken of MariaDB connecties aanvaardt.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-31-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>mariadb
+</span></code></pre></div>
+<p><img alt="" src="../assets/h06/image24.png" /></p>
+<p>Ga eruit door &lt;CTRL&gt; + C te typen.</p>
+<p>De container blijft draaien zolang mariadb draait.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>ps
+</span><span id="__span-32-2"><span class="go">CONTAINER ID  IMAGE                             COMMAND …</span>
+</span><span id="__span-32-3"><span class="go">9db3b5a582b2  docker.io/library/mariadb:latest  mariadbd …</span>
+</span></code></pre></div>
+<h3 id="655-container-wordpress">6.5.5 Container WordPress<a class="headerlink" href="#655-container-wordpress" title="Permanent link">&para;</a></h3>
+<p>We starten nu een container op met WordPress. Aangezien we rootless werken publiceren we de poort naar 8080 op de host. We stellen ook de verbinding met de databaseserver in.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-33-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>wordpress<span class="w"> </span>--network<span class="w"> </span>wpnet<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80<span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_HOST</span><span class="o">=</span><span class="s1">'mariadb:3306'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_USER</span><span class="o">=</span><span class="s1">'wp'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_PASSWORD</span><span class="o">=</span><span class="s1">'ServerXXdocker1'</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_NAME</span><span class="o">=</span><span class="s1">'wordpress'</span><span class="w"> </span>-v<span class="w"> </span>wp-content:/var/www/html/wp-content:Z<span class="w"> </span>docker.io/library/wordpress:latest
+</span><span id="__span-33-2"><span class="go">…</span>
+</span><span id="__span-33-3"><span class="go">143026fcf4b0516884bb68e014bc4131c23514d94496529e98c1c4c13f8c7700</span>
+</span></code></pre></div>
+<p>-d zorgt ervoor dat de container detached start.</p>
+<p>--name wordpress geeft de container de naam wordpress.</p>
+<blockquote>
+<p>--network wpnet verbindt de container met een bestaand netwerk dat wpnet heet.</p>
+</blockquote>
+<p>-e is een environment variable.</p>
+<p>Je ziet dat de gegevens over de database hier terugkomen.</p>
+<blockquote>
+<p>De website wordt opgeslagen in het named volume wp-content.</p>
+</blockquote>
+<p>We kunnen al een kleine test doen of de website beschikbaar is.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-34-1"><span class="gp">student@serverXX:~$ </span>netstat<span class="w"> </span>-tlpn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">8080</span>
+</span><span id="__span-34-2"><span class="go">…</span>
+</span><span id="__span-34-3"><span class="go">tcp6       0      0 :::8080      :::*         LISTEN      5279/rootlessport</span>
+</span></code></pre></div>
+<p>Er is dus een website beschikbaar op poort 8080.</p>
+<h3 id="656-website-wordpress-configureren">6.5.6 Website WordPress configureren<a class="headerlink" href="#656-website-wordpress-configureren" title="Permanent link">&para;</a></h3>
+<p>Ga naar de browser van ServerXX en typ <a href="http://localhost:8080">http://localhost:8080</a> in.</p>
+<p>Kies in het eerste venster voor Nederlands (België) zoals je hieronder ziet.</p>
+<p><img alt="" src="../assets/h06/image25.png" /></p>
+<p>Klik erna op Doorgaan.</p>
+<p>Je kan nu onmiddellijk de info over de website ingeven die je wenst. De database is immers al gekoppeld.</p>
+<p>Vul nu gegevens in analoog met onderstaande.</p>
+<p><img alt="" src="../assets/h06/image26.png" /></p>
+<p>Klik erna uiteraard op WordPress installeren.</p>
+<p>Je krijgt nu de melding dat WordPress is geïnstalleerd.</p>
+<p><img alt="" src="../assets/h06/image27.png" /></p>
+<p>Klik uiteraard op Aanmelden.</p>
+<p><img alt="" src="../assets/h06/image28.png" /></p>
+<p>Je kan de website beheren door eerst de Gebruikersnaam of e-mailadres en wachtwoord in te geven.</p>
+<p><img alt="" src="../assets/h06/image29.png" /></p>
+<p>Je kan nu naar de website zelf gaan door rechtsboven te klikken op “test wordpress”, website bezoeken te klikken.</p>
+<p><img alt="" src="../assets/h06/image30.png" /></p>
+<p>Je kan uiteraard ook <a href="http://localhost:8080">http://localhost:8080</a> of <a href="http://192.168.112.100:8080/">http://192.168.112.100:8080/</a> intypen.</p>
+<p>De configuratie van de website is altijd bereikbaar via http://localhost:8080/wp-admin/.</p>
+<p>Verder gaan we hier niet op in. Dat is voor andere collega’s in de ICT-afdeling.</p>
+<h2 id="66-tips">6.6 Tips<a class="headerlink" href="#66-tips" title="Permanent link">&para;</a></h2>
+<p>Elke officiële image heeft een uitgebreide beschrijving.</p>
+<p>Daar vind je info over o.a.:</p>
+<ul>
+<li>
+<p>Omgevingsvariabelen (zoals MARIADB_ROOT_PASSWORD, WORDPRESS_DB_HOST).</p>
+</li>
+<li>
+<p>Standaard poorten (bijv. MariaDB = 3306, WordPress/Apache = 80).</p>
+</li>
+<li>
+<p>Volumes (waar je data kan mounten).</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../05-containernetwerken-en-datavolumes/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 5 Containernetwerken en datavolumes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                5 Containernetwerken en datavolumes
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../07-visual-studio-code/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 7 Visual Studio Code">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                7 Visual Studio Code
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>

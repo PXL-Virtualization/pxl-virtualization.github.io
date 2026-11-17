@@ -1,0 +1,6 @@
+/* Bij kopiëren de prompt (student@serverXX:~$) en de uitvoer weglaten */
+[data-md-copying] .gp,
+[data-md-copying] .go,
+[data-md-copying] span[id^="__span"]:has(> .go) {
+  display: none;
+}
