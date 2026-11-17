@@ -1,3 +1,24 @@
+/* Kleuren in de stijl van PXL: zwart en goud in plaats van blauw */
+:root, [data-md-color-scheme="default"] {
+  --md-primary-fg-color: #1f1f1f;
+  --md-primary-fg-color--light: #444444;
+  --md-primary-fg-color--dark: #000000;
+  --md-accent-fg-color: #8a6d2f;
+  --md-accent-fg-color--transparent: #b5975a26;
+  --md-typeset-a-color: #7a5f24;
+}
+[data-md-color-scheme="slate"] {
+  --md-accent-fg-color: #d4b77a;
+  --md-accent-fg-color--transparent: #d4b77a26;
+  --md-typeset-a-color: #d4b77a;
+}
+.md-sidebar__scrollwrap {
+  scrollbar-color: #bdbdbd transparent;
+}
+.md-sidebar__scrollwrap:hover {
+  scrollbar-color: #8a8a8a transparent;
+}
+
 /* Bij kopiëren de prompt (student@serverXX:~$) en de uitvoer weglaten */
 [data-md-copying] .gp,
 [data-md-copying] .go,

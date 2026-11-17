@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/</loc>
+        <loc>https://pxl-virtualization.github.io/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/00-inleiding/</loc>
+        <loc>https://pxl-virtualization.github.io/00-inleiding/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/01-rhel-10-in-vmware-workstation/</loc>
+        <loc>https://pxl-virtualization.github.io/01-rhel-10-in-vmware-workstation/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/02-installatie-docker-en-podman/</loc>
+        <loc>https://pxl-virtualization.github.io/02-installatie-docker-en-podman/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/03-beheer-op-afstand/</loc>
+        <loc>https://pxl-virtualization.github.io/03-beheer-op-afstand/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/04-containers-en-container-images/</loc>
+        <loc>https://pxl-virtualization.github.io/04-containers-en-container-images/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/05-containernetwerken-en-datavolumes/</loc>
+        <loc>https://pxl-virtualization.github.io/05-containernetwerken-en-datavolumes/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/06-podman-images/</loc>
+        <loc>https://pxl-virtualization.github.io/06-podman-images/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/07-visual-studio-code/</loc>
+        <loc>https://pxl-virtualization.github.io/07-visual-studio-code/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/08-podman-compose/</loc>
+        <loc>https://pxl-virtualization.github.io/08-podman-compose/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/09-podman-compose-in-combinatie-met-containerfile/</loc>
+        <loc>https://pxl-virtualization.github.io/09-podman-compose-in-combinatie-met-containerfile/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/10-podman-pods/</loc>
+        <loc>https://pxl-virtualization.github.io/10-podman-pods/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/11-kubernetes/</loc>
+        <loc>https://pxl-virtualization.github.io/11-kubernetes/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/12-van-podman-naar-kubernetes/</loc>
+        <loc>https://pxl-virtualization.github.io/12-van-podman-naar-kubernetes/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/13-installatie-proxmox-en-eerste-stappen/</loc>
+        <loc>https://pxl-virtualization.github.io/13-installatie-proxmox-en-eerste-stappen/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/14-proxmox-standalone-server/</loc>
+        <loc>https://pxl-virtualization.github.io/14-proxmox-standalone-server/</loc>
       </url>
       <url>
-        <loc>https://stijnj-sys.github.io/virtualization/15-vms-en-containers-in-proxmox/</loc>
+        <loc>https://pxl-virtualization.github.io/15-vms-en-containers-in-proxmox/</loc>
       </url>
 </urlset>
