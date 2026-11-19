@@ -1,0 +1,1482 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://pxl-virtualization.github.io/16-nested-virtualization/">
+      
+      
+      
+        <link rel="prev" href="../15-vms-en-containers-in-proxmox/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>16 Nested Virtualization - 42SNE1020 Virtualization (2026-27 - GRSNE)</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-header__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            42SNE1020 Virtualization (2026-27 - GRSNE)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              16 Nested Virtualization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-nav__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    42SNE1020 Virtualization (2026-27 - GRSNE)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  16 Nested Virtualization
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  16 Nested Virtualization
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#161-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.1 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#162-nested-virtualization-aanzetten-voor-vmware-workstation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2 Nested virtualization aanzetten voor VMware Workstation
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2 Nested virtualization aanzetten voor VMware Workstation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1621-instellen-voor-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.1 Instellen voor VM
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1622-problemen-nested-virtualization-oplossen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.2 Problemen Nested Virtualization oplossen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2.2 Problemen Nested Virtualization oplossen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16221-met-een-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.2.1 Met een script
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16222-met-de-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.2.2 Met de hand
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1623-beveiliging-terugzetten" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.3 Beveiliging terugzetten
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2.3 Beveiliging terugzetten">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16231-met-een-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.3.1 Met een script
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16232-met-de-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.2.3.2 Met de hand
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#163-nested-virtualization-en-hyper-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        16.3 Nested virtualization en Hyper-V
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Proxmox
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="16-nested-virtualization">16 Nested Virtualization<a class="headerlink" href="#16-nested-virtualization" title="Permanent link">&para;</a></h1>
+<h2 id="161-inleiding">16.1 Inleiding<a class="headerlink" href="#161-inleiding" title="Permanent link">&para;</a></h2>
+<p>Het concept van nested virtualisation (geneste virtualisatie) laat zien hoe meerdere lagen van virtualisatie en isolatie kunnen worden opgebouwd, waarbij elke laag onafhankelijk opereert en specifieke taken kan uitvoeren.</p>
+<p>Beschrijving van de lagen:</p>
+<ul>
+<li>
+<p>Fysieke Hardware (Layer 1)<br>Dit is de laag van je fysieke computer. Bijvoorbeeld, je hebt een desktop of laptop met een CPU, RAM, opslag, enzovoort.</p>
+</li>
+<li>
+<p>Besturingssysteem (Layer 2)<br>Op de fysieke hardware draait het basis besturingssysteem van je computer, bijvoorbeeld Windows 10 of Windows 11.</p>
+</li>
+<li>
+<p>Hypervisor (Layer 3)<br>Op je Windows 11 machine heb je een hypervisor geïnstalleerd, in dit geval VMware Workstation Pro.</p>
+</li>
+<li>
+<p>Virtuele Machine (Layer 4)<br>Binnen VMware Workstation Pro heb je een virtuele machine (VM) gecreëerd. Deze VM heeft zijn eigen besturingssysteem. Bijvoorbeeld Proxmox.</p>
+</li>
+<li>
+<p>VM (Layer 5)<br>Binnen Proxmox ga je VM’s draaien. Hiervoor heb je nested virtualization nodig.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h16/image1.png" /></p>
+<h2 id="162-nested-virtualization-aanzetten-voor-vmware-workstation">16.2 Nested virtualization aanzetten voor VMware Workstation<a class="headerlink" href="#162-nested-virtualization-aanzetten-voor-vmware-workstation" title="Permanent link">&para;</a></h2>
+<h3 id="1621-instellen-voor-vm">16.2.1 Instellen voor VM<a class="headerlink" href="#1621-instellen-voor-vm" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/h16/image2.png" /></p>
+<p>Bij Virtualization engine kan je 2 items aanvinken:</p>
+<ul>
+<li>Virtualize Intel VT-x/EPT of AMD-V/RVI<br>Deze optie is vooral nuttig voor nested virtualization, waarbij je virtuele machines binnen andere virtuele machines draait.</li>
+</ul>
+<p>Door VT-x of AMD-V te virtualiseren, kan de gast-VM zelf ook hypervisors uitvoeren, zoals Hyper-V, KVM of ESXi.<br>Deze instelling moeten wij uiteraard aanzetten.</p>
+<ul>
+<li>Virtualize CPU Performance Counters</li>
+</ul>
+<p>Deze instelling stelt virtuele machines in staat om gebruik te maken van de CPU-prestatieregisters van de fysieke CPU. Prestatieregisters worden vaak gebruikt voor het verzamelen van gedetailleerde prestatiegegevens en statistieken over de CPU-activiteiten.<br>Laat deze instelling uit staan.</p>
+<h3 id="1622-problemen-nested-virtualization-oplossen">16.2.2 Problemen Nested Virtualization oplossen<a class="headerlink" href="#1622-problemen-nested-virtualization-oplossen" title="Permanent link">&para;</a></h3>
+<p>Het kan voorkomen dat Nested Virtualization in eerste instantie niet werkt op je laptop wanneer je een VM start met de gewijzigde instellingen.</p>
+<p><img alt="" src="../assets/h16/image3.png" /></p>
+<p>Wil je nested virtualization gebruiken, dan moet je dit oplossen. De ervaring leert dat je op een AMD-processor meer moet aanpassen dan op een Intel-processor, maar op beide kan je nested virtualization instellen.</p>
+<div class="admonition warning">
+<p class="admonition-title">Opgelet: nested virtualization is een keuze, geen verplichting voor de lessen Virtualization.</p>
+<p>Je kan de cursus volledig volgen zonder nested virtualization. Proxmox draait je VM's dan zonder KVM: dat is trager, maar het werkt. Containers werken gewoon. In hoofdstuk 17 volg je dan de route met Debian.</p>
+<p>De instellingen die nodig zijn voor nested virtualization schakelen onderstaande uit:</p>
+<ul>
+<li>
+<p>Geheugenintegriteit (HVCI) houdt malware en kwaadaardige stuurprogramma's uit de kern van Windows.</p>
+</li>
+<li>
+<p>Credential Guard beschermt je wachtwoorden en aanmeldgegevens tegen diefstal door malware.</p>
+</li>
+<li>
+<p>Firmwarebeveiliging controleert bij het opstarten of er niet met de firmware geknoeid is.</p>
+</li>
+</ul>
+<p>Updates en Defender zijn de basis. Ze houden het grootste deel van de aanvallen tegen.<br>De instellingen die je uitzet, zijn een extra laag tegen zwaardere aanvallen.<br>Zet de beveiliging terug aan zodra je nested virtualization niet meer nodig hebt (zie Beveiliging terugzetten).</p>
+</div>
+<h4 id="16221-met-een-script">16.2.2.1 Met een script<a class="headerlink" href="#16221-met-een-script" title="Permanent link">&para;</a></h4>
+<p>Het script nestedvirtualization.ps1 controleert je laptop en zet in één keer alle instellingen goed die verderop met de hand beschreven staan: Hyper-V, de Windows-onderdelen, geheugenintegriteit, firmwarebeveiliging en Device Guard. Het werkt op Windows 10 en 11: Home, Pro en Education.</p>
+<p>Open PowerShell als administrator: klik met de rechtermuisknop op Start en kies Windows Powershell (beheerder).</p>
+<p><img alt="" src="../assets/h16/image4.png" /></p>
+<p>Download het script naar je homemap:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="nb">Invoke-WebRequest</span> <span class="n">https</span><span class="p">://</span><span class="n">pxl-virtualization</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">/</span><span class="n">downloads</span><span class="p">/</span><span class="n">nestedvirtualization</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-OutFile</span> <span class="s2">"$HOME\nestedvirtualization.ps1"</span>
+</span></code></pre></div>
+<p>Controleer eerst je laptop. Het script verandert dan nog niets:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="s2">"$HOME\nestedvirtualization.ps1"</span>
+</span></code></pre></div>
+<p>Elke regel met [!!] is een instelling die nested virtualization tegenhoudt. Pas de instellingen toe:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="s2">"$HOME\nestedvirtualization.ps1"</span> <span class="n">-Apply</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h16/image5.png" /></p>
+<p>Herstart de laptop.</p>
+<p>Voer daarna het script opnieuw uit zonder -Apply. Je moet nu Geen Windows-hypervisor actief en VBS-status nu: uit zien.</p>
+<p><img alt="" src="../assets/h16/image6.png" /></p>
+<p>Goed om te weten:</p>
+<ul>
+<li>
+<p>Staat BitLocker aan, dan pauzeert het script BitLocker voor één herstart. Zo hoef je na de herstart je herstelsleutel niet in te geven.</p>
+</li>
+<li>
+<p>Het script schrijft een logbestand in C:\Users\Public. Dat kan je doorsturen als het niet lukt.</p>
+</li>
+<li>
+<p>Zonder Hyper-V werken WSL2, Docker Desktop en Windows Sandbox niet meer.</p>
+</li>
+<li>
+<p>Op Windows Education staat Credential Guard standaard aan. Het script zet ook dat uit.</p>
+</li>
+<li>
+<p>Meldt het script dat Device Guard via Intune of MDM opgelegd wordt, dan kan je het niet zelf uitzetten. Neem dan contact op met de IT-dienst.</p>
+</li>
+<li>
+<p>Met -VmxPath zet het script ook het vinkje Virtualize Intel VT-x/EPT or AMD-V/RVI in je VM, bijvoorbeeld -VmxPath "D:\VMs\pve\pve.vmx". VMware moet dan gesloten zijn.</p>
+</li>
+</ul>
+<h4 id="16222-met-de-hand">16.2.2.2 Met de hand<a class="headerlink" href="#16222-met-de-hand" title="Permanent link">&para;</a></h4>
+<p>Werkt het script niet, of wil je zelf zien wat er verandert, volg dan deze stappen. Niet alles bestaat op elke editie van Windows. Welke editie je hebt, zie je bij Instellingen &gt; Systeem &gt; Info. Windows Education werkt zoals Pro: overal waar Pro staat, geldt hetzelfde voor Education.</p>
+<p>Overzicht:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Stap</strong></th>
+<th><strong>Windows Home</strong></th>
+<th><strong>Windows Pro / Education</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Hyper-V-hypervisor uit (bcdedit)</strong></td>
+<td>ja</td>
+<td>ja</td>
+</tr>
+<tr>
+<td><strong>2. Windows-onderdelen uit</strong></td>
+<td>Platform voor virtuele machine, Windows Hypervisor-platform</td>
+<td>idem, plus Hyper-V en Windows Sandbox</td>
+</tr>
+<tr>
+<td><strong>3. Geheugenintegriteit uit</strong></td>
+<td>ja</td>
+<td>ja</td>
+</tr>
+<tr>
+<td><strong>4. Firmwarebeveiliging uit</strong></td>
+<td>ja, als je laptop het heeft</td>
+<td>ja, als je laptop het heeft</td>
+</tr>
+<tr>
+<td><strong>5. Device Guard (VBS) uit</strong></td>
+<td>via het register</td>
+<td>via gpedit.msc</td>
+</tr>
+</tbody>
+</table>
+<p>Herstart de laptop na de stappen en start je VM opnieuw. Zie je de foutmelding van VMware niet meer, dan ben je klaar.</p>
+<p><strong>Stap 1: Zet de Hyper-V-hypervisor uit (Home en Pro)</strong></p>
+<p>Voer dit uit in PowerShell als administrator en herstart daarna de laptop:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1">bcdedit /set hypervisorlaunchtype off
+</span></code></pre></div>
+<ul>
+<li>
+<p>Deze opdracht zorgt ervoor dat Windows de Hyper-V-hypervisor niet meer start.</p>
+</li>
+<li>
+<p>Zolang Hyper-V draait, gebruikt het zelf de virtualisatiefuncties van de CPU (VT-x of AMD-V). VMware kan ze dan niet doorgeven aan je VM.</p>
+</li>
+<li>
+<p>Start daarna je VM opnieuw en kijk of de foutmelding weg is.</p>
+</li>
+</ul>
+<p>Werkt het nog niet, ga dan verder met de volgende stappen.</p>
+<p><strong>Stap 2: Zet Windows-onderdelen uit (Home en Pro)</strong></p>
+<p>Ga naar Configuratiescherm &gt; Programma's &gt; Programma's en onderdelen &gt; Windows-onderdelen in- of uitschakelen. Zet uit wat je in de lijst ziet staan:</p>
+<ul>
+<li>
+<p>Hyper-V (enkel Pro)</p>
+</li>
+<li>
+<p>Platform voor virtuele machine (Home en Pro)</p>
+</li>
+<li>
+<p>Windows Hypervisor-platform (Home en Pro)</p>
+</li>
+<li>
+<p>Windows Sandbox (enkel Pro)</p>
+</li>
+</ul>
+<p>Op Windows Home bestaan Hyper-V en Windows Sandbox niet: je ziet ze dan gewoon niet in de lijst. Let op: zonder Platform voor virtuele machine werken WSL2 en Docker Desktop niet meer.</p>
+<p><strong>Stap 3: Zet geheugenintegriteit uit (Home en Pro)</strong></p>
+<p>Geheugenintegriteit is een onderdeel van kernisolatie. Het beschermt Windows tegen malware door gevoelige processen af te zonderen. Daarvoor start Windows zijn eigen hypervisor, en dan kan VMware VT-x niet meer doorgeven.</p>
+<p>Zet geheugenintegriteit als volgt uit:</p>
+<ul>
+<li>
+<p>Ga naar Start, Instellingen.</p>
+</li>
+<li>
+<p>Klik links op Privacy en beveiliging.</p>
+</li>
+<li>
+<p>Klik rechts op Windows-beveiliging.</p>
+</li>
+<li>
+<p>Kies voor Apparaatbeveiliging.</p>
+</li>
+<li>
+<p>Klik op Kernisolatiedetails.</p>
+</li>
+<li>
+<p>Zet Geheugenintegriteit uit.</p>
+</li>
+<li>
+<p>Start de computer opnieuw op.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h16/image7.png" /></p>
+<p><strong>Stap 4: Zet firmwarebeveiliging uit (Home en Pro, als je laptop het heeft)</strong></p>
+<p>Firmwarebeveiliging (System Guard Secure Launch) zie je enkel op laptops die het ondersteunen. Staat de optie er niet, sla deze stap dan over. Ook firmwarebeveiliging gebruikt de hypervisor van Windows en kan nested virtualization tegenhouden. Opgelet: nadat je ze uitzet, vraagt Windows bij het aanmelden soms je wachtwoord in plaats van je pincode.</p>
+<p>Zet firmwarebeveiliging als volgt uit:</p>
+<ul>
+<li>
+<p>Ga naar Start, Instellingen.</p>
+</li>
+<li>
+<p>Klik links op Privacy en beveiliging.</p>
+</li>
+<li>
+<p>Klik rechts op Windows-beveiliging.</p>
+</li>
+<li>
+<p>Kies voor Apparaatbeveiliging.</p>
+</li>
+<li>
+<p>Klik op Kernisolatiedetails.</p>
+</li>
+<li>
+<p>Zet Firmwarebeveiliging uit.</p>
+</li>
+<li>
+<p>Start de computer opnieuw op.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h16/image8.png" /></p>
+<p><strong>Stap 5: Zet Device Guard (VBS) uit</strong></p>
+<p>Op Windows Pro en Education doe je dat met het lokaal groepsbeleid:</p>
+<ul>
+<li>
+<p>Druk op Windows+R, typ gpedit.msc en druk op Enter.</p>
+</li>
+<li>
+<p>Ga naar Computerconfiguratie &gt; Beheersjablonen &gt; Systeem &gt; Device Guard.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h16/image9.png" /></p>
+<ul>
+<li>
+<p>Dubbelklik op Beveiliging op basis van virtualisatie inschakelen.</p>
+</li>
+<li>
+<p>Kies in het venster dat verschijnt voor uitschakelen.<br><img alt="" src="../assets/h16/image10.png" /></p>
+</li>
+</ul>
+<p>Windows Home heeft geen gpedit.msc. Daar zet je dezelfde instelling in het register. Voer dit uit in PowerShell als administrator en herstart daarna de laptop:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1">reg add "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard" /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f
+</span></code></pre></div>
+<h3 id="1623-beveiliging-terugzetten">16.2.3 Beveiliging terugzetten<a class="headerlink" href="#1623-beveiliging-terugzetten" title="Permanent link">&para;</a></h3>
+<p>Heb je nested virtualization niet meer nodig, bijvoorbeeld na de les, zet de beveiliging van Windows dan terug aan. Daarna werkt nested virtualization in VMware niet meer.</p>
+<h4 id="16231-met-een-script">16.2.3.1 Met een script<a class="headerlink" href="#16231-met-een-script" title="Permanent link">&para;</a></h4>
+<p>Het script nestedvirtualization-terug.ps1 zet terug aan wat nestedvirtualization.ps1 uitzette: de Hyper-V-hypervisor, Platform voor virtuele machine (voor WSL2 en Docker Desktop), geheugenintegriteit, firmwarebeveiliging en VBS / Device Guard.</p>
+<p>Open PowerShell als administrator en download het script naar je homemap:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="nb">Invoke-WebRequest</span> <span class="n">https</span><span class="p">://</span><span class="n">pxl-virtualization</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">/</span><span class="n">downloads</span><span class="p">/</span><span class="n">nestedvirtualization-terug</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-OutFile</span> <span class="s2">"$HOME\nestedvirtualization-terug.ps1"</span>
+</span></code></pre></div>
+<p>Bekijk eerst wat het script zal doen. Het verandert dan nog niets:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="s2">"$HOME\nestedvirtualization-terug.ps1"</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h16/image11.png" /></p>
+<p>Zet de beveiliging terug:</p>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="s2">"$HOME\nestedvirtualization-terug.ps1"</span> <span class="n">-Apply</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h16/image12.png" /></p>
+<p>Herstart de laptop. Voer daarna nestedvirtualization.ps1 uit zonder -Apply. Je ziet nu Er draait nu een Windows-hypervisor en VBS-status nu: DRAAIT. Dat is nu de bedoeling.</p>
+<p><img alt="" src="../assets/h16/image13.png" /></p>
+<p>Goed om te weten:</p>
+<ul>
+<li>
+<p>Met -HyperV zet het script ook Hyper-V en Windows Sandbox weer aan. Dat kan enkel op Windows Pro en Education.</p>
+</li>
+<li>
+<p>Met -VmxPath haalt het script het vinkje Virtualize Intel VT-x/EPT or AMD-V/RVI weg in je VM, bijvoorbeeld -VmxPath "D:\VMs\pve\pve.vmx". Anders meldt VMware bij het starten van die VM dat VT-x niet ondersteund is.</p>
+</li>
+<li>
+<p>Het script zet de standaardinstellingen van Windows terug, niet noodzakelijk exact wat er vroeger stond.</p>
+</li>
+<li>
+<p>Ook dit script pauzeert BitLocker voor één herstart en schrijft een logbestand in C:\Users\Public.</p>
+</li>
+</ul>
+<h4 id="16232-met-de-hand">16.2.3.2 Met de hand<a class="headerlink" href="#16232-met-de-hand" title="Permanent link">&para;</a></h4>
+<p>Doe de stappen van hierboven in omgekeerde volgorde.</p>
+<p>Herstart de laptop.</p>
+<h2 id="163-nested-virtualization-en-hyper-v">16.3 Nested virtualization en Hyper-V<a class="headerlink" href="#163-nested-virtualization-en-hyper-v" title="Permanent link">&para;</a></h2>
+<p>Hyper-V ondersteunt nested virtualization wel en dat werkt gewoon met geheugenintegriteit, VBS en Credential Guard aan. Hyper-V gaan opzetten valt buiten de doelstellingen van de cursus.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../15-vms-en-containers-in-proxmox/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 15 VM&#x27;s en containers in Proxmox">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                15 VM's en containers in Proxmox
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+        <script src="../javascripts/menu.js"></script>
+      
+    
+  </body>
+</html>
