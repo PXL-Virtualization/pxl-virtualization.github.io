@@ -6,9 +6,9 @@
 
   GEBRUIK (PowerShell als Administrator):
     1) Enkel controleren (verandert niets):
-         powershell -ExecutionPolicy Bypass -File .\NestedVirtualization.ps1
+         powershell -ExecutionPolicy Bypass -File .\nestedvirtualization.ps1
     2) Instellingen toepassen:
-         powershell -ExecutionPolicy Bypass -File .\NestedVirtualization.ps1 -Apply
+         powershell -ExecutionPolicy Bypass -File .\nestedvirtualization.ps1 -Apply
     3) Na de herstart: opnieuw stap 1 uitvoeren om te controleren.
 
   Logbestand: %PUBLIC%\NestedVirt_<datum>.log
