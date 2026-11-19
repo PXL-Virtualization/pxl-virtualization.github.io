@@ -10,6 +10,7 @@
     2) Instellingen toepassen:
          powershell -ExecutionPolicy Bypass -File .\nestedvirtualization.ps1 -Apply
     3) Na de herstart: opnieuw stap 1 uitvoeren om te controleren.
+    Optioneel: -VmxPath "C:\pad\naar\vm.vmx" zet ook vhv.enable = TRUE in die VM (VMware afgesloten!).
 
   Logbestand: %PUBLIC%\NestedVirt_<datum>.log
 #>
@@ -32,9 +33,14 @@ if (-not $isAdmin) {
 $log = Join-Path $env:PUBLIC ("NestedVirt_{0:yyyyMMdd_HHmmss}.log" -f (Get-Date))
 Start-Transcript -Path $log | Out-Null
 
+# ---------- Uitvoerhelpers ----------
+# Bad  = moet opgelost worden (telt mee in de samenvatting)
+# Warn = goed om te weten, maar blokkeert niets
+$script:Issues = 0
 function Title($t) { Write-Host ""; Write-Host "=== $t ===" -ForegroundColor Cyan }
 function Ok($t)    { Write-Host "  [OK]   $t" -ForegroundColor Green }
-function Bad($t)   { Write-Host "  [!!]   $t" -ForegroundColor Yellow }
+function Bad($t)   { $script:Issues++; Write-Host "  [!!]   $t" -ForegroundColor Red }
+function Warn($t)  { Write-Host "  [i]    $t" -ForegroundColor Yellow }
 function Info($t)  { Write-Host "         $t" }
 
 $DG   = 'HKLM:\SYSTEM\CurrentControlSet\Control\DeviceGuard'
@@ -44,8 +50,22 @@ $POL  = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard'
 $LSA  = 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'
 $MDM  = 'HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\DeviceGuard'
 
+$Features = 'Microsoft-Hyper-V-All','VirtualMachinePlatform','HypervisorPlatform','Containers-DisposableClientVM'
+
 function RegVal($path, $name) {
     try { (Get-ItemProperty -Path $path -Name $name -ErrorAction Stop).$name } catch { $null }
+}
+
+function Get-LaunchType {
+    $bcd = (bcdedit /enum '{current}') -join "`n"
+    if ($bcd -match 'hypervisorlaunchtype\s+(\S+)') { $Matches[1] } else { $null }   # $null = niet ingesteld (= Auto)
+}
+
+function Get-EnabledFeatures {
+    foreach ($f in $Features) {
+        $st = Get-WindowsOptionalFeature -Online -FeatureName $f -ErrorAction SilentlyContinue
+        if ($st -and $st.State -eq 'Enabled') { $f }
+    }
 }
 
 function Show-Status {
@@ -56,7 +76,7 @@ function Show-Status {
     $win = if ($build -ge 22000) { 'Windows 11' } else { 'Windows 10' }
     Info ("{0} {1}  versie {2}  (build {3}.{4})" -f $win, $cv.EditionID, $cv.DisplayVersion, $cv.CurrentBuild, $cv.UBR)
     $script:IsHome = $cv.EditionID -match 'Core'
-    if ($script:IsHome) { Bad "Home-editie: Hyper-V, Sandbox en gpedit bestaan niet; script gebruikt het register." }
+    if ($script:IsHome) { Warn "Home-editie: Hyper-V, Sandbox en gpedit bestaan niet; script gebruikt het register." }
 
     # ---------- CPU ----------
     Title "Processor"
@@ -71,22 +91,38 @@ function Show-Status {
         else { Bad "VT-x/AMD-V staat UIT in BIOS/UEFI: zet 'Virtualization Technology' / 'SVM' aan in het BIOS." }
     }
 
+    # ---------- Windows-onderdelen (eerst, want de bcdedit-beoordeling hangt hiervan af) ----------
+    $enabled = @(Get-EnabledFeatures)
+
     # ---------- Hypervisor launch type ----------
     Title "Hyper-V hypervisor (bcdedit)"
-    $bcd = (bcdedit /enum '{current}') -join "`n"
-    if ($bcd -match 'hypervisorlaunchtype\s+(\S+)') { $hlt = $Matches[1] } else { $hlt = '(niet ingesteld = Auto)' }
-    if ($hlt -match 'Off') { Ok "hypervisorlaunchtype = $hlt" } else { Bad "hypervisorlaunchtype = $hlt" }
+    $hlt = Get-LaunchType
+    if ($hlt -match '^Off$') {
+        Ok "hypervisorlaunchtype = Off"
+    }
+    elseif (-not $hlt -or $hlt -match '^Auto$') {
+        $shown = if ($hlt) { $hlt } else { 'niet ingesteld (= Auto)' }
+        if ($enabled.Count -eq 0 -and -not $cs.HypervisorPresent) {
+            Warn "hypervisorlaunchtype = $shown. Nu onschadelijk (geen Hyper-V-onderdelen aan), maar Windows kan de hypervisor later terug starten."
+            Info "-Apply zet dit expliciet op Off."
+        } else {
+            Bad "hypervisorlaunchtype = $shown en er zijn Hyper-V-onderdelen aan: -Apply zet dit op Off."
+        }
+    }
+    else {
+        Bad "hypervisorlaunchtype = $hlt (verwacht: Off)"
+    }
 
     # ---------- Windows-onderdelen ----------
     Title "Windows-onderdelen"
-    foreach ($f in 'Microsoft-Hyper-V-All','VirtualMachinePlatform','HypervisorPlatform','Containers-DisposableClientVM') {
+    foreach ($f in $Features) {
         $st = Get-WindowsOptionalFeature -Online -FeatureName $f -ErrorAction SilentlyContinue
         if (-not $st) { Info "$f : niet aanwezig op deze editie" }
         elseif ($st.State -eq 'Enabled') { Bad "$f : AAN" }
         else { Ok "$f : $($st.State)" }
     }
     $wsl = Get-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -ErrorAction SilentlyContinue
-    if ($wsl -and $wsl.State -eq 'Enabled') { Info "Let op: WSL2 en Docker Desktop werken niet meer zonder VirtualMachinePlatform." }
+    if ($wsl -and $wsl.State -eq 'Enabled') { Warn "WSL2 en Docker Desktop werken niet meer zonder VirtualMachinePlatform." }
 
     # ---------- VBS / Device Guard ----------
     Title "Kernisolatie / VBS / Device Guard"
@@ -109,17 +145,31 @@ function Show-Status {
     # ---------- Beheerd toestel? ----------
     Title "Beheer"
     if (Test-Path $MDM) {
-        Bad "Device Guard wordt via Intune/MDM opgelegd: instellingen kunnen na een sync terugkomen. Contacteer IT."
+        Warn "Device Guard wordt via Intune/MDM beheerd: instellingen kunnen na een sync terugkomen. Contacteer IT als dat gebeurt."
     } else { Ok "Geen Intune/MDM-beleid voor Device Guard gevonden." }
     $bl = Get-BitLockerVolume -MountPoint $env:SystemDrive -ErrorAction SilentlyContinue
-    if ($bl -and $bl.ProtectionStatus -eq 'On') { Info "BitLocker staat aan op $($env:SystemDrive) (wordt bij -Apply 1 herstart gepauzeerd)." }
+    if ($bl -and $bl.ProtectionStatus -eq 'On') {
+        Warn "BitLocker staat aan op $($env:SystemDrive): wordt bij -Apply voor 1 herstart gepauzeerd. Houd toch je herstelsleutel bij de hand."
+    }
+
+    # ---------- Samenvatting ----------
+    Title "Samenvatting"
+    if ($script:Issues -eq 0) { Ok "Alles staat goed voor nested virtualization in VMware." }
+    else { Write-Host "  $($script:Issues) punt(en) vragen aandacht (rood hierboven)." -ForegroundColor Red }
 }
 
 Show-Status
 
 if (-not $Apply) {
     Write-Host ""
-    Write-Host "Enkel gecontroleerd. Start opnieuw met -Apply om de instellingen toe te passen." -ForegroundColor Cyan
+    if ($script:Issues -eq 0) {
+        Write-Host "Enkel gecontroleerd. Niets te doen." -ForegroundColor Cyan
+        if ((Get-LaunchType) -notmatch '^Off$') {
+            Write-Host "Tip: -Apply zet hypervisorlaunchtype nog expliciet op Off (aanbevolen)." -ForegroundColor Cyan
+        }
+    } else {
+        Write-Host "Enkel gecontroleerd. Start opnieuw met -Apply om de instellingen toe te passen." -ForegroundColor Cyan
+    }
     Stop-Transcript | Out-Null
     exit 0
 }
@@ -134,12 +184,17 @@ if ($bl -and $bl.ProtectionStatus -eq 'On') {
     Ok "BitLocker gepauzeerd voor 1 herstart."
 }
 
-# 1. Hyper-V hypervisor niet laden
-bcdedit /set hypervisorlaunchtype off | Out-Null
-Ok "bcdedit /set hypervisorlaunchtype off"
+# 1. Hyper-V hypervisor niet laden (en controleren dat het echt vastgelegd is)
+if ((Get-LaunchType) -match '^Off$') {
+    Ok "hypervisorlaunchtype stond al op Off"
+} else {
+    bcdedit /set hypervisorlaunchtype off | Out-Null
+    if ((Get-LaunchType) -match '^Off$') { Ok "hypervisorlaunchtype = Off ingesteld" }
+    else { Bad "hypervisorlaunchtype kon niet op Off gezet worden (Secure Boot/beleid?). Controleer: bcdedit /enum '{current}'" }
+}
 
 # 2. Windows-onderdelen uit
-foreach ($f in 'Microsoft-Hyper-V-All','VirtualMachinePlatform','HypervisorPlatform','Containers-DisposableClientVM') {
+foreach ($f in $Features) {
     $st = Get-WindowsOptionalFeature -Online -FeatureName $f -ErrorAction SilentlyContinue
     if ($st -and $st.State -eq 'Enabled') {
         Disable-WindowsOptionalFeature -Online -FeatureName $f -NoRestart -ErrorAction SilentlyContinue | Out-Null
@@ -179,7 +234,10 @@ if ($VmxPath) {
 }
 
 Write-Host ""
+if ($script:Issues -gt 0) {
+    Write-Host "Let op: $($script:Issues) stap(pen) mislukt (rood hierboven). Los die eerst op." -ForegroundColor Red
+}
 Write-Host "Klaar. HERSTART de computer nu en voer daarna het script opnieuw uit zonder -Apply om te controleren." -ForegroundColor Cyan
-Write-Host "Verwacht na herstart: 'Geen Windows-hypervisor actief' en 'VBS-status nu: uit'." -ForegroundColor Cyan
+Write-Host "Verwacht na herstart: 'Geen Windows-hypervisor actief', 'hypervisorlaunchtype = Off' en 'VBS-status nu: uit'." -ForegroundColor Cyan
 Write-Host "Log: $log"
 Stop-Transcript | Out-Null
