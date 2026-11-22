@@ -1,0 +1,2559 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://pxl-virtualization.github.io/17-clusters-in-proxmox/">
+      
+      
+      
+        <link rel="prev" href="../16-nested-virtualization/">
+      
+      
+        <link rel="next" href="../18-proxmox-cli/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>17 Clusters in Proxmox - 42SNE1020 Virtualization (2026-27 - GRSNE)</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-header__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            42SNE1020 Virtualization (2026-27 - GRSNE)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17 Clusters in Proxmox
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-nav__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    42SNE1020 Virtualization (2026-27 - GRSNE)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-nested-virtualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  16 Nested Virtualization
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#171-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#172-waarom-meerdere-proxmox-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.2 Waarom meerdere Proxmox-servers?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#173-de-opstelling" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.3 De opstelling
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#174-nodes-aanmaken-en-configureren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.4 Nodes aanmaken en configureren
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.4 Nodes aanmaken en configureren">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1741-mappen-kopieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.4.1 Mappen kopiëren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1742-ip-nummer-instellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.4.2 IP-nummer instellen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1743-hostname-instellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.4.3 Hostname instellen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#175-het-cluster-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5 Het cluster aanmaken
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.5 Het cluster aanmaken">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1751-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5.1 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1752-voorbereiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5.2 Voorbereiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1753-pve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5.3 pve
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1754-pve2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5.4 pve2
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1755-pve3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.5.5 pve3
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#176-hoe-een-cluster-werkt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.6 Hoe een cluster werkt
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.6 Hoe een cluster werkt">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1761-algemeen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.6.1 Algemeen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1762-migratie-tussen-losse-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.6.2 Migratie tussen losse servers
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1763-migratie-in-een-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.6.3 Migratie in een cluster
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#177-voorbeeld-migratie-zonder-gedeelde-opslag" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.7 Voorbeeld: migratie zonder gedeelde opslag
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#178-ceph" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8 Ceph
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.8 Ceph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1781-introductie-tot-ceph-opslag" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.1 Introductie tot Ceph-opslag
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1782-belangrijke-componenten-van-ceph" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.2 Belangrijke componenten van Ceph
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1783-installatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3 Installatie
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.8.3 Installatie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17831-vooraf" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.1 Vooraf
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17832-initialisatie-van-configuratie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.2 Initialisatie van configuratie
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17833-creeren-van-monitors" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.3 Creëren van monitors
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17834-aanmaken-van-object-storage-daemons" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.4 Aanmaken van Object Storage Daemons
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17835-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.5 Managers
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17836-pool-configureren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.3.6 Pool configureren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1784-controleren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.8.4 Controleren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#179-voorbeeld-live-migratie-met-ceph" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.9 Voorbeeld: live migratie met Ceph
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1710-high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10 High availability
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.10 High availability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17101-algemeen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.1 Algemeen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17102-ha-instellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.2 HA instellen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17103-een-storing-nabootsen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.3 Een storing nabootsen
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17104-affinity-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.4 Affinity rules
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17105-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.5 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17106-ha-node-affinity-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.6 HA Node Affinity Rules
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17107-ha-resource-affinity-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        17.10.7 HA Resource Affinity Rules
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-proxmox-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  18 Proxmox CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Opslag en cloud
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Opslag en cloud
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-storage-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-containers-in-azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  20 Containers in Azure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Proxmox
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="17-clusters-in-proxmox">17 Clusters in Proxmox<a class="headerlink" href="#17-clusters-in-proxmox" title="Permanent link">&para;</a></h1>
+<h2 id="171-doelstellingen">17.1 Doelstellingen<a class="headerlink" href="#171-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>de voordelen van een cluster opsommen: hoge beschikbaarheid, belasting verdelen, back-up en herstel, live migratie en redundantie;</p>
+</li>
+<li>
+<p>drie nodes voorbereiden door een bestaande Proxmox-installatie te kopiëren, en per node het IP-adres, de naam van de netwerkkaart en de hostname correct instellen;</p>
+</li>
+<li>
+<p>met pvecm en via de webinterface een cluster aanmaken en er de andere nodes aan toevoegen;</p>
+</li>
+<li>
+<p>uitleggen wat Corosync en het Proxmox Cluster File System doen, en aantonen dat /etc/pve op alle nodes gelijk is;</p>
+</li>
+<li>
+<p>het verschil uitleggen tussen migratie met en zonder gedeelde opslag, en een virtuele machine in beide gevallen live naar een andere node verplaatsen;</p>
+</li>
+<li>
+<p>uitleggen wat Ceph is en welke rol monitors, OSD's, managers en pools daarin spelen;</p>
+</li>
+<li>
+<p>Ceph op het cluster installeren: de software installeren, de configuratie initialiseren, monitors, OSD's en managers aanmaken en een pool instellen;</p>
+</li>
+<li>
+<p>high availability instellen met ha-manager en aantonen dat een virtuele machine na het uitvallen van een node elders opnieuw start;</p>
+</li>
+<li>
+<p>met affinity rules bepalen op welke nodes een virtuele machine mag draaien, en welke machines samen of apart moeten draaien;</p>
+</li>
+<li>
+<p>uitleggen wat fencing is en hoe Proxmox een node zonder quorum met een watchdog uitschakelt.</p>
+</li>
+</ul>
+<h2 id="172-waarom-meerdere-proxmox-servers">17.2 Waarom meerdere Proxmox-servers?<a class="headerlink" href="#172-waarom-meerdere-proxmox-servers" title="Permanent link">&para;</a></h2>
+<p>Een cluster bestaat uit minstens drie nodes, zodat er bij een storing een meerderheid overblijft. Zo'n cluster levert een aantal concrete voordelen op:</p>
+<ul>
+<li>
+<p>Hoge beschikbaarheid: valt een node uit, dan start een andere node zijn virtuele machines en containers vanzelf opnieuw op. Voor toepassingen waarbij uitval niet aanvaardbaar is, is dat het belangrijkste argument.</p>
+</li>
+<li>
+<p>Dat werkt enkel met gedeelde opslag, bijvoorbeeld NFS, iSCSI of Ceph: de gegevens van een machine moeten vanaf elke node bereikbaar zijn.<img alt="" src="../assets/h17/image1.png" /></p>
+</li>
+<li>
+<p>Belasting verdelen: je spreidt de virtuele machines over de nodes, zodat geen enkele server overbelast raakt.<img alt="" src="../assets/h17/image2.png" /></p>
+</li>
+<li>
+<p>Back-up en herstel: je kan snapshots en back-ups van de ene node naar de andere kopiëren. Na een hardwarestoring zet je een machine gewoon elders terug.</p>
+</li>
+<li>
+<p>Live migratie: je verplaatst een draaiende machine naar een andere node zonder dat ze stilvalt. Zo neem je een server in onderhoud terwijl de dienst blijft draaien.</p>
+</li>
+<li>
+<p>Redundantie: je bent niet langer afhankelijk van één machine. Valt er een schijf, een geheugenmodule of een netwerkverbinding weg, dan draait de rest verder.</p>
+</li>
+</ul>
+<p>In dit hoofdstuk zetten we zo'n cluster zelf op.</p>
+<h2 id="173-de-opstelling">17.3 De opstelling<a class="headerlink" href="#173-de-opstelling" title="Permanent link">&para;</a></h2>
+<p>We bouwen deze opstelling: drie nodes in één cluster.</p>
+<p><img alt="" src="../assets/h17/image3.png" /></p>
+<p>Elke node krijgt een vast IP-adres. Alle drie de nodes zijn een kopie van Proxmox Clean, dus ook pve krijgt hier een nieuw adres.</p>
+<table>
+<thead>
+<tr>
+<th>Hostname</th>
+<th>IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pve</td>
+<td>192.168.112.110</td>
+</tr>
+<tr>
+<td>pve2</td>
+<td>192.168.112.120</td>
+</tr>
+<tr>
+<td>pve3</td>
+<td>192.168.112.130</td>
+</tr>
+</tbody>
+</table>
+<h2 id="174-nodes-aanmaken-en-configureren">17.4 Nodes aanmaken en configureren<a class="headerlink" href="#174-nodes-aanmaken-en-configureren" title="Permanent link">&para;</a></h2>
+<h3 id="1741-mappen-kopieren">17.4.1 Mappen kopiëren<a class="headerlink" href="#1741-mappen-kopieren" title="Permanent link">&para;</a></h3>
+<p>Kopieer de map van je VM Proxmox Clean drie keer, zoals hieronder. Elke kopie wordt één node: pve, pve2 en pve3.</p>
+<p><img alt="" src="../assets/h17/image4.png" /></p>
+<p>Je kan de VM ook klonen via het menu van VMware. Het resultaat is hetzelfde.<img alt="" src="../assets/h17/image5.png" /></p>
+<h3 id="1742-ip-nummer-instellen">17.4.2 IP-nummer instellen<a class="headerlink" href="#1742-ip-nummer-instellen" title="Permanent link">&para;</a></h3>
+<p>We tonen de instellingen op pve2. Doe hetzelfde op pve en pve3, elk met het eigen IP-adres uit de tabel.</p>
+<p>Start pve2.</p>
+<p>Belangrijk: Kies bij de eerste start voor I Copied It. VMware geeft de kopie dan een nieuw MAC-adres. Zo heeft elke node een eigen netwerkkaart en zitten ze elkaar op het netwerk niet in de weg.</p>
+<p><img alt="" src="../assets/h17/image6.png" /></p>
+<ul>
+<li>
+<p>Log in op de console van de VM zelf. Via SSH lukt het nog niet, want het netwerk werkt nog niet.<img alt="" src="../assets/h17/image7.png" /></p>
+</li>
+<li>
+<p>Controleer de huidige netwerkconfiguratie<br>Bekijk de huidige netwerkconfiguratie om te zien welke instellingen actief zijn:</p>
+</li>
+</ul>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">root@pve:~# </span>ip<span class="w"> </span>a
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image8.png" /></p>
+<p>Je ziet DOWN staan bij ens33.</p>
+</blockquote>
+<p>Hoe komt dat? Proxmox 9 geeft de netwerkkaart bij de installatie een vaste naam, nic0, die gekoppeld is aan het MAC-adres van de kaart. Door I Copied It heeft de kopie een nieuw MAC-adres. De naam nic0 geldt dan niet meer, en de kaart heet weer ens33. In /etc/network/interfaces staat nog nic0, dus de bridge vmbr0 vindt haar netwerkkaart niet.</p>
+<ul>
+<li>Bewerk het netwerkconfiguratiebestand<br>Proxmox gebruikt standaard /etc/network/interfaces om netwerkinstellingen te beheren. Open dit bestand met een teksteditor:</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">root@pve:~# </span>nano<span class="w"> </span>/etc/network/interfaces
+</span></code></pre></div>
+<ul>
+<li>Stel een gewijzigd IP-adres in en fix de naam van de netwerkkaart<br>Zoek in de configuratie naar nic0 en verander dat in ens33. Je moet dat twee keer wijzigen. Pas ook de IP-nummer aan. Je moet onderstaand resultaat bekomen:</li>
+</ul>
+<blockquote>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1">auto lo
+</span><span id="__span-2-2">iface lo inet loopback
+</span><span id="__span-2-3">
+</span><span id="__span-2-4">iface ens33 inet manual
+</span><span id="__span-2-5">
+</span><span id="__span-2-6">auto vmbr0
+</span><span id="__span-2-7">iface vmbr0 inet static
+</span><span id="__span-2-8">address 192.168.112.120/24
+</span><span id="__span-2-9">gateway 192.168.112.2
+</span><span id="__span-2-10">bridge-ports ens33
+</span><span id="__span-2-11">bridge-stp off
+</span><span id="__span-2-12">bridge-fd 0
+</span><span id="__span-2-13">
+</span><span id="__span-2-14">source /etc/network/interfaces.d/*
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image9.png" /></p>
+<p>Sla het bestand op.</p>
+</blockquote>
+<ul>
+<li>Configuratie controleren<br>Controleer het configuratiebestand op fouten voordat je het toepast:</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">root@pve:~# </span>ifup<span class="w"> </span>--no-act<span class="w"> </span>ens33
+</span></code></pre></div>
+<ul>
+<li>Herstart de VM:</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">root@pve:~# </span>reboot
+</span></code></pre></div>
+<ul>
+<li>Controleer de nieuwe configuratie<br>Controleer of de interface nu het ingestelde IP-adres gebruikt:</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">root@pve:~# </span>ip<span class="w"> </span>a
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image10.png" /></p>
+<ul>
+<li>Test de verbinding<br>Test of het vaste IP-adres correct werkt:</li>
+</ul>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">root@pve:~# </span>ping<span class="w"> </span>www.google.be
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image11.png" /></p>
+</blockquote>
+<h3 id="1743-hostname-instellen">17.4.3 Hostname instellen<a class="headerlink" href="#1743-hostname-instellen" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SSH<br>Log nu vanaf je eigen pc via SSH in op pve2.</li>
+</ul>
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">PS C:\Users\student&gt; </span><span class="n">ssh</span> <span class="n">root</span><span class="nv">@192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">112</span><span class="p">.</span><span class="n">120</span>
+</span></code></pre></div>
+<blockquote>
+<p><img alt="" src="../assets/h17/image12.png" /></p>
+</blockquote>
+<ul>
+<li>Controleer de huidige hostname<br>Voer het volgende commando uit om de huidige hostname te controleren:</li>
+</ul>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">root@pve:~# </span>hostname
+</span><span id="__span-8-2"><span class="go">pve</span>
+</span></code></pre></div>
+<p>De naam staat nog op pve. Dat moet pve2 worden.</p>
+</blockquote>
+<ul>
+<li>
+<p>Pas de hostname aan<br>Verander de hostname op de volgende locaties:</p>
+<ul>
+<li>/etc/hostname<br>Bewerk het bestand met een teksteditor, zoals nano:</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">root@pve:~# </span>nano<span class="w"> </span>/etc/hostname
+</span><span id="__span-9-2"><span class="go">pve2</span>
+</span></code></pre></div>
+<p>Vervang de oude hostname dus door de nieuwe hostname pve2.</p>
+<p><img alt="" src="../assets/h17/image13.png" /></p>
+<p>Sla het bestand op en sluit de editor.</p>
+</blockquote>
+<ul>
+<li>/etc/hosts<br>Bewerk het bestand:</li>
+</ul>
+<blockquote>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">root@pve:~# </span>nano<span class="w"> </span>/etc/hosts
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image14.png" />Let op: pas ook het IP-adres aan naar 192.168.112.120.</p>
+</blockquote>
+<ul>
+<li>Herstart de server<br>Voor een volledige toepassing van de wijzigingen, herstart je best de server:</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">root@pve:~# </span>reboot
+</span></code></pre></div>
+<ul>
+<li>Check inlog<br>Je prompt toont nu root@pve2.<br><img alt="" src="../assets/h17/image15.png" /></li>
+</ul>
+<h2 id="175-het-cluster-aanmaken">17.5 Het cluster aanmaken<a class="headerlink" href="#175-het-cluster-aanmaken" title="Permanent link">&para;</a></h2>
+<h3 id="1751-inleiding">17.5.1 Inleiding<a class="headerlink" href="#1751-inleiding" title="Permanent link">&para;</a></h3>
+<p>We voegen de drie nodes nu samen tot een cluster.</p>
+<p>Dat gaat in drie stappen:</p>
+<ul>
+<li>
+<p>op pve maken we een nieuw cluster aan;</p>
+</li>
+<li>
+<p>we voegen pve2 toe aan het cluster;</p>
+</li>
+<li>
+<p>we voegen pve3 toe aan het cluster.</p>
+</li>
+</ul>
+<p>Belangrijk: een node die je aan een cluster toevoegt, mag nog geen virtuele machines of containers hebben. Hun ID's zouden kunnen botsen met die in het cluster, en daarom weigert Proxmox de toetreding. Maak je VM's dus pas aan als het cluster klaar is.</p>
+<h3 id="1752-voorbereiding">17.5.2 Voorbereiding<a class="headerlink" href="#1752-voorbereiding" title="Permanent link">&para;</a></h3>
+<p>Eerst zorgen we dat de nodes elkaar op naam vinden. Dat regelen we in /etc/hosts.</p>
+<p>Op pve ziet dat er zo uit:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">root@pve:~# </span>nano<span class="w"> </span>/etc/hosts
+</span><span id="__span-12-2"><span class="go">192.168.112.120 pve2.localdomain pve2</span>
+</span><span id="__span-12-3"><span class="go">192.168.112.130 pve3.localdomain pve3</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image16.png" /></p>
+<p>Zet op elke node de regels voor de twee andere nodes in /etc/hosts.</p>
+<h3 id="1753-pve">17.5.3 pve<a class="headerlink" href="#1753-pve" title="Permanent link">&para;</a></h3>
+<p>Log via SSH in op pve.</p>
+<p>Proxmox heeft hiervoor de tool pvecm, de Proxmox VE Cluster Manager.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">root@pve:~# </span>pvecm<span class="w"> </span><span class="nb">help</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image17.png" /></p>
+<p>Met pvecm maak je een cluster aan, voeg je nodes toe of verwijder je ze, en vraag je de status van het cluster op.</p>
+<p>Een cluster maak je met pvecm create, gevolgd door de naam van het cluster.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">root@pve:~# </span>pvecm<span class="w"> </span>create<span class="w"> </span>cluster1
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image18.png" /></p>
+<p>Dat is alles: het cluster cluster1 bestaat nu.</p>
+<p>Je ziet het ook in de webinterface.</p>
+<p><img alt="" src="../assets/h17/image19.png" /></p>
+<h3 id="1754-pve2">17.5.4 pve2<a class="headerlink" href="#1754-pve2" title="Permanent link">&para;</a></h3>
+<p>Nu voegen we pve2 toe aan het cluster.</p>
+<p>Dat doe je op pve2 met pvecm add, gevolgd door de naam of het IP-adres van een node die al in het cluster zit, hier pve.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">root@pve2:~# </span>pvecm<span class="w"> </span>add<span class="w"> </span>pve
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image20.png" /></p>
+<p>Geef het rootwachtwoord van pve in en bevestig met yes.</p>
+<blockquote>
+<p>De melding "The authenticity of host 'pve' can't be established" verschijnt omdat pve een zelfondertekend certificaat gebruikt. pve2 kan dus niet controleren of het echt met pve praat. In het labo bevestig je gewoon; in productie vergelijk je eerst de vingerafdruk.</p>
+</blockquote>
+<p>pve en pve2 zitten nu samen in het cluster.</p>
+<h3 id="1755-pve3">17.5.5 pve3<a class="headerlink" href="#1755-pve3" title="Permanent link">&para;</a></h3>
+<p>Tot slot voegen we pve3 toe, dit keer via de webinterface.</p>
+<p>Surf naar https://192.168.112.110:8006 of https://192.168.112.120:8006.</p>
+<p>Op beide adressen zie je nu twee nodes.</p>
+<p><img alt="" src="../assets/h17/image21.png" /></p>
+<p>Klik bij Datacenter op Cluster en daarna op Join Information.</p>
+<p><img alt="" src="../assets/h17/image22.png" /></p>
+<p>Klik op Copy Information.</p>
+<p><img alt="" src="../assets/h17/image23.png" /></p>
+<p>Surf nu naar https://192.168.112.130:8006, de webinterface van pve3.</p>
+<p>Kies daar Datacenter, Cluster en daarna Join Cluster.</p>
+<p><img alt="" src="../assets/h17/image24.png" /></p>
+<p>Plak de informatie met Ctrl+V in het veld Information, vul het rootwachtwoord van pve in en klik op Join 'cluster1'.</p>
+<p><img alt="" src="../assets/h17/image25.png" /></p>
+<p>Je beheert nu alle drie de nodes vanuit één webinterface, op welk van de drie adressen je ook surft.</p>
+<p><img alt="" src="../assets/h17/image26.png" /></p>
+<p>Je hebt nu een cluster dat je centraal beheert. Je kan virtuele machines aanmaken en tussen de nodes verplaatsen, maar nog niet alle mogelijkheden van een cluster zijn beschikbaar.</p>
+<p><img alt="" src="../assets/h17/image27.png" /></p>
+<p><strong>Toch maar twee nodes?</strong> Dat kan met een QDevice, een derde stem buiten de cluster. In Windows Failover Clustering is zo'n witness vaak een gedeelde schijf of een share. In Proxmox is het geen opslag, maar een kleine dienst (corosync-qnetd) op een andere machine. In een bedrijf zet je die meestal op de back-upserver of een NAS; in een labo volstaat een kleine VM op andere hardware of een Raspberry Pi.</p>
+<h2 id="176-hoe-een-cluster-werkt">17.6 Hoe een cluster werkt<a class="headerlink" href="#176-hoe-een-cluster-werkt" title="Permanent link">&para;</a></h2>
+<h3 id="1761-algemeen">17.6.1 Algemeen<a class="headerlink" href="#1761-algemeen" title="Permanent link">&para;</a></h3>
+<p>Er is nog geen gedeelde opslag. Daardoor werkt high availability nog niet, en moet bij een migratie van een VM bijvoorbeeld de volledige schijf van de VM mee over het netwerk. Om te begrijpen waarom, kijken we eerst naar de twee technologieën waarop een Proxmox-cluster draait:</p>
+<p>De belangrijkste technologieën die gebruikt worden in de cluster:</p>
+<ul>
+<li>
+<p>Corosync: Een communicatiesysteem dat servers in het cluster informeert over de status van andere leden.</p>
+<ul>
+<li>
+<p>Corosync heeft een betrouwbaar netwerk met lage latency nodig.</p>
+</li>
+<li>
+<p>Valt Corosync weg, dan verliest het cluster zijn quorum.</p>
+</li>
+<li>
+<p>Corosync zorgt ervoor dat servers elkaars status kunnen zien.</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><img alt="" src="../assets/h17/image28.png" /></p>
+</blockquote>
+<ul>
+<li>Proxmox Cluster File System (PMXCFS): Een databasegestuurd bestandssysteem dat configuratiebestanden in real-time repliceert naar alle servers in het cluster. Dit wordt gemount onder /etc/pve.</li>
+</ul>
+<blockquote>
+<p><img alt="" src="../assets/h17/image29.png" /></p>
+</blockquote>
+<p>Samen zorgen ze ervoor dat elke node weet welke VM's en containers er in het cluster zijn, en waar ze draaien. Valt een node uit, dan kan de HA-manager die machines op een andere node opnieuw starten. Dat bekijken we verderop.</p>
+<p><img alt="" src="../assets/h17/image30.png" /></p>
+<p>Wat is een virtuele machine eigenlijk, gezien vanuit de hypervisor?</p>
+<p>Ten eerste is een VM een configuratiebestand. Daarin staat alles over de VM: de processor, de hoeveelheid geheugen, de schijven, de netwerkkaarten, enzovoort. Om een VM te starten, leest de hypervisor dit bestand, reserveert hij wat nodig is en bootst hij de hardware na zoals het bestand beschrijft.</p>
+<p>Ten tweede is er de schijf, de image, die als opslag aan de VM gekoppeld is.</p>
+<p><img alt="" src="../assets/h17/image31.png" /></p>
+<h3 id="1762-migratie-tussen-losse-servers">17.6.2 Migratie tussen losse servers<a class="headerlink" href="#1762-migratie-tussen-losse-servers" title="Permanent link">&para;</a></h3>
+<p>Stel dat je een VM wil verplaatsen tussen losse servers, zonder cluster.</p>
+<p>Dan moet je zelf het configuratiebestand naar de andere server kopiëren, en daarna de schijf. Pas dan kan de VM daar starten.</p>
+<p><img alt="" src="../assets/h17/image32.png" /></p>
+<h3 id="1763-migratie-in-een-cluster">17.6.3 Migratie in een cluster<a class="headerlink" href="#1763-migratie-in-een-cluster" title="Permanent link">&para;</a></h3>
+<p>In een Proxmox-cluster werken de nodes samen: ze vertrouwen elkaar en bewaren hun configuratiebestanden in een gedeeld, gerepliceerd bestandssysteem.</p>
+<p><img alt="" src="../assets/h17/image33.png" /></p>
+<p>Maak je een VM aan op pve, dan schrijft Proxmox haar configuratiebestand in het Proxmox Cluster File System. Dat bestand staat meteen op alle nodes.</p>
+<p>Bij een migratie hoeft het configuratiebestand dus niet gekopieerd te worden: elke node kent al alle VM's van het cluster.</p>
+<p>Staan de schijven bovendien op gedeelde opslag, zoals een SAN, een NAS of Ceph, dan kan elke node ook aan de schijf van de VM.</p>
+<p><img alt="" src="../assets/h17/image34.png" /></p>
+<p>Elke node heeft dan zowel het configuratiebestand als de schijf. Bij een migratie moet enkel nog het werkgeheugen over het netwerk.</p>
+<ul>
+<li>Maak een SSH-verbinding met pve.</li>
+</ul>
+<p>We bekijken de inhoud van /etc/pve.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">root@pve:~# </span>ls<span class="w"> </span>/etc/pve
+</span></code></pre></div>
+<p>Omdat het een gerepliceerd bestandssysteem is, ziet de inhoud er op alle nodes hetzelfde uit.</p>
+<p>Bekijk bijvoorbeeld het configuratiebestand van de opslag.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">root@pve:~# </span>cat<span class="w"> </span>/etc/pve/storage.cfg
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image35.png" /></p>
+<ul>
+<li>Maak nu een SSH-verbinding met pve2.</li>
+</ul>
+<p>Het configuratiebestand ziet er precies hetzelfde uit.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">root@pve2:~# </span>cat<span class="w"> </span>/etc/pve/storage.cfg
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image36.png" /></p>
+<p><strong>Let op:</strong> dit is de beschrijving van de opslag, niet de opslag zelf. storage.cfg zegt dat elke node een opslag local heeft in /var/lib/vz en een opslag local-lvm op de thin pool pve/data. Maar elke node gebruikt daarvoor zijn eigen schijf: dezelfde naam, een andere inhoud. Dat merk je zo:</p>
+<ul>
+<li>
+<p>een ISO die je op pve naar local uploadt, zie je niet in local van pve2;</p>
+</li>
+<li>
+<p>de schijf van een VM op local-lvm van pve bestaat niet op pve2. Daarom moet bij een migratie de hele schijf mee.</p>
+</li>
+</ul>
+<p>Daarom zie je in de webinterface onder elke node een eigen local en local-lvm.</p>
+<p><img alt="" src="../assets/h17/image37.png" /></p>
+<p>Bij gedeelde opslag, zoals NFS, iSCSI of Ceph, is dat anders. Daar staat de opslag zelf maar één keer in het netwerk, en zien alle nodes dezelfde inhoud.</p>
+<p>Maak op pve2 een testbestand aan in /etc/pve:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">root@pve2:~# </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"message from server two"</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pve/test.log
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image38.png" /></p>
+<ul>
+<li>Maak nu een SSH-verbinding met pve3.</li>
+</ul>
+<p>Lees het bestand op pve3:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">root@pve3:~# </span>cat<span class="w"> </span>/etc/pve/test.log
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image39.png" /></p>
+<p>Het bestand dat je op pve2 schreef, staat ook op pve3 (en pve). Proxmox repliceert alles in /etc/pve naar alle nodes. Verwijder het testbestand daarna weer met rm /etc/pve/test.log.</p>
+<p><img alt="" src="../assets/h17/image40.png" /></p>
+<h2 id="177-voorbeeld-migratie-zonder-gedeelde-opslag">17.7 Voorbeeld: migratie zonder gedeelde opslag<a class="headerlink" href="#177-voorbeeld-migratie-zonder-gedeelde-opslag" title="Permanent link">&para;</a></h2>
+<p>Vanaf nu beheer je het cluster vanuit één webinterface. Je kan er back-ups inplannen, opslag toevoegen en virtuele machines tussen de nodes verplaatsen.</p>
+<p><img alt="" src="../assets/h17/image41.png" /></p>
+<p>Zonder gedeelde opslag kan Proxmox een draaiende VM wel verplaatsen, maar dan moet de volledige schijf mee over het netwerk. Dat duurt lang. We proberen het uit.</p>
+<p>Maak daarvoor eerst opnieuw de Alpine-VM aan op pve.</p>
+<p>Start de VM. We verplaatsen ze nu van pve naar pve2.</p>
+<p>Klik met de rechtermuisknop op de VM en kies Migrate.</p>
+<p><img alt="" src="../assets/h17/image42.png" /></p>
+<p>Je krijgt een foutmelding: een VM met een lokale cd/dvd kan je niet verplaatsen. De ISO staat immers alleen op pve.</p>
+<p><img alt="" src="../assets/h17/image43.png" /></p>
+<p>Pas daarom de hardware van de VM aan: dubbelklik bij Hardware op CD/DVD Drive.</p>
+<p><img alt="" src="../assets/h17/image44.png" /></p>
+<p>Kies Do not use any media en klik op OK.</p>
+<p><img alt="" src="../assets/h17/image45.png" /></p>
+<p>Probeer de VM opnieuw te verplaatsen.</p>
+<p>Kies als doel pve2. Bij Mode staat Online: de VM blijft draaien tijdens de migratie.</p>
+<p>Proxmox waarschuwt dat de migratie lang kan duren, omdat de lokale schijf mee moet. Klik toch op Migrate.</p>
+<p><img alt="" src="../assets/h17/image46.png" /></p>
+<p>De migratie loopt. In het logboek zie je hoe de schijf stap voor stap naar pve2 gekopieerd wordt.</p>
+<p><img alt="" src="../assets/h17/image47.png" /></p>
+<p>De VM blijft draaien zolang de schijf gekopieerd wordt. Pas helemaal op het einde ligt ze heel even stil, terwijl het werkgeheugen overgaat. Daarna draait de VM op pve2.</p>
+<p><img alt="" src="../assets/h17/image48.png" /></p>
+<p>Het werkt, maar het duurt lang, en hoe groter de schijf, hoe langer. Bovendien kan Proxmox de VM niet elders starten als pve plots uitvalt: de schijf staat dan op een node die er niet meer is. Daarom werken bedrijven met gedeelde opslag waar alle nodes aan kunnen.</p>
+<h2 id="178-ceph">17.8 Ceph<a class="headerlink" href="#178-ceph" title="Permanent link">&para;</a></h2>
+<h3 id="1781-introductie-tot-ceph-opslag">17.8.1 Introductie tot Ceph-opslag<a class="headerlink" href="#1781-introductie-tot-ceph-opslag" title="Permanent link">&para;</a></h3>
+<p>Ceph is een softwarematige, redundante opslagoplossing, gebouwd voor hoge beschikbaarheid en goede prestaties. Eenvoudig gezegd voegt Ceph de schijven van meerdere servers samen tot één grote opslagruimte over het netwerk. Heb je drie servers met elk drie schijven, dan krijg je één opslagruimte van negen schijven.</p>
+<p><img alt="" src="../assets/h17/image49.png" /></p>
+<p>Ceph bewaart alle gegevens meerdere keren. Dat aantal kopieën, het aantal replica's, stel je zelf in; voor productie raadt men er minstens drie aan. Ceph zet elke kopie op een andere node. Met drie replica's staat elk stukje gegevens dus één keer op pve, één keer op pve2 en één keer op pve3, los van hoeveel schijven elke node heeft. Heb je meer nodes, bijvoorbeeld vijf, dan komt elk stukje op drie van de vijf nodes, telkens een andere combinatie; zo doen alle nodes mee. Valt een schijf of zelfs een hele node uit, dan zijn er nog altijd twee kopieën via het netwerk beschikbaar.</p>
+<p>De schijven voor Ceph (hier 3 per node, maar dat kunnen er meer of minder zijn) zet je niet in RAID: Ceph zorgt zelf voor de kopieën over de nodes heen, en wil daarom elke schijf rechtstreeks als aparte OSD (Object Storage Daemon) zien.</p>
+<p><img alt="" src="../assets/h17/image50.png" /></p>
+<p>Daarnaast is Ceph een zelfherstellend systeem. Als een kopie van de gegevens ontbreekt of inconsistent wordt, zal Ceph automatisch een nieuwe kopie maken om de replicatiefactor van de opslagpool te waarborgen. Hierdoor kan het cluster meerdere schijven of zelfs servers verliezen zonder gegevensverlies.</p>
+<p><img alt="" src="../assets/h17/image51.png" /></p>
+<p>Dat kost natuurlijk opslagcapaciteit: met drie replica's kan je maar een derde van de totale schijfruimte gebruiken.</p>
+<p><img alt="" src="../assets/h17/image52.png" /></p>
+<h3 id="1782-belangrijke-componenten-van-ceph">17.8.2 Belangrijke componenten van Ceph<a class="headerlink" href="#1782-belangrijke-componenten-van-ceph" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Monitor (MON):<br>Een monitor bewaart een masterkopie van de clustermap en houdt de algemene status van het Ceph-cluster bij. Voor productie gebruik je minstens drie monitors, en altijd een oneven aantal.<br><img alt="" src="../assets/h17/image53.png" /></p>
+</li>
+<li>
+<p>Object Storage Daemon (OSD):<br>Een OSD is een proces dat communicatie met individuele schijven mogelijk maakt. Voor elke fysieke schijf in het cluster moet een aparte OSD draaien. Als een server bijvoorbeeld drie schijven heeft, zijn er drie OSD-processen nodig.<br><img alt="" src="../assets/h17/image54.png" /></p>
+</li>
+<li>
+<p>Manager (MGR):<br>De manager verzamelt statistieken over het Ceph-cluster en levert de Ceph-pagina's in de webinterface. Er is altijd maar één actieve manager; extra managers staan stand-by en nemen over als die uitvalt.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h17/image55.png" /></p>
+<p>Ceph heeft geen single point of failure. De client communiceert direct met alle schijven in het cluster zonder tussenliggende gateways of bottlenecks. Dit zorgt voor een robuuste en schaalbare opslagoplossing.<br><img alt="" src="../assets/h17/image56.png" /></p>
+<p>Dus als een client gegevens in een cluster wil lezen of schrijven, zijn er twee stappen nodig:</p>
+<ul>
+<li>
+<p>Stap één: De client moet beschikken over de nieuwste clustermap, aangezien de clustermap informatie bevat over alle OSD's in het cluster.</p>
+</li>
+<li>
+<p>Stap twee: Aan de hand van de informatie uit de clustermap past de client het Crush-algoritme toe om te bepalen met welke OSD het moet communiceren om een specifiek object te lezen of te schrijven.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h17/image57.png" /></p>
+<p>Samenvatting:</p>
+<ul>
+<li>
+<p>Ceph is een softwaregedefinieerde opslagoplossing (toepassing).</p>
+</li>
+<li>
+<p>Het biedt redundantie en is zelfherstellend.</p>
+</li>
+<li>
+<p>Er zijn geen SPOF (Single Point of Failure).</p>
+</li>
+<li>
+<p>Er is minstens één monitor nodig om de clustermap en de status bij te houden; voor productie zijn het er drie.</p>
+</li>
+<li>
+<p>OSD (Object Storage Daemon) maakt directe communicatie met een opslagstation via het netwerk mogelijk, waarbij clients gebruikmaken van het Crush-algoritme om rechtstreeks met elke OSD te communiceren.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h17/image58.png" /></p>
+<h3 id="1783-installatie">17.8.3 Installatie<a class="headerlink" href="#1783-installatie" title="Permanent link">&para;</a></h3>
+<h4 id="17831-vooraf">17.8.3.1 Vooraf<a class="headerlink" href="#17831-vooraf" title="Permanent link">&para;</a></h4>
+<p>De installatie ziet er technisch uit, maar ze is rechtlijnig.</p>
+<p>Proxmox heeft er een eigen tool voor: pveceph.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">root@pve:~# </span>pveceph<span class="w"> </span><span class="nb">help</span>
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image59.png" /></p>
+<p>Het besturingssysteem moet wel correct voorbereid zijn:</p>
+<ul>
+<li>
+<p>een correct ingesteld /etc/hosts;</p>
+</li>
+<li>
+<p>ingestelde repositories;</p>
+</li>
+<li>
+<p>alle nodes in hetzelfde subnet;</p>
+</li>
+<li>
+<p>een juist ingestelde tijd.</p>
+</li>
+</ul>
+<p>Synchroniseer de klok nog eens met de tijdserver:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">root@pve:~# </span>chronyc<span class="w"> </span>makestep
+</span><span id="__span-22-2"><span class="go">200 OK</span>
+</span></code></pre></div>
+<p>Controleer de tijd:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">root@pve:~# </span>date
+</span><span id="__span-23-2"><span class="go">Tue Nov 25 03:36:22 PM CET 2025</span>
+</span></code></pre></div>
+<p>Controleer of de nodes elkaar op naam kunnen pingen. Op pve:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">root@pve:~# </span>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span><span class="w"> </span>pve2<span class="p">;</span><span class="w"> </span>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span><span class="w"> </span>pve3
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image60.png" /></p>
+<p>Doe dezelfde test op pve2 en pve3.</p>
+<p>Installeer Ceph met pveceph. Doe dit op alle drie de nodes:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><span class="gp">root@pve:~# </span>pveceph<span class="w"> </span>install<span class="w"> </span>--repository<span class="w"> </span>no-subscription
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image61.png" /></p>
+<p>Bevestig met Y.</p>
+<h4 id="17832-initialisatie-van-configuratie">17.8.3.2 Initialisatie van configuratie<a class="headerlink" href="#17832-initialisatie-van-configuratie" title="Permanent link">&para;</a></h4>
+<p>Maak het eerste configuratiebestand aan. Dat doe je maar op één node:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-26-1"><span class="gp">root@pve:~# </span>pveceph<span class="w"> </span>init<span class="w"> </span>--network<span class="w"> </span><span class="m">192</span>.168.112.0/24
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image62.png" /></p>
+<p>pveceph init schrijft enkel de beginconfiguratie van Ceph. Er wordt nog niets gestart: geen monitor, geen OSD en geen pool. Dit commando maakt /etc/pve/ceph.conf aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-27-1"><span class="gp">root@pve:~# </span>cat<span class="w"> </span>/etc/pve/ceph.conf
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image63.png" /></p>
+<p>Dat bestand staat in /etc/pve en wordt dus naar alle nodes gerepliceerd. Controleer het op pve2:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-28-1"><span class="gp">root@pve2:~# </span>cat<span class="w"> </span>/etc/pve/ceph.conf
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image64.png" /></p>
+<h4 id="17833-creeren-van-monitors">17.8.3.3 Creëren van monitors<a class="headerlink" href="#17833-creeren-van-monitors" title="Permanent link">&para;</a></h4>
+<p>Maak een monitor aan op pve:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-29-1"><span class="gp">root@pve:~# </span>pveceph<span class="w"> </span>createmon
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image65.png" /></p>
+<p>Met één monitor kan je het Ceph-cluster al bevragen:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-30-1"><span class="gp">root@pve:~# </span>ceph<span class="w"> </span>status
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image66.png" /></p>
+<p>Voor een quorum heeft Ceph drie monitors nodig: zo blijft er een meerderheid over als er één uitvalt.</p>
+<p>Maak daarom ook op pve2 en pve3 een monitor aan.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-31-1"><span class="gp">root@pve2:~# </span>pveceph<span class="w"> </span>createmon
+</span><span id="__span-31-2"><span class="gp">root@pve3:~# </span>pveceph<span class="w"> </span>createmon
+</span></code></pre></div>
+<p>Vraag daarna opnieuw de status op:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-32-1"><span class="gp">root@pve:~# </span>ceph<span class="w"> </span>status
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image67.png" /></p>
+<h4 id="17834-aanmaken-van-object-storage-daemons">17.8.3.4 Aanmaken van Object Storage Daemons<a class="headerlink" href="#17834-aanmaken-van-object-storage-daemons" title="Permanent link">&para;</a></h4>
+<p>Een OSD is een proces dat één schijf beheert. Elke OSD zorgt voor:</p>
+<ul>
+<li>
+<p>Opslaan van objecten: Het slaat gegevens op in de vorm van objecten op de toegewezen schijf.</p>
+</li>
+<li>
+<p>Replicatie: Het zorgt ervoor dat de gegevens worden gerepliceerd naar andere OSD's volgens de ingestelde replicatiefactor.</p>
+</li>
+<li>
+<p>Communicatie: het praat met andere OSD's en met clients, zoals de hypervisor.</p>
+</li>
+<li>
+<p>Zelfherstel: In het geval van een storing zorgt de OSD voor het herstellen van replicaties om de consistentie in het cluster te waarborgen.</p>
+</li>
+</ul>
+<p>Je hebt per schijf één OSD nodig.</p>
+<p>Ceph draait op gewone hardware en werkt met de gangbare schijfaansluitingen:</p>
+<ul>
+<li>
+<p>SATA</p>
+</li>
+<li>
+<p>SCSI</p>
+</li>
+<li>
+<p>SAS</p>
+</li>
+<li>
+<p>NVMe</p>
+</li>
+<li>
+<p>RAID-controllers enkel in HBA- of IT-modus: Ceph moet elke schijf rechtstreeks zien;</p>
+</li>
+<li>
+<p>USB enkel om te testen.</p>
+</li>
+</ul>
+<p>We voegen op elke node een SATA-schijf van 5000 GB toe. Die wordt meteen herkend.</p>
+<p><img alt="" src="../assets/h17/image68.png" /></p>
+<p>Controleer of de schijf herkend is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-33-1"><span class="gp">root@pve:~# </span>lsblk
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image69.png" /></p>
+<p>Maak nu op elke node een OSD op /dev/sdb. pveceph wist de schijf, maakt er een logisch volume op en start de OSD:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-34-1"><span class="gp">root@pve:~# </span>pveceph<span class="w"> </span>createosd<span class="w"> </span>/dev/sdb
+</span><span id="__span-34-2"><span class="gp">root@pve2:~# </span>pveceph<span class="w"> </span>createosd<span class="w"> </span>/dev/sdb
+</span><span id="__span-34-3"><span class="gp">root@pve3:~# </span>pveceph<span class="w"> </span>createosd<span class="w"> </span>/dev/sdb
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image70.png" /></p>
+<p>Opgelet: de schijf moet leeg zijn. Staan er nog partities of gegevens op, dan weigert pveceph de schijf. Wis ze dan eerst:</p>
+<ul>
+<li>Eerste gedeelde schijf wissen met dd</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-35-1"><span class="gp">root@pve:~# </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/sdb<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">200</span>
+</span></code></pre></div>
+<ul>
+<li>Wis nu de bestandssysteemhandtekeningen (in “superblocken”)</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-36-1"><span class="gp">root@pve:~# </span>wipefs<span class="w"> </span>--all<span class="w"> </span>/dev/sdb
+</span></code></pre></div>
+<p>Je kan OSD's ook in de webinterface toevoegen. We doen dat nu niet, maar zo zou het gaan:</p>
+<blockquote>
+<p>Selecteer de node, kies Ceph, OSD en klik op Create: OSD.</p>
+</blockquote>
+<p><img alt="" src="../assets/h17/image71.png" /></p>
+<p>Kijk nu in de webinterface bij Ceph, Monitor. Je ziet drie monitors, en één manager op pve: die werd automatisch aangemaakt samen met de eerste monitor.</p>
+<p><img alt="" src="../assets/h17/image72.png" /></p>
+<h4 id="17835-managers">17.8.3.5 Managers<a class="headerlink" href="#17835-managers" title="Permanent link">&para;</a></h4>
+<p>Er is nu één manager, op pve. Ceph heeft altijd maar één actieve manager, zodat twee managers elkaar niet in de weg zitten. Extra managers staan stand-by en nemen over als de actieve manager uitvalt.</p>
+<p>Maak daarom ook op pve2 en pve3 een manager aan:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-37-1"><span class="gp">root@pve2:~# </span>pveceph<span class="w"> </span>createmgr
+</span><span id="__span-37-2"><span class="gp">root@pve3:~# </span>pveceph<span class="w"> </span>createmgr
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image73.png" /></p>
+<p>Controleer de toestand op een willekeurige node:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-38-1"><span class="gp">root@pve:~# </span>ceph<span class="w"> </span>-s
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image74.png" /></p>
+<h4 id="17836-pool-configureren">17.8.3.6 Pool configureren<a class="headerlink" href="#17836-pool-configureren" title="Permanent link">&para;</a></h4>
+<p>Een Ceph pool is een logische groep voor het opslaan van objecten. Essentiële parameters voor een pool zijn:</p>
+<ul>
+<li>
+<p>Het aantal placement groups.</p>
+</li>
+<li>
+<p>De replicatiefactor.</p>
+</li>
+</ul>
+<p>Ga in de webinterface naar Ceph, Pools. Er staat al één pool, .mgr. Selecteer ze en klik op Edit.</p>
+<p><img alt="" src="../assets/h17/image75.png" /></p>
+<p>Je ziet hier een aantal velden. We bespreken de belangrijkste.</p>
+<ul>
+<li>
+<p>Size<br>Het aantal replicaties van elk object in de pool.<br>Elk object in de pool wordt drie keer gerepliceerd, op drie verschillende OSD's.<br>Dit zorgt voor gegevensredundantie en fouttolerantie.<br>Voor productieomgevingen wordt minimaal een replicatiefactor van 3 aanbevolen.</p>
+</li>
+<li>
+<p>Min.Size<br>Het minimale aantal replicas dat beschikbaar moet zijn voordat een object wordt beschouwd als veilig toegankelijk.<br>Het cluster blijft operationeel zolang minstens 2 van de 3 replicas beschikbaar zijn.<br>Min. Size moet meestal 2 zijn bij een replicatiefactor van 3.</p>
+</li>
+<li>
+<p>Crush Rule<br>De CRUSH (Controlled Replication Under Scalable Hashing)-regel bepaalt hoe objecten worden verdeeld over de OSD's in het cluster.</p>
+</li>
+<li>
+<p># of PGs (Placement Groups)<br>Het aantal Placement Groups (PG's) bepaalt hoe objecten worden verdeeld over de OSD's. Hoe meer PG's een pool heeft, hoe fijner de objecten worden verdeeld over de beschikbare OSD's. Dit resulteert in een betere balans in termen van opslagruimte en I/O-belasting. Meer PG’s verbruiken wel meer CPU, geheugen en netwerkbandbreedte op de OSD's en monitors.</p>
+</li>
+<li>
+<p>PG Autoscaler Mode<br>Dit regelt of het aantal PG's automatisch wordt aangepast.</p>
+</li>
+<li>
+<p>Target Ratio<br>Het relatieve deel van de totale clusteropslag dat deze pool mag gebruiken. Hier is geen limiet ingesteld (0.0).</p>
+</li>
+<li>
+<p>Target Size<br>De maximale grootte van de pool. Ook hier is geen limiet ingesteld voor de grootte van de pool (0 GiB).</p>
+</li>
+<li>
+<p>Min. # of PGs<br>Het minimum aantal Placement Groups dat voor deze pool mag worden ingesteld.</p>
+</li>
+</ul>
+<p>In Ceph is de .mgr pool een speciale pool die wordt gebruikt door de Ceph Manager (Mgr) daemon. Deze pool bevat metadata die nodig is voor de werking van de Manager, zoals monitoringdata en clusterstatistieken. Het verwijderen van deze pool kan ernstige gevolgen hebben voor de functionaliteit van de Ceph-cluster.</p>
+<p>Maak een nieuwe pool met Create. Geef als naam Pool1 en klik op Create. Laat Add as Storage aangevinkt: zo verschijnt Pool1 meteen als opslag op alle nodes.</p>
+<p><img alt="" src="../assets/h17/image76.png" /></p>
+<h3 id="1784-controleren">17.8.4 Controleren<a class="headerlink" href="#1784-controleren" title="Permanent link">&para;</a></h3>
+<p>Kijk in de webinterface van pve naar de status van Ceph.</p>
+<p>Je ziet er ook de OSD's en de monitors.</p>
+<p><img alt="" src="../assets/h17/image77.png" /></p>
+<p>Je ziet 3 OSD's, 3 monitors en 3 managers, zoals we ze aangemaakt hebben.</p>
+<p>Eronder zie je ook de totale hoeveelheid opslagruimte.</p>
+<p>Bijna dezelfde informatie krijg je op de commandoregel:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-39-1"><span class="gp">root@pve:~# </span>ceph<span class="w"> </span>-s
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image78.png" /></p>
+<h2 id="179-voorbeeld-live-migratie-met-ceph">17.9 Voorbeeld: live migratie met Ceph<a class="headerlink" href="#179-voorbeeld-live-migratie-met-ceph" title="Permanent link">&para;</a></h2>
+<p>Links in Server View zie je dat Pool1 nu op alle drie de nodes beschikbaar is.</p>
+<p><img alt="" src="../assets/h17/image79.png" /></p>
+<p>Staat de schijf van een VM in Pool1, dan moet bij een migratie enkel het werkgeheugen over het netwerk: de schijf is vanaf elke node bereikbaar. Een migratie gaat daardoor snel, en na een storing kan de VM meteen op een andere node starten.</p>
+<p>We maken geen nieuwe VM aan. We verhuizen de schijf van Alpine van de lokale opslag van pve2 naar Pool1. Dat kan terwijl de VM draait.</p>
+<p>Selecteer 555 (Alpine) onder pve2, kies Hardware en selecteer Hard Disk (scsi0). Klik op Disk Action en kies Move Storage.</p>
+<p><img alt="" src="../assets/h17/image80.png" /></p>
+<p>Kies bij Target Storage Pool1 en vink Delete source aan. Zonder dat vinkje blijft de oude schijf als Unused Disk op local-lvm staan. Klik op Move disk.</p>
+<p><img alt="" src="../assets/h17/image81.png" /></p>
+<p>Proxmox kopieert de schijf naar Ceph terwijl de VM blijft draaien. Wacht tot je TASK OK ziet. Sluit het venster.</p>
+<p><img alt="" src="../assets/h17/image82.png" /></p>
+<p>Bij Hardware staat de schijf nu op Pool1.</p>
+<p><img alt="" src="../assets/h17/image83.png" /></p>
+<p>Via commandoregel had je hetzelfde kunnen doen:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-40-1"><span class="gp">root@pve2:~# </span>qm<span class="w"> </span>disk<span class="w"> </span>move<span class="w"> </span><span class="m">555</span><span class="w"> </span>scsi0<span class="w"> </span>Pool1<span class="w"> </span>--delete<span class="w"> </span><span class="m">1</span>
+</span></code></pre></div>
+<p>Let op: heeft de VM snapshots, dan kan Proxmox de oude schijf niet verwijderen. Verwijder de snapshots eerst.</p>
+<p>Zorg eerst dat 555 (alpine) draait op pve2.</p>
+<p>We verplaatsen ze nu live naar pve3: klik met de rechtermuisknop op 555 (Alpine) en kies Migrate. Kies als doel pve3 en klik op Migrate.</p>
+<p><img alt="" src="../assets/h17/image84.png" /></p>
+<p>De migratie is na enkele seconden klaar. Enkel het werkgeheugen moet naar pve3, want de schijf staat in Ceph en is vanaf elke node bereikbaar. De VM ligt maar een fractie van een seconde stil.</p>
+<p>Na de migratie draait 555 (Alpine) op pve3.</p>
+<p><img alt="" src="../assets/h17/image85.png" /></p>
+<h2 id="1710-high-availability">17.10 High availability<a class="headerlink" href="#1710-high-availability" title="Permanent link">&para;</a></h2>
+<h3 id="17101-algemeen">17.10.1 Algemeen<a class="headerlink" href="#17101-algemeen" title="Permanent link">&para;</a></h3>
+<p>Beschikbaarheid (uptime) is het percentage van de tijd dat een server en de diensten erop bereikbaar zijn. Je meet het meestal over een jaar. Een server met 99,9 % beschikbaarheid ligt per jaar dus hoogstens 8,76 uur stil, door storingen én door gepland onderhoud zoals updates en herstarts.</p>
+<p><img alt="" src="../assets/h17/image86.png" /></p>
+<p>Een hoge beschikbaarheid bereik je op drie manieren:</p>
+<ul>
+<li>
+<p>Minder storingen: betrouwbare hardware</p>
+<ul>
+<li>
+<p>Kies servercomponenten. Die zijn betrouwbaarder dan gewone pc-onderdelen, maar ook duurder.</p>
+</li>
+<li>
+<p>Gebruik ECC-RAM: dat corrigeert geheugenfouten voordat ze een crash veroorzaken.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Geen single point of failure: alles dubbel</p>
+<ul>
+<li>
+<p>Stroom: een UPS en twee voedingen per server.</p>
+</li>
+<li>
+<p>Netwerk: twee netwerkkaarten en twee switches.</p>
+</li>
+<li>
+<p>Lokale schijven: RAID.</p>
+</li>
+<li>
+<p>VM-gegevens: gedistribueerde, redundante opslag zoals Ceph.</p>
+</li>
+<li>
+<p>Servers: een cluster van minstens drie nodes.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Sneller herstel: kortere uitvaltijd</p>
+<ul>
+<li>
+<p>De HA-manager merkt een storing automatisch op en start de VM's op een andere node.</p>
+</li>
+<li>
+<p>Beheerders zijn snel bereikbaar, eventueel 24/7.</p>
+</li>
+<li>
+<p>Er liggen reserveonderdelen klaar.</p>
+</li>
+<li>
+<p>Met live migratie verhuis je de VM's vóór gepland onderhoud, zodat ze niet stilvallen.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Elke extra 9 is moeilijker en duurder dan de vorige. Van 99 % naar 99,9 % gaan, is nog vrij eenvoudig. Van 99,999 % naar 99,9999 % is heel moeilijk en duur.</p>
+<p>De HA-manager van Proxmox heeft ongeveer twee minuten nodig om een storing op te merken en de VM elders te starten. Daarna moet de VM ook nog opstarten. Bij 99,999 % mag een dienst maar 5 minuten per jaar onbereikbaar zijn: dat zijn hooguit twee storingen. Hoger raak je niet met HA, want daarbij herstart de VM altijd. Daarvoor moet de dienst zelf op meerdere servers tegelijk draaien, bijvoorbeeld achter een load balancer, zodat er bij een storing gewoon een andere server antwoordt.</p>
+<p><img alt="" src="../assets/h17/image87.png" /></p>
+<h3 id="17102-ha-instellen">17.10.2 HA instellen<a class="headerlink" href="#17102-ha-instellen" title="Permanent link">&para;</a></h3>
+<p>Eerst schakel je HA in voor een resource, bijvoorbeeld een VM. Dat kan in de webinterface of op de commandoregel:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-41-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span>add<span class="w"> </span>vm:555
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image88.png" /></p>
+<p>In de webinterface zie je de VM nu bij Datacenter, HA.</p>
+<p><img alt="" src="../assets/h17/image89.png" /></p>
+<p>De HA-manager start de VM nu en houdt ze draaiende. ha-manager add zet de gewenste toestand standaard op started.</p>
+<p>Je kan ook instellen in welke toestand de HA-manager de VM moet houden. Met stopped zet hij de VM uit, en start hij ze niet meer opnieuw, ook niet na een storing:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-42-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span><span class="nb">set</span><span class="w"> </span>vm:555<span class="w"> </span>--state<span class="w"> </span>stopped
+</span></code></pre></div>
+<p>Zet de toestand terug op started:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-43-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span><span class="nb">set</span><span class="w"> </span>vm:555<span class="w"> </span>--state<span class="w"> </span>started
+</span></code></pre></div>
+<p>De HA-configuratie bekijk je met:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-44-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span>config
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image90.png" /></p>
+<p>De actuele toestand van de HA-manager en de resources bekijk je met:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-45-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span>status
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image91.png" /></p>
+<blockquote>
+<p>Op elke node draait een Local Resource Manager (LRM), die de HA-taken op die node uitvoert. De Cluster Resource Manager (CRM) heeft het overzicht over het hele cluster en beslist welke VM waar draait.</p>
+</blockquote>
+<p>Je kan een HA-resource ook zelf naar een andere node verplaatsen:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-46-1"><span class="gp">root@pve:~# </span>ha-manager<span class="w"> </span>migrate<span class="w"> </span>vm:555<span class="w"> </span>pve2
+</span></code></pre></div>
+<p><img alt="" src="../assets/h17/image92.png" /></p>
+<p>In de webinterface zie je dat VM 555 na enkele ogenblikken op pve2 draait.</p>
+<p><img alt="" src="../assets/h17/image93.png" /></p>
+<h3 id="17103-een-storing-nabootsen">17.10.3 Een storing nabootsen<a class="headerlink" href="#17103-een-storing-nabootsen" title="Permanent link">&para;</a></h3>
+<p>We bootsen een stroomuitval van pve2 na: kies in VMware bij de VM van pve2 Power, Power Off.</p>
+<p><img alt="" src="../assets/h17/image94.png" /></p>
+<p>Na ongeveer twee minuten draait VM 555 op een andere node. Proxmox wacht eerst tot zeker is dat pve2 echt uitgeschakeld is. Zo draait de VM nooit twee keer tegelijk. Hoe dat werkt, zie je bij Fencing.</p>
+<p><img alt="" src="../assets/h17/image95.png" /></p>
+<p>Zet daarna de pve2 in VMware weer aan.</p>
+<h3 id="17104-affinity-rules">17.10.4 Affinity rules<a class="headerlink" href="#17104-affinity-rules" title="Permanent link">&para;</a></h3>
+<h3 id="17105-inleiding">17.10.5 Inleiding<a class="headerlink" href="#17105-inleiding" title="Permanent link">&para;</a></h3>
+<p>In Proxmox 9 bepalen affinity rules waar een HA-resource, zoals een VM, mag draaien. Ze vervangen de HA-groepen uit vroegere versies.</p>
+<p>Er zijn twee soorten affinity rules:</p>
+<ul>
+<li>
+<p>HA Node Affinity bepaalt op welke nodes een VM mag draaien.</p>
+</li>
+<li>
+<p>HA Resource Affinity bepaalt de relatie tussen meerdere HA-resources (VM–VM). Je kan bepalen of je wil dat bepaalde VM’s liever bij elkaar draaien of liever uit elkaar.</p>
+</li>
+</ul>
+<h3 id="17106-ha-node-affinity-rules">17.10.6 HA Node Affinity Rules<a class="headerlink" href="#17106-ha-node-affinity-rules" title="Permanent link">&para;</a></h3>
+<p>Open bij Datacenter de pagina HA en kies Affinity Rules.</p>
+<p>Klik op Add bij HA Node Affinity Rules.</p>
+<p><img alt="" src="../assets/h17/image96.png" /></p>
+<p>Vink in het venster Enable aan en kies bij HA Resources de VM 555. Vink de nodes pve en pve2 aan: daar mag dan de VM draaien. Vink ook Strict aan: dan draait de VM enkel op die nodes, en nooit op pve3. Klik op Add.</p>
+<p><img alt="" src="../assets/h17/image97.png" /></p>
+<p>Zet nu pve uit (in VMware: Power Off).</p>
+<p><img alt="" src="../assets/h17/image98.png" /></p>
+<p>VM 555 verhuist dan met zekerheid naar pve2: dat is de enige andere node die de regel toelaat.</p>
+<p><img alt="" src="../assets/h17/image99.png" /></p>
+<p>Zet pve weer aan. VM 555 blijft op pve2 draaien: pve en pve2 hebben in de regel dezelfde prioriteit, dus er is geen reden om terug te verhuizen. Geef je pve een hogere prioriteit, dan verhuist de VM wel terug zodra pve weer online is. Dat heet failback.</p>
+<p><img alt="" src="../assets/h17/image100.png" /></p>
+<h3 id="17107-ha-resource-affinity-rules">17.10.7 HA Resource Affinity Rules<a class="headerlink" href="#17107-ha-resource-affinity-rules" title="Permanent link">&para;</a></h3>
+<p>Verwijder eerst de node affinity rule die we hebben ingesteld.</p>
+<p><img alt="" src="../assets/h17/image101.png" /></p>
+<p>Voor een resource affinity rule heb je minstens twee HA-resources nodig. Maak daarom een kloon van Alpine: klik met de rechtermuisknop op 555 (Alpine) en kies Clone. Geef als VM ID 556, kies bij Target Storage Pool1. Geef de naam Alpine2.</p>
+<p><img alt="" src="../assets/h17/image102.png" /></p>
+<p>Je krijgt nu onderstaande situatie.</p>
+<p><img alt="" src="../assets/h17/image103.png" /></p>
+<p>Voeg daarna ook 556 toe aan HA: kies bij Datacenter, HA bij Resources op Add, kies bij VM 556 en klik op Add. De HA-manager start 556 meteen, want de gewenste toestand is standaard started.</p>
+<p><img alt="" src="../assets/h17/image104.png" /></p>
+<p>Open Datacenter, HA, Affinity Rules en klik op Add bij HA Resource Affinity Rules. Vink Enable aan en kies bij HA Resources 555 en 556.</p>
+<p>Bij Affinity kies je of de VM's samen (Keep Together) of apart (Keep Separate) moeten draaien. 555 draait nu op pve2 en de kloon 556 op pve. We kiezen daarom Keep Together. Klik op Add.</p>
+<p><img alt="" src="../assets/h17/image105.png" /></p>
+<p>Na enkele ogenblikken verhuist één van de twee VM's: ze draaien nu samen op dezelfde node.</p>
+<p><img alt="" src="../assets/h17/image106.png" /></p>
+<p>Keep Separate werkt omgekeerd: draaien de VM's op dezelfde node, dan verhuist de HA-manager er één. Dat gebruik je voor VM's die elkaar vervangen, zoals twee webservers of twee DNS-servers: valt een node uit, dan blijft de andere bereikbaar.</p>
+<p>Verwijder daarna de resource affinity rule weer.</p>
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">Proxmox</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">Cluster</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">Ceph</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">High availability</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">Migratie</span>
+      
+    
+  </nav>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../16-nested-virtualization/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 16 Nested Virtualization">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                16 Nested Virtualization
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../18-proxmox-cli/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 18 Proxmox CLI">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                18 Proxmox CLI
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+        <script src="../javascripts/menu.js"></script>
+      
+        <script src="../javascripts/copy.js"></script>
+      
+    
+  </body>
+</html>

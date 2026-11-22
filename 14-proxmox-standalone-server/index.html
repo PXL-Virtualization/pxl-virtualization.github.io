@@ -1234,6 +1234,168 @@
 
                 
               
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-clusters-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-proxmox-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  18 Proxmox CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Opslag en cloud
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Opslag en cloud
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-storage-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-containers-in-azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  20 Containers in Azure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
             </ul>
           </nav>
         
@@ -1352,7 +1514,7 @@
 </ul>
 <h2 id="142-inleiding">14.2 Inleiding<a class="headerlink" href="#142-inleiding" title="Permanent link">&para;</a></h2>
 <p>Een Proxmox standalone server is een Proxmox server die geen deel uitmaakt van een cluster.</p>
-<p>Dit betekent dat de server zelfstandig werkt en niet gekoppeld is aan andere Proxmox-nodes. Standalone servers zijn ideaal voor kleinere omgevingen of situaties waarin clustering of high availability (HA) niet vereist is. Je bereikt hem zoals in het vorige hoofdstuk: via de webinterface op poort 8006 of via SSH.</p>
+<p>Dit betekent dat de server zelfstandig werkt en niet gekoppeld is aan andere Proxmox-nodes. Standalone servers zijn ideaal voor kleinere omgevingen of situaties waarin clustering of high availability (HA) niet vereist is. Je bereikt hem via de webinterface op poort 8006 of via SSH.</p>
 <h2 id="143-belangrijke-instellingen">14.3 Belangrijke instellingen<a class="headerlink" href="#143-belangrijke-instellingen" title="Permanent link">&para;</a></h2>
 <h3 id="1431-systeem-software-updates">14.3.1 Systeem software-updates<a class="headerlink" href="#1431-systeem-software-updates" title="Permanent link">&para;</a></h3>
 <p>Om foutloos te kunnen updaten moet je klok juist staan. Staat de tijd niet juist, dan aanvaardt de server de handtekeningen van de repository's niet en mislukt de update.</p>
@@ -1437,8 +1599,8 @@
 <p><img alt="" src="../assets/h14/image8.png" /></p>
 <p>We stellen dit later in.</p>
 <h3 id="1433-tijdsynchronisatie">14.3.3 Tijdsynchronisatie<a class="headerlink" href="#1433-tijdsynchronisatie" title="Permanent link">&para;</a></h3>
-<p>In het vorige hoofdstuk heb je de klok van deze server al correct gezet: je controleerde ze met timedatectl, herstartte de tijddienst met systemctl restart chronyd en dwong zo nodig een sprong af met chronyc makestep. Daar ging het om deze ene server. Hier kijken we naar de bron: waar haalt chrony zijn tijd vandaan?</p>
-<p>Die tijd moet kloppen, zeker zodra je met een cluster werkt. De nodes melden elkaar voortdurend dat ze nog meedoen, en Ceph doet hetzelfde voor de opslag. Lopen hun klokken uit elkaar, dan vertrouwen ze die berichten niet meer. En apt weigert je pakketlijsten zodra de tijd te ver afwijkt, zoals je in hoofdstuk 13 gemerkt hebt.</p>
+<p>De klok van deze server heb je al correct gezet: je controleerde ze met timedatectl, herstartte de tijddienst met systemctl restart chronyd en dwong zo nodig een sprong af met chronyc makestep. Daarbij ging het om deze ene server. Hier kijken we naar de bron: waar haalt chrony zijn tijd vandaan?</p>
+<p>Die tijd moet kloppen, zeker zodra je met een cluster werkt. De nodes melden elkaar voortdurend dat ze nog meedoen, en Ceph doet hetzelfde voor de opslag. Lopen hun klokken uit elkaar, dan vertrouwen ze die berichten niet meer. En apt weigert je pakketlijsten zodra de tijd te ver afwijkt.</p>
 <p>Proxmox gebruikt sinds versie 7 chrony als NTP-daemon. Welke tijdservers chrony aanspreekt, staat in één bestand:</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">root@pve:~# </span>cat<span class="w"> </span>/etc/chrony/chrony.conf
 </span><span id="__span-4-2"><span class="go">…</span>
@@ -1473,7 +1635,7 @@
 <h3 id="1441-de-knoppen-bovenaan">14.4.1 De knoppen bovenaan<a class="headerlink" href="#1441-de-knoppen-bovenaan" title="Permanent link">&para;</a></h3>
 <p>Bovenaan het venster staan twee rijen knoppen. De bovenste hoort bij de hele interface, de onderste bij de node die je links geselecteerd hebt.</p>
 <p><img alt="" src="../assets/h14/image9.png" /></p>
-<p>In de bovenste rij staat Documentation: die opent de volledige Proxmox-handleiding. Ze staat lokaal op de server geïnstalleerd. Je kan ze dus ook raadplegen op een machine zonder internetverbinding. Ernaast staan Create VM en Create CT, waarmee je een virtuele machine of een container aanmaakt. Daarmee ga je in het volgende hoofdstuk aan de slag.</p>
+<p>In de bovenste rij staat Documentation: die opent de volledige Proxmox-handleiding. Ze staat lokaal op de server geïnstalleerd. Je kan ze dus ook raadplegen op een machine zonder internetverbinding. Ernaast staan Create VM en Create CT, waarmee je een virtuele machine of een container aanmaakt.</p>
 <p>De rij eronder geldt voor de node zelf, hier pve. Met Reboot en Shutdown herstart of stop je de server. Shell opent een terminal in de browser. Met Bulk Actions start, stop of migreer je in één keer alle virtuele machines van deze node.</p>
 <h3 id="1442-summary">14.4.2 Summary<a class="headerlink" href="#1442-summary" title="Permanent link">&para;</a></h3>
 <p>Onder Summary volg je de node in realtime: het verbruik van processor, geheugen en opslag, en hoe lang de server al draait.</p>
@@ -1499,16 +1661,16 @@
 <p>ZFS: geavanceerd bestandssysteem met snapshots, compressie en databescherming; vraagt meer RAM maar biedt de meeste functies.</p>
 </li>
 </ul>
-<p>Proxmox ondersteunt daarnaast Ceph, een gedistribueerd opslagsysteem dat gegevens over meerdere nodes verspreidt en repliceert. Dat komt in hoofdstuk 17 aan bod.</p>
+<p>Proxmox ondersteunt daarnaast Ceph, een gedistribueerd opslagsysteem dat gegevens over meerdere nodes verspreidt en repliceert.</p>
 <p><img alt="" src="../assets/h14/image13.png" /></p>
 <h3 id="1445-firewall">14.4.5 Firewall<a class="headerlink" href="#1445-firewall" title="Permanent link">&para;</a></h3>
 <p>Onder Firewall staan de regels die bepalen welk netwerkverkeer deze node binnen en buiten mag.</p>
-<p>We stellen hier nu niets in. Hoofdstuk 19 gaat volledig over de firewall van Proxmox.</p>
+<p>We stellen hier nu niets in.</p>
 <p><img alt="" src="../assets/h14/image14.png" /></p>
 <h3 id="1446-updates">14.4.6 Updates<a class="headerlink" href="#1446-updates" title="Permanent link">&para;</a></h3>
 <p>Onder Updates beheert Proxmox de pakketten met apt zoals reeds besproken.</p>
 <p><img alt="" src="../assets/h14/image15.png" /></p>
-<p>Je controleert hier of er updates klaarstaan en je installeert ze met een klik. Dat heb je in het vorige hoofdstuk al gedaan vanaf de commandoregel.</p>
+<p>Je controleert hier of er updates klaarstaan en je installeert ze met een klik.</p>
 <p><img alt="" src="../assets/h14/image16.png" /></p>
 <h3 id="1447-certificates">14.4.7 Certificates<a class="headerlink" href="#1447-certificates" title="Permanent link">&para;</a></h3>
 <p>Proxmox maakt bij de installatie zijn eigen certificaten aan. Je ziet er hier twee:</p>
@@ -1524,8 +1686,8 @@
 <p>In de kolom Subject Alternative Names staat waarvoor dat tweede certificaat geldig is: 127.0.0.1, localhost, pve, pve.localdomain en het IP-adres 192.168.112.144. Surf je naar een naam of adres dat daar niet bij staat, dan klaagt je browser ook over de naam en niet enkel over de uitgever.</p>
 <p>En daar zit meteen de reden van de waarschuwing die je bij het aanmelden kreeg. Het certificaat op zich is in orde, maar je browser kent de CA die het ondertekend heeft niet: die bestaat alleen op jouw server. Voeg je pve-root-ca.pem toe aan de vertrouwde root-certificaten van je besturingssysteem, dan verdwijnt de waarschuwing — en meteen ook voor elke andere node die diezelfde CA later ondertekent.</p>
 <p>In Powershell voer je onderstaande uit:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1">PS C:\WINDOWS\system32&gt; scp root@192.168.112.144:/etc/pve/pve-root-ca.pem .
-</span><span id="__span-8-2">PS C:\WINDOWS\system32&gt; Import-Certificate -FilePath "C:\Users\stijn\pve-root-ca.pem" -CertStoreLocation Cert:\LocalMachine\Root
+<div class="language-ps1con highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">scp</span> <span class="n">root</span><span class="nv">@192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">112</span><span class="p">.</span><span class="n">144</span><span class="p">:/</span><span class="n">etc</span><span class="p">/</span><span class="n">pve</span><span class="p">/</span><span class="n">pve-root-ca</span><span class="p">.</span><span class="n">pem</span> <span class="p">.</span>
+</span><span id="__span-8-2"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="nb">Import-Certificate</span> <span class="n">-FilePath</span> <span class="s2">"C:\Users\stijn\pve-root-ca.pem"</span> <span class="n">-CertStoreLocation</span> <span class="n">Cert</span><span class="p">:\</span><span class="n">LocalMachine</span><span class="p">\</span><span class="n">Root</span>
 </span></code></pre></div>
 <p>Eronder staat ACME, het protocol waarmee je automatisch een certificaat aanvraagt bij een publieke certificaatautoriteit zoals Let’s Encrypt. Zo’n certificaat vertrouwt elke browser meteen, zonder dat je iets moet installeren. Maar dan moet je server wel een echte domeinnaam hebben die publiek te bereiken is, want de certificaatautoriteit controleert of jij die naam effectief beheert. Met een IP-adres in een labonetwerk lukt dat niet, dus laten we dit ongemoeid. Je ziet dan ook No Account available en No Domains configured staan.</p>
 <h3 id="1448-shell">14.4.8 Shell<a class="headerlink" href="#1448-shell" title="Permanent link">&para;</a></h3>
@@ -1535,7 +1697,7 @@
 <p>Onder System, Time staan de tijdzone en de tijd van de node.</p>
 <p><img alt="" src="../assets/h14/image19.png" /></p>
 <p>Met Edit pas je de tijdzone aan.</p>
-<p>Subscription toont de status van je abonnement. Bij ons staat daar notfound: There is no subscription key omdat we werken met de gratis no-subscription-repository. Dat is ook de reden voor het venster No valid subscription dat je bij elke aanmelding kreeg; in hoofdstuk 13 heb je dat met het post-install-script uitgezet.</p>
+<p>Subscription toont de status van je abonnement. Bij ons staat daar notfound: There is no subscription key omdat we werken met de gratis no-subscription-repository. Dat is ook de reden voor het venster No valid subscription dat je bij elke aanmelding kreeg; het post-install-script zet dat venster uit.</p>
 <p>Als je wel een abonnement koopt geef je bij de bestelling het Server ID op dat je hier ziet staan.</p>
 <p><img alt="" src="../assets/h14/image20.png" /></p>
 <p>Onderaan het venster loopt het takenlogboek. Via Task History raadpleeg je ook oudere taken; met View/Output en View/Status zie je wat een taak precies gedaan heeft.</p>
@@ -1560,7 +1722,7 @@
 <p>Notifications: instellen waar meldingen naartoe gaan.</p>
 </li>
 </ul>
-<p>Cluster, Replication, High Availability en Ceph hebben een cluster nodig; die onderdelen bekijken we in hoofdstuk 17.</p>
+<p>Cluster, Replication, High Availability en Ceph hebben een cluster nodig; op een losse server gebruik je ze niet.</p>
 <p><img alt="" src="../assets/h14/image22.png" /></p>
 <h3 id="1451-summary">14.5.1 Summary<a class="headerlink" href="#1451-summary" title="Permanent link">&para;</a></h3>
 <p>Summary geeft de toestand van het geheel in één oogopslag:</p>
@@ -1616,7 +1778,7 @@
 <p>onder Retention leg je vast hoeveel back-ups je bijhoudt, bijvoorbeeld de laatste zeven.<br><img alt="" src="../assets/h14/image28.png" /></p>
 </li>
 </ul>
-<p>De opdracht verschijnt in de lijst en loopt vanaf dan vanzelf. Na hoofdstuk 15 kan je ze met Run now meteen eens uitproberen.</p>
+<p>De opdracht verschijnt in de lijst en loopt vanaf dan vanzelf. Zodra er een virtuele machine is, kan je ze met Run now meteen eens uitproberen.</p>
 <h3 id="1454-permissions">14.5.4 Permissions<a class="headerlink" href="#1454-permissions" title="Permanent link">&para;</a></h3>
 <p>Onder Permissions regel je wie wat mag:</p>
 <ul>
@@ -1674,7 +1836,7 @@
 <p>Create VM en Create CT bovenaan zijn grijs. De rol PVEVMUser mag bestaande virtuele machines bedienen: starten, stoppen, de console openen, een cd-rom wisselen en een back-up nemen. Een nieuwe machine aanmaken mag ze niet; daarvoor heb je de rol PVEVMAdmin nodig.</p>
 </li>
 </ul>
-<p>Virtuele machines zijn er nog niet. Die maken we in hoofdstuk 15. Meld je daarna nog eens aan als student@pve: de machine staat er dan wel, en je kan ze starten en stoppen, maar niet aan haar instellingen komen.</p>
+<p>Virtuele machines zijn er nog niet. Meld je, zodra er een VM is, nog eens aan als student@pve: de machine staat er dan wel, en je kan ze starten en stoppen, maar niet aan haar instellingen komen.</p>
 <p>Een rol zegt wat iemand mag, een pad zegt waarop, en samen vormen ze een permissie.</p>
 <h3 id="1455-tweefactorauthenticatie">14.5.5 Tweefactorauthenticatie<a class="headerlink" href="#1455-tweefactorauthenticatie" title="Permanent link">&para;</a></h3>
 <p>We werken Two Factor even uit. Met tweefactorauthenticatie (2FA) beveilig je de toegang tot de webinterface: naast je wachtwoord heb je dan een extra code nodig. Je vindt het onder Datacenter, Permissions en dan Two Factor.</p>
@@ -1694,7 +1856,7 @@
 <p><img alt="" src="../assets/h14/image42.png" /></p>
 <p>In onze opstelling met één node en één bridge hebben we dit niet nodig.</p>
 <h3 id="1457-firewall">14.5.7 Firewall<a class="headerlink" href="#1457-firewall" title="Permanent link">&para;</a></h3>
-<p>Onder Firewall vind je dezelfde instellingen terug, maar dan voor het hele datacenter. Ook dat komt in hoofdstuk 19 aan bod.</p>
+<p>Onder Firewall vind je dezelfde instellingen terug, maar dan voor het hele datacenter.</p>
 <p><img alt="" src="../assets/h14/image43.png" /></p>
 <h3 id="1458-nog-meer-op-datacenterniveau">14.5.8 Nog meer op datacenterniveau<a class="headerlink" href="#1458-nog-meer-op-datacenterniveau" title="Permanent link">&para;</a></h3>
 <p>Verder vind je in dit menu nog:</p>
@@ -1843,6 +2005,8 @@
       <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
       
         <script src="../javascripts/menu.js"></script>
+      
+        <script src="../javascripts/copy.js"></script>
       
     
   </body>

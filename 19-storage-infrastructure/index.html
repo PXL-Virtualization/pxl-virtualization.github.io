@@ -1,0 +1,2000 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cursus van het OLOD Docker, Podman en Kubernetes (PXL, HBO5)">
+      
+      
+      
+        <link rel="canonical" href="https://pxl-virtualization.github.io/19-storage-infrastructure/">
+      
+      
+      
+        <link rel="prev" href="../18-proxmox-cli/">
+      
+      
+        <link rel="next" href="../20-containers-in-azure/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>19 Storage Infrastructure - 42SNE1020 Virtualization (2026-27 - GRSNE)</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Ga naar inhoud
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-header__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigatie</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            42SNE1020 Virtualization (2026-27 - GRSNE)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              19 Storage Infrastructure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Zoeken</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Zoeken">
+  <button type="button" class="md-search__button">
+    Zoeken
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="42SNE1020 Virtualization (2026-27 - GRSNE)" class="md-nav__button md-logo" aria-label="42SNE1020 Virtualization (2026-27 - GRSNE)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    42SNE1020 Virtualization (2026-27 - GRSNE)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Containers met Docker en Podman
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Containers met Docker en Podman
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-inleiding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0 Inleiding
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-rhel-10-in-vmware-workstation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1 RHEL 10 in VMware Workstation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-installatie-docker-en-podman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2 Installatie Docker en Podman
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-beheer-op-afstand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3 Beheer op afstand
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-containers-en-container-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4 Containers en container images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-containernetwerken-en-datavolumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5 Containernetwerken en datavolumes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-podman-images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6 Podman images
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-visual-studio-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  7 Visual Studio Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-podman-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  8 Podman Compose
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-podman-compose-in-combinatie-met-containerfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  9 Podman Compose in combinatie met Containerfile
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-podman-pods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  10 Podman pods
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Kubernetes
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  11 Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-van-podman-naar-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  12 Van Podman naar Kubernetes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Proxmox
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Proxmox
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-installatie-proxmox-en-eerste-stappen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  13 Installatie Proxmox en eerste stappen
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-proxmox-standalone-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  14 Proxmox Standalone Server
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-vms-en-containers-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  15 VM's en containers in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-nested-virtualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  16 Nested Virtualization
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-clusters-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-proxmox-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  18 Proxmox CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Opslag en cloud
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Opslag en cloud
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#191-doelstellingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.1 Doelstellingen
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#192-opslagsystemen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.2 Opslagsystemen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19.2 Opslagsystemen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1921-das-direct-attached-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.2.1 DAS (Direct Attached Storage):
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1922-san-storage-area-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.2.2 SAN (Storage Area Network):
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1923-nas-network-attached-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.2.3 NAS (Network Attached Storage):
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#193-iscsi" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3 iSCSI
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19.3 iSCSI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1931-inleiding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.1 Inleiding
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1932-toevoegen-netwerk-voor-san" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.2 Toevoegen netwerk voor SAN
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1933-installatie-truenas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.3 Installatie TrueNAS
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1934-iscsi-instellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.4 iSCSI instellen
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19.3.4 iSCSI instellen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#19341-opslagpool-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.4.1 Opslagpool aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19342-zvol-aanmaken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.4.2 Zvol aanmaken
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19343-iscsi-service-activeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.4.3 iSCSI-service activeren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19344-iscsi-configuratie" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.4.4 iSCSI configuratie
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1935-verbinding-maken-met-iscsi-target-op-serverxx" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.5 Verbinding maken met iSCSI-target op ServerXX
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1936-initialiseren-en-formatteren-van-het-doel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.6 Initialiseren en formatteren van het doel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1937-podman-met-iscsi" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        19.3.7 Podman met iSCSI
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-containers-in-azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  20 Containers in Azure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Start
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Opslag en cloud
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+
+<h1 id="19-storage-infrastructure">19 Storage Infrastructure<a class="headerlink" href="#19-storage-infrastructure" title="Permanent link">&para;</a></h1>
+<h2 id="191-doelstellingen">19.1 Doelstellingen<a class="headerlink" href="#191-doelstellingen" title="Permanent link">&para;</a></h2>
+<p>Na dit hoofdstuk beheerst de student het volgende:</p>
+<ul>
+<li>
+<p>DAS, NAS en SAN beschrijven en hun voor- en nadelen vergelijken;</p>
+</li>
+<li>
+<p>uitleggen hoe iSCSI werkt, met de begrippen initiator, target, LUN, portal en IQN;</p>
+</li>
+<li>
+<p>TrueNAS Community Edition installeren in VMware Workstation, met een apart netwerk voor de opslag;</p>
+</li>
+<li>
+<p>in TrueNAS een pool (mirror) en een zvol aanmaken en het zvol met de wizard als iSCSI-share aanbieden;</p>
+</li>
+<li>
+<p>vanaf RHEL 10 met iscsiadm een target zoeken en erop inloggen;</p>
+</li>
+<li>
+<p>de iSCSI-schijf partitioneren, er een XFS-bestandssysteem op zetten en ze blijvend mounten;</p>
+</li>
+<li>
+<p>de iSCSI-schijf als volume gebruiken in een Podman-container.</p>
+</li>
+</ul>
+<h2 id="192-opslagsystemen">19.2 Opslagsystemen<a class="headerlink" href="#192-opslagsystemen" title="Permanent link">&para;</a></h2>
+<p>SAN (Storage Area Network), DAS (Direct Attached Storage) en NAS (Network Attached Storage) zijn drie veelvoorkomende manieren om opslag in IT-infrastructuren te beheren en te gebruiken. Ze verschillen in hoe ze toegang bieden tot opslagbronnen en in hun typische gebruiksscenario's.</p>
+<p><img alt="" src="../assets/h19/image1.png" /></p>
+<h3 id="1921-das-direct-attached-storage">19.2.1 DAS (Direct Attached Storage):<a class="headerlink" href="#1921-das-direct-attached-storage" title="Permanent link">&para;</a></h3>
+<p>DAS is opslag die direct is aangesloten op een server of computer, zonder een netwerk tussen de opslag en de computer. Het is het eenvoudigste type opslag en komt vaak voor in de vorm van interne harde schijven of externe opslag die via interfaces zoals SATA, SAS of USB direct met één computer is verbonden.<br>Voorbeelden:</p>
+<blockquote>
+<p>Een externe harde schijf die via USB aan een computer is gekoppeld of een RAID-array die in een server is ingebouwd.</p>
+</blockquote>
+<p>Voordelen:</p>
+<ul>
+<li>
+<p>Eenvoudig op te zetten en te gebruiken.</p>
+</li>
+<li>
+<p>Lage latency omdat er geen netwerk bij betrokken is.</p>
+</li>
+<li>
+<p>Goedkoop voor kleine opstellingen.</p>
+</li>
+</ul>
+<p>Nadelen:</p>
+<ul>
+<li>
+<p>Niet geschikt voor delen van opslag over meerdere computers.</p>
+</li>
+<li>
+<p>Schaalbaarheid is beperkt tot de fysieke capaciteit van de host.</p>
+</li>
+</ul>
+<h3 id="1922-san-storage-area-network">19.2.2 SAN (Storage Area Network):<a class="headerlink" href="#1922-san-storage-area-network" title="Permanent link">&para;</a></h3>
+<p>SAN is een speciaal high-performance netwerk dat meerdere servers verbindt met gecentraliseerde, block-level opslag. Het gebruikt vaak gespecialiseerde netwerken zoals Fibre Channel of iSCSI om servers directe toegang te geven tot gedeelde opslag, alsof het een lokale schijf is. SAN's worden vaak gebruikt in datacenters en grote ondernemingen voor veeleisende toepassingen zoals databases en virtualisatie.</p>
+<p>Voorbeelden:</p>
+<blockquote>
+<p>Een SAN-oplossing zoals die van Dell EMC, NetApp, of een systeem dat gebruik maakt van Fibre Channel-switches en gedeelde storage arrays.</p>
+</blockquote>
+<p>Voordelen:</p>
+<ul>
+<li>
+<p>Hoge prestaties door dedicated opslagnetwerken.</p>
+</li>
+<li>
+<p>Block-level toegang, wat efficiënt is voor virtualisatie en databases.</p>
+</li>
+<li>
+<p>Hoge schaalbaarheid en betrouwbaarheid, geschikt voor enterprise omgevingen.</p>
+</li>
+</ul>
+<p>Nadelen:</p>
+<ul>
+<li>
+<p>Complex en duur om op te zetten en te beheren.</p>
+</li>
+<li>
+<p>Vereist vaak gespecialiseerde hardware/software en kennis.</p>
+</li>
+</ul>
+<h3 id="1923-nas-network-attached-storage">19.2.3 NAS (Network Attached Storage):<a class="headerlink" href="#1923-nas-network-attached-storage" title="Permanent link">&para;</a></h3>
+<p>NAS is een dedicated opslagapparaat dat via een standaard lokaal netwerk (LAN) verbonden is en bestanden deelt met meerdere clients (computers, servers, etc.). Het biedt bestand-gebaseerde toegang tot opslag en werkt meestal via netwerkprotocollen zoals SMB/CIFS (voor Windows), NFS (voor Linux/Unix), en FTP.</p>
+<p>Voorbeelden:</p>
+<blockquote>
+<p>Een NAS-apparaat zoals die van merken als Synology, QNAP of een zelfgebouwde NAS-server die via het netwerk wordt gedeeld.</p>
+</blockquote>
+<p>Voordelen:</p>
+<ul>
+<li>
+<p>Eenvoudig toegang tot gedeelde opslag voor meerdere apparaten op het netwerk.</p>
+</li>
+<li>
+<p>Goed voor het delen van bestanden binnen een thuis- of bedrijfsomgeving.</p>
+</li>
+<li>
+<p>Gemakkelijk schaalbaar door het toevoegen van schijven of nieuwe NAS-apparaten aan het netwerk.</p>
+</li>
+</ul>
+<p>Nadelen:</p>
+<ul>
+<li>
+<p>Prestaties kunnen beperkt worden door netwerksnelheden (zoals de snelheid van je ethernetverbinding).</p>
+</li>
+<li>
+<p>Beperkt tot bestand-gebaseerde toegang, wat minder efficiënt kan zijn voor intensieve toepassingen zoals databases of virtualisatie.</p>
+</li>
+</ul>
+<h2 id="193-iscsi">19.3 iSCSI<a class="headerlink" href="#193-iscsi" title="Permanent link">&para;</a></h2>
+<h3 id="1931-inleiding">19.3.1 Inleiding<a class="headerlink" href="#1931-inleiding" title="Permanent link">&para;</a></h3>
+<p>We gaan een open source storage-oplossing implementeren met behulp van TrueNAS Community Edition, dat onder de GNU General Public License valt. Deze tool maakt gebruik van het iSCSI-protocol om opslag op een efficiënte manier te delen over een netwerk.</p>
+<p>iSCSI gebruikt dezelfde opslagcommando’s als het traditionele SCSI-protocol, maar verstuurt deze via TCP/IP. Hierdoor kunnen opslagbronnen en rekenkracht eenvoudig worden gescheiden en over meerdere locaties worden verspreid. Dit zorgt voor meer flexibiliteit en schaalbaarheid in je IT-infrastructuur.</p>
+<p><img alt="" src="../assets/h19/image2.png" /></p>
+<ul>
+<li>
+<p>Server met iSCSI Initiator Service (links):</p>
+<ul>
+<li>
+<p>Dit is de machine (bijvoorbeeld een fysieke server of virtuele machine) die gebruik wil maken van opslag die extern beschikbaar is.</p>
+</li>
+<li>
+<p>Op deze server draait de iSCSI Initiator Service, een softwarecomponent die verantwoordelijk is voor het leggen van de netwerkverbinding met de externe opslag.</p>
+</li>
+<li>
+<p>De initiator stuurt via het netwerk SCSI-opdrachten naar de opslagserver, ook wel de iSCSI Target Service genoemd.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Netwerk (midden):</p>
+<ul>
+<li>
+<p>Tussen de server en de opslag bevindt zich het netwerk, meestal bestaande uit switches en routers.</p>
+</li>
+<li>
+<p>Over dit netwerk worden de data en commando’s verstuurd met het TCP/IP-protocol.</p>
+</li>
+<li>
+<p>De verbinding loopt van de iSCSI initiator op de server naar de iSCSI target op de opslagserver.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Opslagserver of Appliance (rechts):</p>
+<ul>
+<li>
+<p>Deze server bevat de iSCSI Target Service, die de taak heeft om opslagbronnen aan te bieden aan clientmachines (de initiators).</p>
+</li>
+<li>
+<p>De target service ontvangt en verwerkt de SCSI-opdrachten, en vertaalt deze naar acties op de fysieke schijven of andere opslagmedia.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Disk en LUN (Logical Unit Number):</p>
+</li>
+</ul>
+<p>De fysieke opslag op de opslagserver wordt opgedeeld in logische eenheden, zogenaamde LUN’s.</p>
+<ul>
+<li>
+<p>Een LUN is een deel van een fysieke schijf dat als afzonderlijke schijf wordt gepresenteerd aan de initiator.</p>
+</li>
+<li>
+<p>Bijvoorbeeld, een LUN van 100 GB is een specifiek deel van een fysieke schijf dat de server als een zelfstandige opslag ziet.</p>
+</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>
+<p>iSCSI Target Service (rechts, in opslagserver):</p>
+<ul>
+<li>
+<p>Deze service maakt de LUN’s vrij en beschikbaar aan de initiator.</p>
+</li>
+<li>
+<p>Wanneer de initiator verbinding maakt met de target, gebruikt deze de LUN alsof het een lokale schijf is, ook al bevindt de opslag zich fysiek op een andere locatie.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>We zullen een iSCSI-target configureren op TrueNAS Community Edition en dat target benaderen vanuit RHEL 10. We zullen daarna met Podman gegevens hierop opslaan.</p>
+<h3 id="1932-toevoegen-netwerk-voor-san">19.3.2 Toevoegen netwerk voor SAN<a class="headerlink" href="#1932-toevoegen-netwerk-voor-san" title="Permanent link">&para;</a></h3>
+<p>Een SAN gebruikt een eigen netwerk, los van het gewone LAN. Zo hindert het opslagverkeer het andere verkeer niet, en omgekeerd. We voegen daarom een tweede netwerk toe.</p>
+<p><img alt="" src="../assets/h19/image3.png" /></p>
+<p>We zullen dit als volgt implementeren.</p>
+<p><img alt="" src="../assets/h19/image4.png" /></p>
+<p>Voeg in VMware via Edit &gt; Virtual Network Editor een netwerk toe: klik op Add Network en kies VMnet2.</p>
+<p><img alt="" src="../assets/h19/image5.png" /></p>
+<p>Laat Host-only staan en kies als subnet 10.10.10.0/24.</p>
+<p><img alt="" src="../assets/h19/image6.png" /></p>
+<h3 id="1933-installatie-truenas">19.3.3 Installatie TrueNAS<a class="headerlink" href="#1933-installatie-truenas" title="Permanent link">&para;</a></h3>
+<p>Ga naar <a href="https://www.truenas.com/download-truenas-community-edition/">https://www.truenas.com/download-truenas-community-edition/</a>.</p>
+<p>Klik rechtsonder op <img alt="" src="../assets/h19/image7.png" />.</p>
+<p>Klik nu op onderstaande.</p>
+<p><img alt="" src="../assets/h19/image8.png" /></p>
+<p>Gebruik niet versie 25.10.0: die heeft een fout bij het herkennen van schijven. Neem 25.10.1 of later.</p>
+<p>Open VMware Workstation en klik op “Create a New Virtual Machine”.</p>
+<p><img alt="" src="../assets/h19/image9.png" /></p>
+<p>Kies nu voor de Optie “I will install the operating system later”.</p>
+<p><img alt="" src="../assets/h19/image10.png" /></p>
+<p>Kies Linux, Debian 12.x 64-bit. TrueNAS is gebaseerd op Debian.</p>
+<p><img alt="" src="../assets/h19/image11.png" /></p>
+<p>Kies zelf waar je de VM bewaart en noem ze TrueNAS.</p>
+<p><img alt="" src="../assets/h19/image12.png" /></p>
+<p>Geef de VM minstens 100 GB schijfruimte.</p>
+<p><img alt="" src="../assets/h19/image13.png" /></p>
+<p>Klik op “Customize Hardware” om de hardware-instellingen te optimaliseren.</p>
+<ul>
+<li>
+<p>Geheugen (RAM): 8 GB wordt aangeraden; 4 GB werkt ook voor deze test.<img alt="" src="../assets/h19/image14.png" /></p>
+</li>
+<li>
+<p>Processors: Kies minimaal 2 cores.<br><img alt="" src="../assets/h19/image15.png" /></p>
+</li>
+<li>
+<p>CD/DVD (IDE): Selecteer Use ISO image file:. Klik op browse en selecteer de ISO van TrueNAS. Zet zeker vinkje voor Connect at power on.<br><img alt="" src="../assets/h19/image16.png" /></p>
+</li>
+<li>
+<p>Network Adapter: Stel de netwerkadapter in op “Custom (VMnet2)” zodat TrueNAS toegang heeft tot ServerXX.<br><img alt="" src="../assets/h19/image17.png" /></p>
+</li>
+<li>
+<p>Klik Close, Finish.</p>
+</li>
+<li>
+<p>Klik op Edit virtual machine settings.</p>
+</li>
+<li>
+<p>Op het tabblad Options, Advanced kies je bij Firmware type voor UEFI.</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h19/image18.png" /></p>
+<ul>
+<li>Klik op OK om de hardwareconfiguratie op te slaan.</li>
+</ul>
+<p>Start de VM op. Kies voor Start TrueNAS Installation en druk &lt;Enter&gt;.</p>
+<p><img alt="" src="../assets/h19/image19.png" /></p>
+<p>Kies in onderstaand venster voor 1 en druk &lt;Enter&gt;.</p>
+<p><img alt="" src="../assets/h19/image20.png" /></p>
+<p>Selecteer met de spatiebalk de virtuele schijf waarop TrueNAS geïnstalleerd wordt, en bevestig met Enter.</p>
+<p><img alt="" src="../assets/h19/image21.png" /></p>
+<p>Je krijgt een melding dat alle partities op sda verwijderd worden. Druk op Enter.</p>
+<p><img alt="" src="../assets/h19/image22.png" /></p>
+<p>Kies bij Authentication Method voor 2 en druk &lt;Enter&gt;.</p>
+<p><img alt="" src="../assets/h19/image23.png" /></p>
+<p>De installatie gaat nu van start.</p>
+<p>Klik na de installatie op OK.</p>
+<p><img alt="" src="../assets/h19/image24.png" /></p>
+<p>Kies 4 (Shutdown System) en druk op Enter.</p>
+<p><img alt="" src="../assets/h19/image25.png" /></p>
+<p>Koppel nu de virtuele cd/dvd los. Je hebt ze niet meer nodig, en je wil er niet meer van opstarten.</p>
+<p>Ga naar virtual machine settings en selecteer links CD/DVD (IDE).</p>
+<p>Verwijder het vinkje voor “Connect at power on”.</p>
+<p><img alt="" src="../assets/h19/image26.png" /></p>
+<p>Voeg ook twee SCSI-schijven van 200 GB toe met Add. Daarop komt straks de opslagpool.</p>
+<p>Uiteindelijk krijg je volgende instellingen.</p>
+<p><img alt="" src="../assets/h19/image27.png" /></p>
+<p>Start TrueNAS op.</p>
+<p>TrueNAS krijgt nu een IP-adres via DHCP van VMnet2.</p>
+<p>Noteer het IP-adres dat de console van TrueNAS toont.</p>
+<p><img alt="" src="../assets/h19/image28.png" /></p>
+<p>Voeg een tweede netwerkkaart toe aan ServerXX: VM &gt; Settings &gt; Add... &gt; Network Adapter &gt; Finish.</p>
+<p><img alt="" src="../assets/h19/image29.png" /></p>
+<p>Koppel die netwerkkaart aan VMnet2.</p>
+<p><img alt="" src="../assets/h19/image30.png" /></p>
+<p>Verbind op ServerXX de tweede netwerkkaart:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@serverXX:~$ </span>nmcli
+</span><span id="__span-0-2"><span class="go">…</span>
+</span><span id="__span-0-3"><span class="go">ens224: niet verbonden</span>
+</span><span id="__span-0-4"><span class="go">        "VMware VMXNET3"</span>
+</span><span id="__span-0-5"><span class="go">        ethernet (vmxnet3), 00:0C:29:99:B5:46, hw, mtu 1500</span>
+</span><span id="__span-0-6"><span class="go">…</span>
+</span></code></pre></div>
+<p>Verbind de netwerkkaart ens224:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>nmcli<span class="w"> </span>device<span class="w"> </span>connect<span class="w"> </span>ens224
+</span></code></pre></div>
+<p>Vraag de IP-gegevens van ens224 op:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">student@serverXX:~$ </span>nmcli<span class="w"> </span>device<span class="w"> </span>show<span class="w"> </span>ens224<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>IP4
+</span><span id="__span-2-2"><span class="go">IP4.ADDRESS[1]:               10.10.10.129/24</span>
+</span><span id="__span-2-3"><span class="go">IP4.GATEWAY:                      --</span>
+</span><span id="__span-2-4"><span class="go">IP4.ROUTE[1]:                 dst = 10.10.10.0/24, nh = 0.0.0.0, mt = 101</span>
+</span><span id="__span-2-5"><span class="go">IP4.DNS[1]:                    10.10.10.1</span>
+</span><span id="__span-2-6"><span class="go">IP4.DOMAIN[1]:                     localdomain</span>
+</span></code></pre></div>
+<p>Open een browser op ServerXX, of op je laptop als die een virtuele netwerkkaart op VMnet2 heeft. Surf naar het IP-adres van TrueNAS, hier 10.10.10.128.</p>
+<p>Stel een wachtwoord in voor de gebruiker truenas_admin en klik op Aanmelden. In deze testomgeving kiezen we 123; in productie gebruik je uiteraard een sterk wachtwoord.</p>
+<p><img alt="" src="../assets/h19/image31.png" /></p>
+<p>Je krijgt onderstaand dashboard.</p>
+<p><img alt="" src="../assets/h19/image32.png" /></p>
+<h3 id="1934-iscsi-instellen">19.3.4 iSCSI instellen<a class="headerlink" href="#1934-iscsi-instellen" title="Permanent link">&para;</a></h3>
+<h4 id="19341-opslagpool-aanmaken">19.3.4.1 Opslagpool aanmaken<a class="headerlink" href="#19341-opslagpool-aanmaken" title="Permanent link">&para;</a></h4>
+<p>Voordat je een iSCSI-opslagbron kunt configureren, moet je een opslagpool aanmaken.</p>
+<ul>
+<li>
+<p>Ga naar Opslagdashboard en klik op Pool aanmaken.<br><img alt="" src="../assets/h19/image33.png" /></p>
+</li>
+<li>
+<p>Klik op Pool aanmaken</p>
+</li>
+<li>
+<p>Je ziet dat er een probleem is…<br><img alt="" src="../assets/h19/image34.png" /></p>
+</li>
+</ul>
+<p>Dit moet je aanpassen in VMware zelf.</p>
+<p>Sluit TrueNAS daarvoor eerst af.</p>
+<blockquote>
+<p>Opgelet: gebruik Chrome of een andere moderne browser… Anders zie je niet alles goed gepositioneerd op het scherm.</p>
+</blockquote>
+<p><img alt="" src="../assets/h19/image35.png" /></p>
+<p>Je moet een reden opgeven… Kies voor hardware wijzigen.</p>
+<p>Zet een vinkje voor Bevestigen en kies voor Afsluiten.</p>
+<p><img alt="" src="../assets/h19/image36.png" /></p>
+<p>Ga op zoek naar het .vmx-bestand van TrueNAS op je host.</p>
+<p><img alt="" src="../assets/h19/image37.png" /></p>
+<p>Voeg volgende regel toe met de kladblok of een andere teksteditor.</p>
+<p>disk.EnableUUID = "true"</p>
+<p><img alt="" src="../assets/h19/image38.png" /></p>
+<p>Start de VM terug op.</p>
+<p>Ga terug naar Storage, Create Pool. Nu verschijnt er geen foutmelding meer.</p>
+<p><img alt="" src="../assets/h19/image39.png" /></p>
+<p>Typ voor de naam Pool1. Je kan encryptie instellen op poolniveau, wat in de praktijk inhoudt dat de root-dataset (en alle nieuwe datasets/volumes die erin aangemaakt worden) automatisch encryptie gebruiken.</p>
+<p>Klik Next.</p>
+<p><img alt="" src="../assets/h19/image40.png" /></p>
+<p>Je bepaalt nu hoe de schijven samenwerken: hoeveel ruimte, hoeveel snelheid en hoeveel redundantie.</p>
+<p>Je ziet hier veel mogelijkheden:</p>
+<ul>
+<li>
+<p>Stripe<br>Combineert alle disks tot één grote, snelle opslag. Géén redundantie: als één disk uitvalt, verlies je alles.<br>Voordeel: snel, hele opslagruimte bruikbaar.<br>Nadeel: geen bescherming tegen uitval.</p>
+</li>
+<li>
+<p>Mirror<br>Elk blok data wordt naar twee (of meer) disks tegelijk geschreven. Als één disk uitvalt, blijft je data intact.<br>Voordeel: hoge veiligheid, eenvoudige recovery.<br>Nadeel: de helft (bij 2 disks) van je opslag verlies je aan "spiegeling".</p>
+</li>
+<li>
+<p>RAIDZ1<br>Vergelijkbaar met RAID5: één disk mag uitvallen zonder dataverlies. Data en pariteitsinformatie worden verspreid.<br>Voordeel: iets meer capaciteit over dan mirror, basisbescherming.<br>Nadeel: trager bij kleine schrijfacties, maar er blijven risico’s als er twee disks tegelijk falen.</p>
+</li>
+<li>
+<p>RAIDZ2<br>Vergelijkbaar met RAID6: twee disks mogen tegelijk falen.<br>Voordeel: veel veiligere bescherming dan RAIDZ1.<br>Nadeel: iets minder bruikbare capaciteit, nog iets trager.</p>
+</li>
+<li>
+<p>RAIDZ3<br>Drie disks mogen tegelijk falen.<br>Voordeel: maximale bescherming.<br>Nadeel: meeste capaciteit kwijt, prestaties vooral bij kleine IO lager.</p>
+</li>
+<li>
+<p>dRAID1, dRAID2, dRAID3<br>Dit zijn gedistribueerde RAID-varianten, nieuw in recentere ZFS/TrueNAS versies, geoptimaliseerd voor zeer grote aantallen drives.<br>Voordeel: Sneller rebuild bij uitval, geschikt voor grote installaties.<br>Nadeel: Complexer, vaak alleen relevant bij tientallen schijven.</p>
+</li>
+</ul>
+<p>Wij kiezen Mirror: met twee schijven mag er één uitvallen.</p>
+<p><img alt="" src="../assets/h19/image41.png" /></p>
+<p>De schijven zijn al geselecteerd.</p>
+<p>Kies voor Save And Go To Review (de andere instellingen zijn optioneel).</p>
+<p><img alt="" src="../assets/h19/image42.png" /></p>
+<p>Klik erna op Create Pool.</p>
+<p><img alt="" src="../assets/h19/image43.png" /></p>
+<p>Je krijgt de melding dat de contents van de toegevoegde schijven zal worden verwijderd. Bevestig dit en klik op Create Pool.</p>
+<p><img alt="" src="../assets/h19/image44.png" /></p>
+<p>De pool wordt nu aangemaakt.</p>
+<p>Je krijgt nu een overzicht van de Storage.</p>
+<p><img alt="" src="../assets/h19/image45.png" /></p>
+<h4 id="19342-zvol-aanmaken">19.3.4.2 Zvol aanmaken<a class="headerlink" href="#19342-zvol-aanmaken" title="Permanent link">&para;</a></h4>
+<p>Een Zvol (ZFS virtual volume) is een virtual block device, vergelijkbaar met een fysieke harde schijf of SSD, maar dan virtueel en binnen je bestaande storage pool.</p>
+<p>Een Zvol (ZFS-volume) is dan ook nodig om opslagruimte te reserveren voor iSCSI.</p>
+<ul>
+<li>
+<p>Ga naar Datasets aan de linkerkant.</p>
+</li>
+<li>
+<p>Selecteer Pool1.</p>
+</li>
+<li>
+<p>Klik rechtsboven op Add Zvol</p>
+</li>
+</ul>
+<p><img alt="" src="../assets/h19/image46.png" /></p>
+<ul>
+<li>Geef het Zvol de naam opslag1 en stel een grootte van 50GiB in. Deze grootte zal het beschikbare iSCSI-opslagvolume bepalen. Bij compression level kiezen we voor Off. Laat de overige instellingen staan.</li>
+</ul>
+<p><img alt="" src="../assets/h19/image47.png" /></p>
+<ul>
+<li>Klik op Save om het Zvol aan te maken.</li>
+</ul>
+<p>Je ziet nu opslag1 in Pool1 staan.</p>
+<p><img alt="" src="../assets/h19/image48.png" /></p>
+<h4 id="19343-iscsi-service-activeren">19.3.4.3 iSCSI-service activeren<a class="headerlink" href="#19343-iscsi-service-activeren" title="Permanent link">&para;</a></h4>
+<p>Voordat je verder kunt met het configureren van iSCSI, moet de service worden geactiveerd.</p>
+<p>Ga naar Shares in het hoofdmenu. Je ziet hier dat je naast de SMB en NFS-shares service ook block (iSCSI)-service kan activeren.</p>
+<p>Klik rechtsboven op de 3 puntjes bij Block (iSCSI) Shares Targets en kies voor Turn On Service.</p>
+<p><img alt="" src="../assets/h19/image49.png" /></p>
+<p>Als je wil dat iSCSI telkens bij het opstarten geactiveerd wordt ga je naar System aan de linkerkant, Services.</p>
+<p>Zet de schakelaar aan bij “Start Automatically”.</p>
+<p><img alt="" src="../assets/h19/image50.png" /></p>
+<h4 id="19344-iscsi-configuratie">19.3.4.4 iSCSI configuratie<a class="headerlink" href="#19344-iscsi-configuratie" title="Permanent link">&para;</a></h4>
+<p>Ga terug naar Shares aan de linkerkant.</p>
+<p>Op dit moment heb je nog geen target/extents aangemaakt. Je ziet: "No records have been added yet".</p>
+<p>Je zvol opslag1 is dus nog niet gekoppeld aan de iSCSI-service.</p>
+<p>TrueNAS heeft een ingebouwde wizard die je door het configureren van een iSCSI-share leidt.</p>
+<p><img alt="" src="../assets/h19/image51.png" /></p>
+<p>Na het klikken kies je bij Target voor Create New en Next.</p>
+<p><img alt="" src="../assets/h19/image52.png" /></p>
+<p>Bij Extent kiezen we de naam blockdevice1. Bij extent type laat je Device staan. Bij device kies je uiteraard voor Pool1/opslag1(50GiB). De overige instellingen laat je staan en klik op Next.</p>
+<p><img alt="" src="../assets/h19/image53.png" /></p>
+<p>In de volgende stap configureer je de Protocol options.</p>
+<p>We kiezen het pijltje naar beneden en kiezen voor Create New bij Portal. Een portal is de combinatie van IP-adres + poort (standaard 3260) waarop TrueNAS iSCSI aanbiedt.</p>
+<p><img alt="" src="../assets/h19/image54.png" /></p>
+<p>We hebben nog geen vast IP-adres ingesteld. Kies daarom 0.0.0.0 bij IP Address: TrueNAS luistert dan op al zijn IP-adressen.</p>
+<p>In deze stap configureer je ook welke initiators (iSCSI-clients) toegang hebben tot het iSCSI-doel.</p>
+<p>Initiators: laat je het veld leeg, dan krijgen alle iSCSI-clients toegang. Wij doen dat. Anders vul je de IQN's van de toegelaten initiators in, één per regel.</p>
+<p>Klik op Save.</p>
+<p><img alt="" src="../assets/h19/image55.png" /></p>
+<p>Je kan de instellingen wijzigen of het overzicht opvragen als je op het potloodje klikt bij blockdevice1.</p>
+<p><img alt="" src="../assets/h19/image56.png" /></p>
+<p>We veranderen niets en klikken rechtsboven op het kruisje.</p>
+<h3 id="1935-verbinding-maken-met-iscsi-target-op-serverxx">19.3.5 Verbinding maken met iSCSI-target op ServerXX<a class="headerlink" href="#1935-verbinding-maken-met-iscsi-target-op-serverxx" title="Permanent link">&para;</a></h3>
+<p>Installeer eerst de iSCSI-initiatortools.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>iscsi-initiator-utils
+</span></code></pre></div>
+<p>Start de iSCSI-service:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>iscsid
+</span><span id="__span-4-2"><span class="go">Created symlink '/etc/systemd/system/multi-user.target.wants/iscsid.service' → '/usr/lib/systemd/system/iscsid.service'.</span>
+</span></code></pre></div>
+<p>Zoek naar targets op het IP-adres van TrueNAS:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>iscsiadm<span class="w"> </span>-m<span class="w"> </span>discovery<span class="w"> </span>-t<span class="w"> </span>sendtargets<span class="w"> </span>-p<span class="w"> </span><span class="m">10</span>.10.10.128
+</span><span id="__span-5-2"><span class="go">10.10.10.128:3260,1 iqn.2005-10.org.freenas.ctl:blockdevice1</span>
+</span></code></pre></div>
+<p>Er is één target gevonden.</p>
+<p>Log in op de target met zijn IQN (iSCSI Qualified Name), de naam uit de vorige uitvoer:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>iscsiadm<span class="w"> </span>-m<span class="w"> </span>node<span class="w"> </span>-T<span class="w"> </span>iqn.2005-10.org.freenas.ctl:blockdevice1<span class="w"> </span>-p<span class="w"> </span><span class="m">10</span>.10.10.128<span class="w"> </span>--login
+</span><span id="__span-6-2"><span class="go">Logging in to [iface: default, target: iqn.2005-10.org.freenas.ctl:blockdevice1, portal: 10.10.10.128,3260]</span>
+</span><span id="__span-6-3"><span class="go">Login to [iface: default, target: iqn.2005-10.org.freenas.ctl:blockdevice1, portal: 10.10.10.128,3260] successful.</span>
+</span></code></pre></div>
+<p>Controleer of de node opgeslagen is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>iscsiadm<span class="w"> </span>-m<span class="w"> </span>node
+</span><span id="__span-7-2"><span class="go">10.10.10.128:3260,1 iqn.2005-10.org.freenas.ctl:blockdevice1</span>
+</span></code></pre></div>
+<h3 id="1936-initialiseren-en-formatteren-van-het-doel">19.3.6 Initialiseren en formatteren van het doel<a class="headerlink" href="#1936-initialiseren-en-formatteren-van-het-doel" title="Permanent link">&para;</a></h3>
+<p>Controleer of de schijf zichtbaar is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">student@serverXX:~$ </span>lsblk
+</span><span id="__span-8-2"><span class="go">NAME          MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS</span>
+</span><span id="__span-8-3"><span class="go">sda             8:0    0    50G  0 disk</span>
+</span><span id="__span-8-4"><span class="go">sr0            11:0    1 816,4M  0 rom  /run/media/student/RHEL-10-0-BaseOS-x86_64</span>
+</span><span id="__span-8-5"><span class="go">nvme0n1       259:0    0   100G  0 disk</span>
+</span><span id="__span-8-6"><span class="go">├─nvme0n1p1   259:1    0   600M  0 part /boot/efi</span>
+</span><span id="__span-8-7"><span class="go">├─nvme0n1p2   259:2    0     1G  0 part /boot</span>
+</span><span id="__span-8-8"><span class="go">└─nvme0n1p3   259:3    0  98,4G  0 part</span>
+</span><span id="__span-8-9"><span class="go">  ├─rhel-root 253:0    0  64,8G  0 lvm  /</span>
+</span><span id="__span-8-10"><span class="go">  ├─rhel-swap 253:1    0     2G  0 lvm  [SWAP]</span>
+</span><span id="__span-8-11"><span class="go">  └─rhel-home 253:2    0  31,6G  0 lvm  /home</span>
+</span></code></pre></div>
+<p>De iSCSI-schijf is sda, met een grootte van 50 GB.</p>
+<p>Maak er één partitie op met fdisk. Controleer eerst goed welke schijf de iSCSI-schijf is: kies je de verkeerde, dan wis je je eigen systeem.</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>fdisk<span class="w"> </span>/dev/sda
+</span><span id="__span-9-2"><span class="go">Command (m for help): n</span>
+</span><span id="__span-9-3"><span class="go">Select (default p): &lt;Enter&gt;</span>
+</span><span id="__span-9-4"><span class="go">Partition number (1-4, default 1): &lt;Enter&gt;</span>
+</span><span id="__span-9-5"><span class="go">First sector (16384-104857631, default 16384): &lt;Enter&gt;</span>
+</span><span id="__span-9-6"><span class="go">Last sector, +/-sectors or +/-size{K,M,G,T,P} (16384-104857631, default 104857631): &lt;Enter&gt;</span>
+</span><span id="__span-9-7"><span class="go">Command (m for help): w</span>
+</span></code></pre></div>
+<p>Controleer met lsblk of de partitie er is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">student@serverXX:~$ </span>lsblk
+</span><span id="__span-10-2"><span class="go">NAME          MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS</span>
+</span><span id="__span-10-3"><span class="go">sda             8:0    0    50G  0 disk</span>
+</span><span id="__span-10-4"><span class="go">└─sda1          8:1    0    50G  0 part</span>
+</span><span id="__span-10-5"><span class="go">…</span>
+</span></code></pre></div>
+<p>Maak een XFS-bestandssysteem op de partitie:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>mkfs.xfs<span class="w"> </span>/dev/sda1
+</span><span id="__span-11-2"><span class="go">…</span>
+</span><span id="__span-11-3"><span class="go">Discarding blocks...Done.</span>
+</span></code></pre></div>
+<p>Maak een mountpoint en mount de partitie:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>/mnt/iscsi
+</span><span id="__span-12-2"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>mount<span class="w"> </span>/dev/sda1<span class="w"> </span>/mnt/iscsi
+</span></code></pre></div>
+<p>Deze mount verdwijnt bij een herstart. Maak hem blijvend in /etc/fstab. Gebruik de UUID van de partitie, want de naam sda kan bij een herstart veranderen. Zoek de UUID op:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-13-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>blkid<span class="w"> </span>/dev/sda1
+</span></code></pre></div>
+<p>Voeg deze regel toe aan /etc/fstab, met jouw UUID. De optie _netdev zegt dat het om een netwerkschijf gaat: systemd mount ze pas als het netwerk werkt.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1">UUID=&lt;uuid-van-sda1&gt;  /mnt/iscsi  xfs  _netdev  0 0
+</span></code></pre></div>
+<p>Laat RHEL bij het opstarten ook automatisch inloggen op de target, en test de fstab-regel:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-15-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>iscsi
+</span><span id="__span-15-2"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+</span><span id="__span-15-3"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt/iscsi
+</span><span id="__span-15-4"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>mount<span class="w"> </span>-a
+</span></code></pre></div>
+<p><img alt="" src="../assets/h19/image57.png" /></p>
+<h3 id="1937-podman-met-iscsi">19.3.7 Podman met iSCSI<a class="headerlink" href="#1937-podman-met-iscsi" title="Permanent link">&para;</a></h3>
+<p>Een Podman-container gebruikt de iSCSI-schijf gewoon als map.</p>
+<p>Maak student eigenaar van /mnt/iscsi:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">student@serverXX:~$ </span>sudo<span class="w"> </span>chown<span class="w"> </span>student:student<span class="w"> </span>/mnt/iscsi/
+</span></code></pre></div>
+<p>Vraag de vrije ruimte van /mnt/iscsi op:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">student@serverXX:~$ </span>df<span class="w"> </span>/mnt/iscsi/
+</span><span id="__span-17-2"><span class="go">Bestandssysteem 1K-blokken Gebruikt Beschikbaar Geb% Aangekoppeld op</span>
+</span><span id="__span-17-3"><span class="go">/dev/sda1         52355088  1035568    51319520   2% /mnt/iscsi</span>
+</span></code></pre></div>
+<p>De map /mnt/iscsi staat dus op /dev/sda1, de iSCSI-schijf.</p>
+<p>Start een container van de image ubi-init (UBI 10), koppel /mnt/iscsi aan /iscsi in de container en vraag de vrije ruimte van /iscsi op:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">student@serverXX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-v<span class="w"> </span>/mnt/iscsi:/iscsi<span class="w"> </span>registry.access.redhat.com/ubi10/ubi-init<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"df -h /iscsi"</span>
+</span><span id="__span-18-2"><span class="go">Filesystem      Size  Used Avail Use% Mounted on</span>
+</span><span id="__span-18-3"><span class="go">/dev/sda1        50G 1012M   49G   2% /iscsi</span>
+</span></code></pre></div>
+<p>Wil je in de container ook naar /iscsi schrijven, zet dan :Z achter de volume-optie (-v /mnt/iscsi:/iscsi:Z). Dan geeft SELinux de container toegang tot de map.</p>
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">Opslag</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">iSCSI</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">NFS</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">TrueNAS</span>
+      
+    
+  </nav>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../18-proxmox-cli/" class="md-footer__link md-footer__link--prev" aria-label="Vorige: 18 Proxmox CLI">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Vorige
+              </span>
+              <div class="md-ellipsis">
+                18 Proxmox CLI
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../20-containers-in-azure/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 20 Containers in Azure">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                20 Containers in Azure
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.footer","navigation.top","navigation.tracking","navigation.path","search.highlight","toc.integrate"],"redirect":null,"search":"../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Gekopieerd naar klembord","clipboard.copy":"Kopiëren naar klembord","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 extra overeenkomst op deze pagina","search.result.more.other":"# extra overeenkomsten op deze pagina","search.result.none":"Geen overeenkomende documenten","search.result.one":"1 overeenkomende document","search.result.other":"# overeenkomende documenten","search.result.placeholder":"Typ om te beginnen met zoeken","search.result.term.missing":"Ontbreekt","select.version":"Selecteer versie"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+        <script src="../javascripts/menu.js"></script>
+      
+        <script src="../javascripts/copy.js"></script>
+      
+    
+  </body>
+</html>

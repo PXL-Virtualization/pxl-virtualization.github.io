@@ -1001,6 +1001,168 @@
 
                 
               
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-clusters-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-proxmox-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  18 Proxmox CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Opslag en cloud
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Opslag en cloud
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-storage-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-containers-in-azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  20 Containers in Azure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
             </ul>
           </nav>
         
@@ -1125,8 +1287,8 @@
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">student@virt-k8s-XX:~$ </span>kubectl<span class="w"> </span>config<span class="w"> </span>get-clusters
 </span><span id="__span-0-2"><span class="gp">student@virt-k8s-XX:~$ </span>k3d<span class="w"> </span>cluster<span class="w"> </span>delete<span class="w"> </span><span class="o">[</span>naam<span class="w"> </span>cluster<span class="o">]</span>
 </span></code></pre></div>
-<p>Herhaal het laatste commando hierboven tot er geen clusters meer overblijven. Als je net hoofdstuk 11 hebt afgerond zal je geen Kubernetes-clusters moeten verwijderen.</p>
-<p>We installeren WordPress nu eerst als Podman-pod, zoals in het hoofdstuk over pods. Voor de uitleg bij die commando's verwijzen we naar dat hoofdstuk.</p>
+<p>Herhaal het laatste commando hierboven tot er geen clusters meer overblijven. Staan er geen clusters, dan hoef je niets te verwijderen.</p>
+<p>We installeren WordPress nu eerst als Podman-pod.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><span class="gp">student@virt-k8s-XX:~$ </span>podman<span class="w"> </span>pod<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>wp-pod<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80
 </span><span id="__span-1-2"><span class="gp">student@virt-k8s-XX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="o">=</span>always<span class="w"> </span>--pod<span class="o">=</span>wp-pod<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"dbpass"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_DATABASE</span><span class="o">=</span><span class="s2">"wp"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_USER</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="s2">"wppass"</span><span class="w"> </span>--name<span class="o">=</span>wp-db<span class="w"> </span>docker.io/library/mariadb
 </span><span id="__span-1-3"><span class="gp">student@virt-k8s-XX:~$ </span>podman<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="o">=</span>always<span class="w"> </span>--pod<span class="o">=</span>wp-pod<span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_NAME</span><span class="o">=</span><span class="s2">"wp"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_USER</span><span class="o">=</span><span class="s2">"wordpress"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_PASSWORD</span><span class="o">=</span><span class="s2">"wppass"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">WORDPRESS_DB_HOST</span><span class="o">=</span><span class="s2">"127.0.0.1"</span><span class="w"> </span>--name<span class="w"> </span>wp-web<span class="w"> </span>docker.io/library/wordpress
@@ -1255,7 +1417,7 @@
 <p><img alt="" src="../assets/h12/image2.png" /></p>
 <p>…</p>
 </blockquote>
-<p>In het vorige hoofdstuk maakten we een service bereikbaar met kubectl port-forward. Hier pakken we het anders aan: we laten k3d de poort al doorsturen bij het aanmaken van het cluster, zodat die port-forward niet meer nodig is.</p>
+<p>Een service maak je bereikbaar met kubectl port-forward. Hier pakken we het anders aan: we laten k3d de poort al doorsturen bij het aanmaken van het cluster, zodat die port-forward niet meer nodig is.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">student@virt-k8s-XX:~$ </span>k3d<span class="w"> </span>cluster<span class="w"> </span>create<span class="w"> </span>mijncluster<span class="w"> </span>--servers<span class="w"> </span><span class="m">1</span><span class="w"> </span>--agents<span class="w"> </span><span class="m">1</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"8080:32723@server:0"</span>
 </span><span id="__span-6-2"><span class="go">…</span>
 </span></code></pre></div>
@@ -1290,7 +1452,7 @@
 </span><span id="__span-9-8">    io.kubernetes.cri-o.SandboxID/wp-web: b662df54310f7b997504d35b28d6c5a9b5f5ba69c60bfc07483b1de9805824ae
 </span><span id="__span-9-9">  creationTimestamp: "2026-11-06T11:22:47Z"
 </span></code></pre></div>
-<p>De twee lange namen horen bij opslag die Podman zelf heeft aangemaakt: de images mariadb en wordpress vragen daarom. In dit hoofdstuk werken we zonder opslag, net als in het vorige, en daarom halen we die stukken uit het manifest. Daarmee verdwijnt ook de foutmelding, want dan staan die namen er niet meer in.</p>
+<p>De twee lange namen horen bij opslag die Podman zelf heeft aangemaakt: de images mariadb en wordpress vragen daarom. In dit hoofdstuk werken we zonder opslag, en daarom halen we die stukken uit het manifest. Daarmee verdwijnt ook de foutmelding, want dan staan die namen er niet meer in.</p>
 <p>Verwijder bij allebei de containers het blok volumeMounts met de twee regels eronder, en verwijder onderaan het volledige blok volumes.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1">    volumeMounts:
 </span><span id="__span-10-2">    - mountPath: /var/lib/mysql
@@ -1624,6 +1786,8 @@
       <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
       
         <script src="../javascripts/menu.js"></script>
+      
+        <script src="../javascripts/copy.js"></script>
       
     
   </body>

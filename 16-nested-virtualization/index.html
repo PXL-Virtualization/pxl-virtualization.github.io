@@ -18,6 +18,8 @@
         <link rel="prev" href="../15-vms-en-containers-in-proxmox/">
       
       
+        <link rel="next" href="../17-clusters-in-proxmox/">
+      
       
         
       
@@ -1028,6 +1030,168 @@
 
                 
               
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-clusters-in-proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  17 Clusters in Proxmox
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-proxmox-cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  18 Proxmox CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Opslag en cloud
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Opslag en cloud
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-storage-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  19 Storage Infrastructure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-containers-in-azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  20 Containers in Azure
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
             </ul>
           </nav>
         
@@ -1135,18 +1299,22 @@
 <ul>
 <li>Virtualize Intel VT-x/EPT of AMD-V/RVI<br>Deze optie is vooral nuttig voor nested virtualization, waarbij je virtuele machines binnen andere virtuele machines draait.</li>
 </ul>
+<blockquote>
 <p>Door VT-x of AMD-V te virtualiseren, kan de gast-VM zelf ook hypervisors uitvoeren, zoals Hyper-V, KVM of ESXi.<br>Deze instelling moeten wij uiteraard aanzetten.</p>
+</blockquote>
 <ul>
 <li>Virtualize CPU Performance Counters</li>
 </ul>
+<blockquote>
 <p>Deze instelling stelt virtuele machines in staat om gebruik te maken van de CPU-prestatieregisters van de fysieke CPU. Prestatieregisters worden vaak gebruikt voor het verzamelen van gedetailleerde prestatiegegevens en statistieken over de CPU-activiteiten.<br>Laat deze instelling uit staan.</p>
+</blockquote>
 <h3 id="1622-problemen-nested-virtualization-oplossen">16.2.2 Problemen Nested Virtualization oplossen<a class="headerlink" href="#1622-problemen-nested-virtualization-oplossen" title="Permanent link">&para;</a></h3>
 <p>Het kan voorkomen dat Nested Virtualization in eerste instantie niet werkt op je laptop wanneer je een VM start met de gewijzigde instellingen.</p>
 <p><img alt="" src="../assets/h16/image3.png" /></p>
 <p>Wil je nested virtualization gebruiken, dan moet je dit oplossen. De ervaring leert dat je op een AMD-processor meer moet aanpassen dan op een Intel-processor, maar op beide kan je nested virtualization instellen.</p>
 <div class="admonition warning">
 <p class="admonition-title">Opgelet: nested virtualization is een keuze, geen verplichting voor de lessen Virtualization.</p>
-<p>Je kan de cursus volledig volgen zonder nested virtualization. Proxmox draait je VM's dan zonder KVM: dat is trager, maar het werkt. Containers werken gewoon. In hoofdstuk 17 volg je dan de route met Debian.</p>
+<p>Je kan de cursus volledig volgen zonder nested virtualization. Proxmox draait je VM's dan zonder KVM: dat is trager, maar het werkt. Containers werken gewoon. Waar dat nodig is, volg je dan de route met Debian.</p>
 <p>De instellingen die nodig zijn voor nested virtualization schakelen onderstaande uit:</p>
 <ul>
 <li>
@@ -1239,7 +1407,9 @@
 </tbody>
 </table>
 <p>Herstart de laptop na de stappen en start je VM opnieuw. Zie je de foutmelding van VMware niet meer, dan ben je klaar.</p>
-<p><strong>Stap 1: Zet de Hyper-V-hypervisor uit (Home en Pro)</strong></p>
+<ol>
+<li>Zet de Hyper-V-hypervisor uit (Home en Pro)</li>
+</ol>
 <p>Voer dit uit in PowerShell als administrator en herstart daarna de laptop:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1">bcdedit /set hypervisorlaunchtype off
 </span></code></pre></div>
@@ -1255,7 +1425,9 @@
 </li>
 </ul>
 <p>Werkt het nog niet, ga dan verder met de volgende stappen.</p>
-<p><strong>Stap 2: Zet Windows-onderdelen uit (Home en Pro)</strong></p>
+<ol>
+<li>Zet Windows-onderdelen uit (Home en Pro)</li>
+</ol>
 <p>Ga naar Configuratiescherm &gt; Programma's &gt; Programma's en onderdelen &gt; Windows-onderdelen in- of uitschakelen. Zet uit wat je in de lijst ziet staan:</p>
 <ul>
 <li>
@@ -1272,9 +1444,13 @@
 </li>
 </ul>
 <p>Op Windows Home bestaan Hyper-V en Windows Sandbox niet: je ziet ze dan gewoon niet in de lijst. Let op: zonder Platform voor virtuele machine werken WSL2 en Docker Desktop niet meer.</p>
-<p><strong>Stap 3: Zet geheugenintegriteit uit (Home en Pro)</strong></p>
+<ol>
+<li>Zet geheugenintegriteit uit (Home en Pro)</li>
+</ol>
 <p>Geheugenintegriteit is een onderdeel van kernisolatie. Het beschermt Windows tegen malware door gevoelige processen af te zonderen. Daarvoor start Windows zijn eigen hypervisor, en dan kan VMware VT-x niet meer doorgeven.</p>
+<blockquote>
 <p>Zet geheugenintegriteit als volgt uit:</p>
+</blockquote>
 <ul>
 <li>
 <p>Ga naar Start, Instellingen.</p>
@@ -1298,8 +1474,12 @@
 <p>Start de computer opnieuw op.</p>
 </li>
 </ul>
+<blockquote>
 <p><img alt="" src="../assets/h16/image7.png" /></p>
-<p><strong>Stap 4: Zet firmwarebeveiliging uit (Home en Pro, als je laptop het heeft)</strong></p>
+</blockquote>
+<ol>
+<li>Zet firmwarebeveiliging uit (Home en Pro, als je laptop het heeft)</li>
+</ol>
 <p>Firmwarebeveiliging (System Guard Secure Launch) zie je enkel op laptops die het ondersteunen. Staat de optie er niet, sla deze stap dan over. Ook firmwarebeveiliging gebruikt de hypervisor van Windows en kan nested virtualization tegenhouden. Opgelet: nadat je ze uitzet, vraagt Windows bij het aanmelden soms je wachtwoord in plaats van je pincode.</p>
 <p>Zet firmwarebeveiliging als volgt uit:</p>
 <ul>
@@ -1326,7 +1506,9 @@
 </li>
 </ul>
 <p><img alt="" src="../assets/h16/image8.png" /></p>
-<p><strong>Stap 5: Zet Device Guard (VBS) uit</strong></p>
+<ol>
+<li>Zet Device Guard (VBS) uit</li>
+</ol>
 <p>Op Windows Pro en Education doe je dat met het lokaal groepsbeleid:</p>
 <ul>
 <li>
@@ -1336,7 +1518,9 @@
 <p>Ga naar Computerconfiguratie &gt; Beheersjablonen &gt; Systeem &gt; Device Guard.</p>
 </li>
 </ul>
+<blockquote>
 <p><img alt="" src="../assets/h16/image9.png" /></p>
+</blockquote>
 <ul>
 <li>
 <p>Dubbelklik op Beveiliging op basis van virtualisatie inschakelen.</p>
@@ -1360,11 +1544,15 @@
 </span></code></pre></div>
 <p><img alt="" src="../assets/h16/image11.png" /></p>
 <p>Zet de beveiliging terug:</p>
+<blockquote>
 <div class="language-ps1con highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">PS C:\WINDOWS\system32&gt; </span><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="s2">"$HOME\nestedvirtualization-terug.ps1"</span> <span class="n">-Apply</span>
 </span></code></pre></div>
 <p><img alt="" src="../assets/h16/image12.png" /></p>
+</blockquote>
 <p>Herstart de laptop. Voer daarna nestedvirtualization.ps1 uit zonder -Apply. Je ziet nu Er draait nu een Windows-hypervisor en VBS-status nu: DRAAIT. Dat is nu de bedoeling.</p>
+<blockquote>
 <p><img alt="" src="../assets/h16/image13.png" /></p>
+</blockquote>
 <p>Goed om te weten:</p>
 <ul>
 <li>
@@ -1480,6 +1668,22 @@
           </a>
         
         
+          
+          <a href="../17-clusters-in-proxmox/" class="md-footer__link md-footer__link--next" aria-label="Volgende: 17 Clusters in Proxmox">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Volgende
+              </span>
+              <div class="md-ellipsis">
+                17 Clusters in Proxmox
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
       </nav>
     
   
@@ -1518,6 +1722,8 @@
       <script src="../assets/javascripts/bundle.3cb411a8.min.js"></script>
       
         <script src="../javascripts/menu.js"></script>
+      
+        <script src="../javascripts/copy.js"></script>
       
     
   </body>
