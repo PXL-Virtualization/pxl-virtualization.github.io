@@ -1083,6 +1083,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#1548-alpine-op-de-schijf-installeren" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        15.4.8 Alpine op de schijf installeren
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2048,6 +2059,120 @@
 <p>We sluiten de vm af in de console van de vm zelf. We gebruiken poweroff. Alpine kent het commando shutdown niet.</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">localhost:~# </span>poweroff
 </span></code></pre></div>
+<h3 id="1548-alpine-op-de-schijf-installeren">15.4.8 Alpine op de schijf installeren<a class="headerlink" href="#1548-alpine-op-de-schijf-installeren" title="Permanent link">&para;</a></h3>
+<p>Tot nu toe draait Alpine vanaf de ISO. Alles wat je in de VM doet, staat enkel in het werkgeheugen, en na een herstart ben je het kwijt. We installeren Alpine nu op de schijf van de VM, zodat ze daarvan opstart en je wijzigingen bewaard blijven.</p>
+<p>Start VM 555 (Alpine) opnieuw, open xterm.js en meld je aan als root. Start dan de installatie:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">localhost:~# </span>setup-alpine
+</span></code></pre></div>
+<p>Beantwoord de vragen zo:</p>
+<ul>
+<li>
+<p>Hostname</p>
+<ul>
+<li>Enter system hostname (fully qualified form, e.g. 'foo.example.org') [localhost]: alpine</li>
+</ul>
+</li>
+<li>
+<p>Netwerk</p>
+<ul>
+<li>
+<p>Which one do you want to initialize? (or '?' or 'done'): eth0</p>
+</li>
+<li>
+<p>IPv4 address for eth0? (or 'dhcp', 'none', '?'): dhcp</p>
+</li>
+<li>
+<p>IPv6 address for eth0? (or 'auto', 'dhcp', 'none', '?') [fe80::be24:11ff:fea9:eb2/64]: none</p>
+</li>
+<li>
+<p>Do you want to do any manual network configuration? (y/n): n</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Root password</p>
+<ul>
+<li>
+<p>New password: &lt;kies zelf&gt;</p>
+</li>
+<li>
+<p>Retype password: &lt;kies zelf&gt;</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Tijdzone</p>
+<ul>
+<li>
+<p>Which timezone are you in? (or '?' or 'none') [UTC]: Europe</p>
+</li>
+<li>
+<p>What sub-timezone of 'Europe' are you in? (or '?'): Brussels</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Proxy</p>
+<ul>
+<li>HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none') [none]: none</li>
+</ul>
+</li>
+<li>
+<p>Network Time Protocol</p>
+<ul>
+<li>Which NTP client to run? ('busybox', 'openntpd', 'chrony' or 'none') [busybox]: none</li>
+</ul>
+</li>
+<li>
+<p>APK Mirror</p>
+<ul>
+<li>Enter mirror number or URL: [1]: 1</li>
+</ul>
+</li>
+<li>
+<p>User</p>
+<ul>
+<li>
+<p>Setup a user? (enter a lower-case loginname, or 'no'): no</p>
+</li>
+<li>
+<p>Which ssh server? ('openssh', 'dropbear' or 'none') [openssh]: none</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Disk</p>
+<ul>
+<li>
+<p>Which disk(s) would you like to use? (or '?' for help or 'none'): sda</p>
+</li>
+<li>
+<p>How would you like to use it? ('sys', 'data', 'crypt', 'lvm' or '?' for help): sys<br>sys is de belangrijkste keuze: Alpine installeert dan een volledig systeem op de schijf.</p>
+</li>
+<li>
+<p>WARNING: Erase the above disk(s) and continue? (y/n): y</p>
+<p><img alt="" src="../assets/h15/image63.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Sluit de VM af wanneer de installatie klaar is:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">localhost:~# </span>poweroff
+</span></code></pre></div>
+<p>Haal nu de ISO weg, anders start de VM opnieuw van de ISO. Selecteer VM 555 (Alpine), ga naar Hardware, dubbelklik op CD/DVD Drive en kies Do not use any media. Klik op OK.</p>
+<p><img alt="" src="../assets/h15/image64.png" /></p>
+<p>Controleer bij Options, Boot Order dat scsi0 aangevinkt is en bovenaan staat.</p>
+<p><img alt="" src="../assets/h15/image65.png" /></p>
+<p>Start de VM. Ze start nu van de schijf: je meldt je aan als root met het wachtwoord dat je gekozen hebt, en de prompt toont alpine:\~#. Wat je nu aanmaakt, staat er na een herstart nog.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1">alpine:~# echo "blijft bewaard" &gt; /root/test.txt
+</span><span id="__span-19-2">alpine:~# reboot
+</span></code></pre></div>
+<p><img alt="" src="../assets/h15/image66.png" /></p>
+<p>Meld je na de herstart opnieuw aan en controleer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1">alpine:~# cat /root/test.txt
+</span></code></pre></div>
+<p>Verschijnt er in xterm.js geen loginprompt, druk dan op Enter.</p>
+<p><img alt="" src="../assets/h15/image67.png" /></p>
 <h2 id="155-container">15.5 Container<a class="headerlink" href="#155-container" title="Permanent link">&para;</a></h2>
 <h3 id="1551-vereisten">15.5.1 Vereisten<a class="headerlink" href="#1551-vereisten" title="Permanent link">&para;</a></h3>
 <p>Containers vereisen de volgende configuratie:</p>
@@ -2066,9 +2191,9 @@
 <p>Container templates (min of meer vergelijkbaar met images in Docker) zijn vooraf geconfigureerde basisbesturingssystemen (zoals Ubuntu, Debian, Alpine, enz.) die je gebruikt om containers te maken.</p>
 <p>Ga naar Datacenter, pve, opslag local (pve) en klik op CT Templates, Templates.</p>
 <p>We zoeken naar Rocky Linux en selecteren rockylinux-10-default om de template te downloaden.</p>
-<p><img alt="" src="../assets/h15/image63.png" /></p>
+<p><img alt="" src="../assets/h15/image68.png" /></p>
 <p>Na enige tijd krijg je de melding TASK OK. Sluit dan het venster.</p>
-<p><img alt="" src="../assets/h15/image64.png" /></p>
+<p><img alt="" src="../assets/h15/image69.png" /></p>
 <p>Hieronder vind je een vergelijking tussen een Docker image en een CT-template.</p>
 <table>
 <thead>
@@ -2123,7 +2248,7 @@
 </table>
 <h3 id="1553-container-aanmaken">15.5.3 Container aanmaken<a class="headerlink" href="#1553-container-aanmaken" title="Permanent link">&para;</a></h3>
 <p>Klik op Create CT rechtsboven.</p>
-<p><img alt="" src="../assets/h15/image65.png" /></p>
+<p><img alt="" src="../assets/h15/image70.png" /></p>
 <ul>
 <li>General</li>
 </ul>
@@ -2131,63 +2256,63 @@
 <p>Geef een duidelijke naam, zoals Rocky10.</p>
 <p>Voeg een tag toe die het doel van de container aangeeft. Wij kiezen voor LinuxOS.</p>
 <p>Je moet een wachtwoord opgeven van minstens vijf tekens. Daarnaast kan je een SSH Key File laden, zodat je zonder wachtwoord kan aanmelden. Dat laatste laten we nu ongemoeid.</p>
-<p><img alt="" src="../assets/h15/image66.png" /></p>
+<p><img alt="" src="../assets/h15/image71.png" /></p>
 <p>Klik op Next.</p>
 <ul>
 <li>Template</li>
 </ul>
 <p>Selecteer bij Storage local.</p>
 <p>Het spreekt voor zich dat we de template van Rocky Linux selecteren. We hebben immers geen andere.</p>
-<p><img alt="" src="../assets/h15/image67.png" /></p>
+<p><img alt="" src="../assets/h15/image72.png" /></p>
 <p>We klikken erna op Next.</p>
 <ul>
 <li>Disks</li>
 </ul>
 <p>Kies bij Storage local-lm.</p>
 <p>We laten een schijf van 8GiB staan. De andere instellingen veranderen we ook niet.</p>
-<p><img alt="" src="../assets/h15/image68.png" /></p>
+<p><img alt="" src="../assets/h15/image73.png" /></p>
 <p>Klik op Next.</p>
 <ul>
 <li>CPU</li>
 </ul>
 <p>Bij CPU kan je weer het aantal cores instellen.</p>
-<p><img alt="" src="../assets/h15/image69.png" /></p>
+<p><img alt="" src="../assets/h15/image74.png" /></p>
 <p>We laten dat nu onveranderd omdat het weinig zin heeft dit te wijzigen en we klikken op Next.</p>
 <ul>
 <li>Memory</li>
 </ul>
 <p>Je kan hier de grootte van geheugen instellen. We laten dit staan op 512 MB en klikken Next.</p>
-<p><img alt="" src="../assets/h15/image70.png" /></p>
+<p><img alt="" src="../assets/h15/image75.png" /></p>
 <ul>
 <li>Network</li>
 </ul>
 <p>We verbinden de virtuele netwerkkaart met onze enige switch vmbr0. Stel in dat gebruik gemaakt wordt van DHCP.</p>
-<p><img alt="" src="../assets/h15/image71.png" /></p>
+<p><img alt="" src="../assets/h15/image76.png" /></p>
 <p>Klik erna op Next.</p>
 <ul>
 <li>DNS</li>
 </ul>
 <p>De DNS-instellingen laten we ongemoeid. We kiezen voor dus voor de instellingen van de host. Klik erna op Next.</p>
-<p><img alt="" src="../assets/h15/image72.png" /></p>
+<p><img alt="" src="../assets/h15/image77.png" /></p>
 <ul>
 <li>Confirm</li>
 </ul>
 <p>Je krijgt nu een overzicht. Kijk je instellingen na. Indien correct klik je op Finish.</p>
-<p><img alt="" src="../assets/h15/image73.png" /></p>
+<p><img alt="" src="../assets/h15/image78.png" /></p>
 <p>Na enige tijd zal je de melding TASK OK krijgen.</p>
-<p><img alt="" src="../assets/h15/image74.png" /></p>
+<p><img alt="" src="../assets/h15/image79.png" /></p>
 <p>Sluit dat venster.</p>
 <h3 id="1554-container-starten">15.5.4 Container starten<a class="headerlink" href="#1554-container-starten" title="Permanent link">&para;</a></h3>
 <p>Selecteer links de container Rocky10 en klik op Start.</p>
-<p><img alt="" src="../assets/h15/image75.png" /></p>
+<p><img alt="" src="../assets/h15/image80.png" /></p>
 <p>Je kan inloggen op Rocky 10 door op Console te klikken op 1 van de 2 plaatsen zoals reeds besproken.</p>
-<p><img alt="" src="../assets/h15/image76.png" /></p>
+<p><img alt="" src="../assets/h15/image81.png" /></p>
 <p>Log in met de user root en geef het door jouw gekozen wachtwoord in.</p>
-<p><img alt="" src="../assets/h15/image77.png" /></p>
+<p><img alt="" src="../assets/h15/image82.png" /></p>
 <p>Je zal zien dat je toetsenbord correct staat en dat je een ip-nummer hebt bekomen.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">[root@Rocky10 ~]# </span>ip<span class="w"> </span>a
+<div class="language-console highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">[root@Rocky10 ~]# </span>ip<span class="w"> </span>a
 </span></code></pre></div>
-<p><img alt="" src="../assets/h15/image78.png" /></p>
+<p><img alt="" src="../assets/h15/image83.png" /></p>
 <h2 id="156-snapshots-en-klonen">15.6 Snapshots en klonen<a class="headerlink" href="#156-snapshots-en-klonen" title="Permanent link">&para;</a></h2>
 <h3 id="1561-snapshot">15.6.1 Snapshot<a class="headerlink" href="#1561-snapshot" title="Permanent link">&para;</a></h3>
 <p>Een snapshot bevriest de toestand van een machine op een bepaald moment zoals jullie ook kennen van VMware Workstation. Loopt er daarna iets mis, dan zet je ze met een klik terug. Selecteer de VM of container en ga naar Snapshots en klik op Take Snapshot. Geef een naam en eventueel een beschrijving.</p>
@@ -2217,44 +2342,44 @@
 <li>Klik op Take Snapshot.</li>
 </ul>
 <blockquote>
-<p><img alt="" src="../assets/h15/image79.png" /></p>
+<p><img alt="" src="../assets/h15/image84.png" /></p>
 </blockquote>
 <ul>
 <li>Sluit het venster af.</li>
 </ul>
-<p><img alt="" src="../assets/h15/image80.png" /></p>
+<p><img alt="" src="../assets/h15/image85.png" /></p>
 <h4 id="15611-uitproberen-een-wijziging-terugdraaien">15.6.1.1 Uitproberen: een wijziging terugdraaien<a class="headerlink" href="#15611-uitproberen-een-wijziging-terugdraaien" title="Permanent link">&para;</a></h4>
 <p>Je hebt nu een snapshot voor-update, met het werkgeheugen erbij. We doen een wijziging in de VM en draaien ze daarna terug. Open een xterm.js-console van 555 (Alpine) en maak een bestand aan:</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-18-1"><span class="gp">localhost:~# </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"gemaakt na de snapshot"</span><span class="w"> </span>&gt;<span class="w"> </span>/root/na-snapshot.txt
-</span><span id="__span-18-2"><span class="gp">localhost:~# </span>ls<span class="w"> </span>/root
-</span><span id="__span-18-3"><span class="go">na-snapshot.txt</span>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1">alpine:~# echo "gemaakt na de snapshot" &gt; /root/na-snapshot.txt
+</span><span id="__span-22-2">alpine:~# ls /root
+</span><span id="__span-22-3">na-snapshot.txt
 </span></code></pre></div>
-<p><img alt="" src="../assets/h15/image81.png" /></p>
+<p><img alt="" src="../assets/h15/image86.png" /></p>
 <p>Ga terug naar Snapshots, selecteer voor-update en klik op Rollback. Bevestig met Yes.</p>
-<p><img alt="" src="../assets/h15/image82.png" /></p>
+<p><img alt="" src="../assets/h15/image87.png" /></p>
 <p>Kijk opnieuw in de console. De VM draait nog altijd, maar het bestand is weg: ze staat terug op het moment van de snapshot.</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">localhost:~# </span>ls<span class="w"> </span>/root
-</span><span id="__span-19-2"><span class="gp">localhost:~#</span>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1">alpine:~# ls /root
+</span><span id="__span-23-2">alpine:~#
 </span></code></pre></div>
-<p>Onze Alpine-VM draait vanaf de ISO. Alles wat je erin doet, staat dus enkel in het werkgeheugen. Een snapshot zonder Include RAM zou hier niets bewaren. Bij een VM die op haar schijf geïnstalleerd is, bewaart zo'n snapshot wel de schijf. Na een rollback staat die VM dan uit, en moet je ze opnieuw starten.</p>
+<p>Onze Alpine-VM staat nu op haar schijf. Een snapshot zonder Include RAM bewaart enkel die schijf: na een rollback staat de VM uit en moet je ze opnieuw starten. Met Include RAM draait ze meteen verder, zoals je net zag.</p>
 <h4 id="15612-snapshots-beheren">15.6.1.2 Snapshots beheren<a class="headerlink" href="#15612-snapshots-beheren" title="Permanent link">&para;</a></h4>
 <p>Neem nog een snapshot, met als naam voor-update2. In de lijst zie je nu een boom: elke snapshot bouwt verder op de vorige, en NOW (You are here!) staat onder de snapshot waar de VM nu van vertrekt.</p>
-<p><img alt="" src="../assets/h15/image83.png" /></p>
+<p><img alt="" src="../assets/h15/image88.png" /></p>
 <p>Selecteer voor-update2 en klik op Edit om de beschrijving aan te passen. Met Remove verwijder je de snapshot.</p>
 <p>Ruim snapshots op die je niet meer nodig hebt. Een snapshot bewaart de oude versie van alles wat daarna verandert, en groeit dus mee met elke wijziging. Met Include RAM komt daar meteen de grootte van het werkgeheugen bij.</p>
 <h4 id="15613-snapshots-van-een-container">15.6.1.3 Snapshots van een container<a class="headerlink" href="#15613-snapshots-van-een-container" title="Permanent link">&para;</a></h4>
 <p>Bij een container werkt het op dezelfde manier. Selecteer de container 777, ga naar Snapshots en klik op Take Snapshot. Geef als naam basis. Include RAM staat er niet bij: het werkgeheugen van een container kan je niet bewaren.</p>
-<p><img alt="" src="../assets/h15/image84.png" /></p>
+<p><img alt="" src="../assets/h15/image89.png" /></p>
 <p>Open de console van de container en maak een bestand aan:</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">[root@Rocky10 ~]# </span>touch<span class="w"> </span>/root/na-snapshot
-</span><span id="__span-20-2"><span class="gp">[root@Rocky10 ~]# </span>ls<span class="w"> </span>/root
-</span><span id="__span-20-3"><span class="go">na-snapshot</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">[root@Rocky10 ~]# </span>touch<span class="w"> </span>/root/na-snapshot
+</span><span id="__span-24-2"><span class="gp">[root@Rocky10 ~]# </span>ls<span class="w"> </span>/root
+</span><span id="__span-24-3"><span class="go">na-snapshot</span>
 </span></code></pre></div>
-<p><img alt="" src="../assets/h15/image85.png" /></p>
+<p><img alt="" src="../assets/h15/image90.png" /></p>
 <p>Selecteer de snapshot basis en klik op Rollback.</p>
-<p><img alt="" src="../assets/h15/image86.png" /></p>
+<p><img alt="" src="../assets/h15/image91.png" /></p>
 <p>Proxmox stopt de container daarvoor zelf. Start hem daarna opnieuw met Start en kijk in de console: het bestand is weg.</p>
-<p><img alt="" src="../assets/h15/image87.png" /></p>
+<p><img alt="" src="../assets/h15/image92.png" /></p>
 <p>Snapshots werken alleen op opslag die ze ondersteunt. local-lvm (LVM-thin) kan het, local (een gewone directory) enkel met qcow2-schijven. Kijk nog eens naar de tabel bij Opslag.</p>
 <p>Let op: een snapshot is geen back-up. Hij staat op dezelfde schijf als de machine zelf, dus bij een schijfdefect ben je allebei kwijt. Gebruik snapshots om een wijziging terug te draaien.</p>
 <h3 id="1562-klonen-en-templates">15.6.2 Klonen en templates<a class="headerlink" href="#1562-klonen-en-templates" title="Permanent link">&para;</a></h3>
@@ -2267,31 +2392,31 @@
 <p>Linked Clone bewaart enkel de verschillen met het origineel. Dat gaat sneller en neemt minder plaats in, maar het origineel mag je dan niet meer verwijderen.</p>
 </li>
 </ul>
-<p><img alt="" src="../assets/h15/image88.png" /></p>
+<p><img alt="" src="../assets/h15/image93.png" /></p>
 <h4 id="15621-een-volledige-kloon">15.6.2.1 Een volledige kloon<a class="headerlink" href="#15621-een-volledige-kloon" title="Permanent link">&para;</a></h4>
 <p>Zet de Alpine-VM eerst uit met poweroff in haar console. Een uitgeschakelde VM klonen gaat het snelst.</p>
 <p>Klik met de rechtermuisknop op 555 en kies Clone.</p>
-<p><img alt="" src="../assets/h15/image89.png" /></p>
+<p><img alt="" src="../assets/h15/image94.png" /></p>
 <p>Vul bij VM ID 556 in en bij Name alpine-basis. Een gewone VM kan je alleen volledig klonen. Klik op Clone.</p>
-<p><img alt="" src="../assets/h15/image90.png" /></p>
+<p><img alt="" src="../assets/h15/image95.png" /></p>
 <p>Proxmox geeft de kloon automatisch een nieuw MAC-adres. Bij een geïnstalleerd systeem moet je zelf nog de hostname aanpassen, want die staat op de schijf en is dus mee gekopieerd.</p>
 <h4 id="15622-een-template-maken">15.6.2.2 Een template maken<a class="headerlink" href="#15622-een-template-maken" title="Permanent link">&para;</a></h4>
 <p>We zetten de kloon om naar een template, niet het origineel. Zo blijft 555 bruikbaar.</p>
 <p>Klik met de rechtermuisknop op 556 en kies Convert to template.</p>
-<p><img alt="" src="../assets/h15/image91.png" /></p>
+<p><img alt="" src="../assets/h15/image96.png" /></p>
 <p>Bevestig met Yes. Het icoon verandert, en Start is niet meer beschikbaar: een template kan je niet meer starten of wijzigen.</p>
-<p><img alt="" src="../assets/h15/image92.png" /></p>
+<p><img alt="" src="../assets/h15/image97.png" /></p>
 <h4 id="15623-een-linked-clone">15.6.2.3 Een linked clone<a class="headerlink" href="#15623-een-linked-clone" title="Permanent link">&para;</a></h4>
 <p>Klik met de rechtermuisknop op de template 556 en kies Clone.</p>
-<p><img alt="" src="../assets/h15/image93.png" /></p>
+<p><img alt="" src="../assets/h15/image98.png" /></p>
 <p>Nu kan je bij Mode kiezen. Kies Linked Clone, VM ID 557 en Name alpine-linked, en klik op Clone. De kloon staat er na enkele seconden.</p>
-<p><img alt="" src="../assets/h15/image94.png" /></p>
+<p><img alt="" src="../assets/h15/image99.png" /></p>
 <p>Maak om te vergelijken nog een kloon van de template, nu met Mode Full Clone, VM ID 558 en Name alpine-full. Die duurt langer: de volledige schijf wordt gekopieerd.</p>
-<p><img alt="" src="../assets/h15/image95.png" /></p>
+<p><img alt="" src="../assets/h15/image100.png" /></p>
 <h4 id="15624-de-template-verwijderen">15.6.2.4 De template verwijderen<a class="headerlink" href="#15624-de-template-verwijderen" title="Permanent link">&para;</a></h4>
 <p>Selecteer de template 556 en kies More, Remove. Proxmox vraagt het ID ter bevestiging. Op local-lvm (LVM-thin) lukt dat, ook al bestaat de linked clone 557 nog. Een linked clone is hier een thin snapshot: de template en de kloon delen dezelfde blokken in de thin pool, en die bewaart een blok zolang er nog een volume naar verwijst. De linked clone blijft dus gewoon werken.</p>
-<p><img alt="" src="../assets/h15/image96.png" /></p>
-<p><img alt="" src="../assets/h15/image97.png" /></p>
+<p><img alt="" src="../assets/h15/image101.png" /></p>
+<p><img alt="" src="../assets/h15/image102.png" /></p>
 <p>Op andere opslag, zoals ZFS, Ceph of qcow2-bestanden op een directory, weigert Proxmox de template te verwijderen zolang er linked clones van bestaan. Daar verwijder je eerst de linked clones. Een full clone staat altijd los van de template. Ruim tot slot ook 557 en 558 op met More, Remove. 555 houden we, want die gebruiken we nog.</p>
 <h4 id="15625-containers-klonen">15.6.2.5 Containers klonen<a class="headerlink" href="#15625-containers-klonen" title="Permanent link">&para;</a></h4>
 <p>Containers kloon je op dezelfde manier. Een draaiende container kan je niet zomaar klonen: zet de container eerst uit met Shutdown. Ook een container kan je met Convert to template omzetten naar een template.</p>

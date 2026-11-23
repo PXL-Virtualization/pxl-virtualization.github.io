@@ -2023,17 +2023,11 @@
 <p>Vanaf nu beheer je het cluster vanuit één webinterface. Je kan er back-ups inplannen, opslag toevoegen en virtuele machines tussen de nodes verplaatsen.</p>
 <p><img alt="" src="../assets/h17/image41.png" /></p>
 <p>Zonder gedeelde opslag kan Proxmox een draaiende VM wel verplaatsen, maar dan moet de volledige schijf mee over het netwerk. Dat duurt lang. We proberen het uit.</p>
-<p>Maak daarvoor eerst opnieuw de Alpine-VM aan op pve.</p>
+<p>Maak daarvoor eerst opnieuw de Alpine-VM aan op pve, en installeer ze met setup-alpine op de schijf.</p>
 <p>Start de VM. We verplaatsen ze nu van pve naar pve2.</p>
 <p>Klik met de rechtermuisknop op de VM en kies Migrate.</p>
 <p><img alt="" src="../assets/h17/image42.png" /></p>
-<p>Je krijgt een foutmelding: een VM met een lokale cd/dvd kan je niet verplaatsen. De ISO staat immers alleen op pve.</p>
-<p><img alt="" src="../assets/h17/image43.png" /></p>
-<p>Pas daarom de hardware van de VM aan: dubbelklik bij Hardware op CD/DVD Drive.</p>
-<p><img alt="" src="../assets/h17/image44.png" /></p>
-<p>Kies Do not use any media en klik op OK.</p>
-<p><img alt="" src="../assets/h17/image45.png" /></p>
-<p>Probeer de VM opnieuw te verplaatsen.</p>
+<p>Staat er nog een ISO in de CD/DVD Drive, dan weigert Proxmox de migratie: de ISO staat enkel op pve. Zet de drive dan bij Hardware op Do not use any media.</p>
 <p>Kies als doel pve2. Bij Mode staat Online: de VM blijft draaien tijdens de migratie.</p>
 <p>Proxmox waarschuwt dat de migratie lang kan duren, omdat de lokale schijf mee moet. Klik toch op Migrate.</p>
 <p><img alt="" src="../assets/h17/image46.png" /></p>
